@@ -1,0 +1,983 @@
+/* ==========================================================================
+   CTA selection — preview layer for ctaselection.html only.
+   Nothing in this file is loaded by nyroofing.html.
+
+   Part 2 holds the twenty uiverse.io designs the client supplied, each
+   credited to its author. The mechanics are the originals; the colours are
+   the NY Roofing palette, and every design carries an opaque resting
+   background so it reads on the page's dark bands as well as the light ones.
+
+   A style is applied by putting `cta-themed cta-NN` on a button, so the same
+   rules dress both the page's real CTAs and the previews inside the drawer.
+   Structure the designs rely on (normalised by the JS):
+     .cta-themed          the button
+       .btn__pip          the icon chip, when the button has one
+       .cta-wrap          the label's container, carries data-cta-label
+         .cta-text        the label itself
+   ========================================================================== */
+
+:root {
+  --cta-panel-w: min(30rem, 94vw);
+  --cta-z: 120;
+}
+
+
+/* ==========================================================================
+   1. Picker
+   ========================================================================== */
+
+/* Bottom-left, opposite the page's own call button. */
+.ctafab {
+  position: fixed;
+  left: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: var(--cta-z);
+  display: inline-flex;
+  align-items: center;
+  gap: .625rem;
+  min-height: 3.25rem;
+  padding: 0 1.375rem 0 1rem;
+  border: 0;
+  border-radius: 100px;
+  background: #131211;
+  color: #fff;
+  font: inherit;
+  font-size: .9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .6);
+  transition: transform .16s ease, background-color .16s ease;
+}
+
+.ctafab:hover { transform: translateY(-2px); background: #24211d; }
+.ctafab:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+.ctafab i { color: var(--brand); font-size: 1rem; }
+
+.ctafab__count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding-inline: .375rem;
+  border-radius: 100px;
+  background: var(--brand);
+  color: #131211;
+  font-size: .75rem;
+  font-weight: 800;
+}
+
+.ctapanel { position: fixed; inset: 0; z-index: calc(var(--cta-z) + 1); }
+.ctapanel[hidden] { display: none; }
+
+.ctapanel__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 9, .5);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+.ctapanel__sheet {
+  position: absolute;
+  inset: 0 auto 0 0;
+  display: flex;
+  flex-direction: column;
+  width: var(--cta-panel-w);
+  background: #fff;
+  box-shadow: 24px 0 60px -20px rgba(10, 10, 9, .5);
+}
+
+.ctapanel__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.ctapanel__title { margin: 0; font-size: 1.125rem; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+.ctapanel__sub { margin: .25rem 0 0; font-size: .8125rem; line-height: 1.5; color: var(--muted); }
+
+.ctapanel__close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.ctapanel__close:hover { background: var(--surface-2); }
+
+.ctapanel__list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.25rem 1.5rem;
+  display: grid;
+  gap: .625rem;
+  align-content: start;
+}
+
+/* One row per style: the live button, its name and author, and a tick when
+   chosen. */
+.ctacard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .75rem 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+
+.ctacard:hover { border-color: var(--brand); box-shadow: 0 10px 24px -18px rgba(10, 10, 9, .5); }
+.ctacard.is-selected { border-color: #131211; box-shadow: inset 0 0 0 1px #131211; }
+
+/* Room around the demo so shadows, skews and fly-outs are not clipped. */
+.ctacard__stage {
+  grid-column: 1 / -1;
+  display: grid;
+  place-items: center;
+  padding: 1.75rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-2);
+  overflow: hidden;
+}
+
+
+/* The previews are spans; the page's own buttons supply their own display. */
+.ctacard__stage .cta-themed { display: inline-flex; }
+
+.ctacard__name { font-size: .9375rem; font-weight: 700; color: var(--ink); }
+.ctacard__meta { display: block; margin-top: .125rem; font-size: .75rem; font-weight: 500; color: var(--muted); }
+
+.ctacard__tick {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--muted);
+  font-size: .75rem;
+}
+
+.ctacard.is-selected .ctacard__tick { background: var(--brand); color: #131211; }
+
+.ctapanel__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .875rem 1.25rem;
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
+.ctapanel__current { min-width: 0; font-size: .8125rem; line-height: 1.4; color: var(--ink-2); }
+.ctapanel__current strong { display: block; color: var(--ink); font-size: .875rem; }
+.ctapanel__current code { font-size: .75rem; color: var(--muted); }
+
+.ctapanel__reset {
+  flex: none;
+  padding: .5rem .875rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: .8125rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.ctapanel__reset:hover { border-color: #131211; background: #131211; color: #fff; }
+
+/* Confirmation, so a click on a small header button is still visible. */
+.ctatoast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  z-index: calc(var(--cta-z) + 2);
+  padding: .75rem 1.25rem;
+  border-radius: 100px;
+  background: #131211;
+  color: #fff;
+  font-size: .875rem;
+  font-weight: 600;
+  transform: translate(-50%, 1rem);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.ctatoast.is-on { opacity: 1; transform: translate(-50%, 0); }
+
+@media (max-width: 30em) {
+  .ctafab { padding-inline: 1rem; font-size: .875rem; }
+  .ctafab__text { display: none; }
+}
+
+
+/* ==========================================================================
+   2. The twenty designs
+   ========================================================================== */
+
+/* Reset: strips the page's skewed slab so each design starts from a clean
+   box. Doubled class for specificity over .btn and .quote__submit. */
+.cta-themed.cta-themed {
+  position: relative;
+  /* No display here on purpose: .btn and .quote__submit bring their own, and
+     setting it would override the page hiding .header-call on small screens. */
+  align-items: center;
+  justify-content: center;
+  gap: .625rem;
+  min-height: 3.25rem;
+  padding: .75rem 1.75rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: none;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: visible;
+  isolation: isolate;
+  transform: none;
+  cursor: pointer;
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease,
+              box-shadow .3s ease, transform .3s ease;
+}
+
+.cta-themed.cta-themed::before,
+.cta-themed.cta-themed::after { content: none; }
+
+.cta-themed.cta-themed:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+/* The header's button sits in a fixed bar beside nine nav items, so it keeps
+   a smaller face than the rest — otherwise the menu runs out of room. */
+.header-call.cta-themed.cta-themed { font-size: .9375rem; padding-inline: 1.25rem; }
+
+/* The icon chip loses the page's plate and simply follows the colour. The
+   hover selector is repeated because the page's own `.btn:hover .btn__pip`
+   outranks a plain descendant rule and would put its white plate back. */
+.cta-themed:hover .btn__pip,
+.cta-themed:focus-visible .btn__pip,
+.cta-themed .btn__pip {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: .875rem;
+  transition: background-color .3s ease, color .3s ease, transform .3s ease, margin .3s ease;
+}
+
+/* The label, normalised across both kinds of CTA. */
+.cta-themed .cta-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  text-align: center;
+}
+
+.cta-themed .cta-text { display: block; font: inherit; letter-spacing: inherit; }
+.cta-themed .quote__submit-arrow { width: auto; height: auto; background: none; color: inherit; }
+
+/* ---- 01 · Split Skew — by Ali-Tahmazi99 --------------------------------- */
+
+.cta-themed.cta-01 {
+  border: 1px solid var(--brand);
+  border-radius: 10px;
+  background: #fff;
+  color: #131211;
+  overflow: hidden;
+  transition: all .5s ease-in;
+}
+.cta-themed.cta-01::before,
+.cta-themed.cta-01::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 100%;
+  z-index: -1;
+  transform: skew(15deg);
+  transition: all .5s;
+}
+.cta-themed.cta-01::before { left: -10px; background: #131211; }
+.cta-themed.cta-01::after { right: -10px; background: #35302A; }
+.cta-themed.cta-01:hover::before,
+.cta-themed.cta-01:hover::after { width: 58%; }
+.cta-themed.cta-01:hover { color: var(--brand); }
+
+/* ---- 02 · Diagonal Reveal — by doniaskima (btn-31) ---------------------- */
+
+.cta-themed.cta-02 {
+  background: #131211;
+  border: 1px solid #131211;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+.cta-themed.cta-02::before {
+  --progress: 100%;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #fff;
+  clip-path: polygon(100% 0, var(--progress) var(--progress), 0 100%, 100% 100%);
+  transition: clip-path .2s ease;
+}
+.cta-themed.cta-02:hover::before { --progress: 0%; }
+.cta-themed.cta-02 .btn__pip,
+.cta-themed.cta-02 .cta-wrap { position: relative; z-index: 1; mix-blend-mode: difference; }
+.cta-themed.cta-02 .cta-wrap { overflow: hidden; }
+.cta-themed.cta-02:hover .cta-text { animation: cta-move-up .3s ease forwards; }
+
+@keyframes cta-move-up {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(80%); }
+  51%  { transform: translateY(-80%); }
+  100% { transform: translateY(0); }
+}
+
+/* ---- 03 · Letter Roll — by KINGFRESS ------------------------------------ */
+
+.cta-themed.cta-03 { background: var(--brand); color: #131211; border-radius: 2rem; }
+.cta-themed.cta-03 .cta-wrap { overflow: hidden; }
+.cta-themed.cta-03 .cta-text { transition: transform .35s ease; }
+.cta-themed.cta-03 .cta-wrap::after {
+  content: attr(data-cta-label);
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform: translateY(-1.2em);
+  transition: transform .35s ease;
+}
+.cta-themed.cta-03:hover .cta-text { transform: translateY(1.2em); }
+.cta-themed.cta-03:hover .cta-wrap::after { transform: translateY(0); }
+
+/* ---- 04 · Gradient Sweep — by Madflows ---------------------------------- */
+
+.cta-themed.cta-04 {
+  background: #131211;
+  border-radius: 1.5rem;
+  color: #fff;
+  overflow: hidden;
+}
+.cta-themed.cta-04::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(82.3deg, var(--brand) 10.8%, var(--brand-deep) 94.3%);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform .475s;
+}
+.cta-themed.cta-04:hover::before { transform: scaleX(1); }
+.cta-themed.cta-04:hover { color: #131211; }
+
+/* ---- 05 · Skew Meet — by nikk7007 --------------------------------------- */
+
+.cta-themed.cta-05 {
+  --c: var(--brand);
+  border: 2px solid var(--c);
+  border-radius: 6px;
+  background: #fff;
+  color: #131211;
+  font-weight: 600;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: .5s;
+}
+.cta-themed.cta-05::before,
+.cta-themed.cta-05::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 50%;
+  left: 25%;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: var(--c);
+  transform: skew(90deg) translate(-50%, -50%);
+  transition: .5s ease-out;
+}
+.cta-themed.cta-05::before { top: -50%; left: -25%; transform: skew(90deg) rotate(180deg) translate(-50%, -50%); }
+.cta-themed.cta-05:hover::before { transform: skew(45deg) rotate(180deg) translate(-50%, -50%); }
+.cta-themed.cta-05:hover::after { transform: skew(45deg) translate(-50%, -50%); }
+.cta-themed.cta-05:active { filter: brightness(.9); transform: scale(.98); }
+
+/* ---- 06 · Wipe Left — by abrahamcalsin --------------------------------- */
+
+.cta-themed.cta-06 {
+  background: #131211;
+  border-radius: 5px;
+  color: #fff;
+  letter-spacing: .12em;
+  box-shadow: 0 6px 24px 0 rgba(0, 0, 0, .2);
+  overflow: hidden;
+}
+.cta-themed.cta-06::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  z-index: -1;
+  background: var(--brand);
+  transition: all .4s ease-in-out;
+}
+.cta-themed.cta-06:hover::after { right: auto; left: 0; width: 100%; }
+.cta-themed.cta-06:hover { color: #131211; }
+.cta-themed.cta-06:hover .cta-text { animation: cta-scale-up .3s ease-in-out; }
+
+@keyframes cta-scale-up {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(.95); }
+  100% { transform: scale(1); }
+}
+
+/* ---- 07 · Bubble Rise — by cssbuttons-io -------------------------------- */
+
+.cta-themed.cta-07 {
+  border: 1px solid #4f4f4f;
+  border-radius: 4px;
+  background: #fff;
+  color: #131211;
+  overflow: hidden;
+  transition: all .2s ease-in;
+}
+.cta-themed.cta-07::before,
+.cta-themed.cta-07::after {
+  content: "";
+  position: absolute;
+  display: block;
+  z-index: -1;
+  border-radius: 50%;
+  transition: all .5s .1s cubic-bezier(.55, 0, .1, 1);
+}
+.cta-themed.cta-07::before {
+  left: 50%;
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background: rgba(19, 18, 17, .05);
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+}
+.cta-themed.cta-07::after {
+  left: 55%;
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background: var(--brand);
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+}
+.cta-themed.cta-07:hover { border-color: var(--brand); }
+.cta-themed.cta-07:hover::before { top: -35%; background: var(--brand); transform: translateX(-50%) scaleY(1.3) scaleX(.8); }
+.cta-themed.cta-07:hover::after { top: -45%; background: var(--brand); transform: translateX(-50%) scaleY(1.3) scaleX(.8); }
+
+/* ---- 08 · Panel Sweep — by doniaskima (btn-17) -------------------------- */
+
+.cta-themed.cta-08 {
+  background: #131211;
+  border: 2px solid #131211;
+  border-radius: 99rem;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+.cta-themed.cta-08::before,
+.cta-themed.cta-08::after {
+  --skew: .2;
+  content: "";
+  display: block;
+  position: absolute;
+  top: -104%;
+  left: calc(-50% - 50% * var(--skew));
+  width: 100%;
+  height: 102%;
+  z-index: 0;
+  background: #fff;
+  pointer-events: none;
+  transform: skew(calc(150deg * var(--skew))) translateY(var(--progress, 0));
+  transition: transform .2s ease;
+}
+.cta-themed.cta-08::after { --progress: 0%; top: 102%; left: calc(50% + 50% * var(--skew)); }
+.cta-themed.cta-08:hover::before { --progress: 100%; }
+.cta-themed.cta-08:hover::after { --progress: -102%; }
+.cta-themed.cta-08 .btn__pip,
+.cta-themed.cta-08 .cta-wrap { position: relative; z-index: 1; mix-blend-mode: difference; }
+.cta-themed.cta-08 .cta-wrap { overflow: hidden; }
+.cta-themed.cta-08:hover .cta-text { animation: cta-move-up .3s forwards; }
+
+/* ---- 09 · Border Draw — by Nawsome -------------------------------------- */
+
+/* The four rules are drawn as background layers rather than pseudo-elements:
+   the button only has two pseudo-elements, and hanging the verticals off the
+   label put the left one in the middle of the button. */
+.cta-themed.cta-09 {
+  background-color: #fff;
+  background-image:
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand));
+  background-size: 0 2px, 0 2px, 2px 0, 2px 0;
+  background-position: top right, bottom left, right bottom, left top;
+  background-repeat: no-repeat;
+  border-radius: 3px;
+  color: #131211;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: background-size .45s cubic-bezier(.35, .1, .25, 1), color .3s ease;
+}
+.cta-themed.cta-09:hover {
+  background-size: 100% 2px, 100% 2px, 2px 100%, 2px 100%;
+  color: var(--brand-ink);
+}
+
+/* ---- 10 · Shutter — by TISEPSE ------------------------------------------ */
+
+.cta-themed.cta-10 {
+  border: 2px solid var(--brand);
+  border-radius: 0;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.cta-themed.cta-10::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% - 12px);
+  z-index: -1;
+  background: #131211;
+  transform: scaleY(1);
+  transition: .3s ease-in-out;
+}
+.cta-themed.cta-10::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: -2px;
+  width: calc(100% - 12px);
+  height: calc(100% + 4px);
+  z-index: -1;
+  background: #131211;
+  transform: scaleX(1);
+  transition: .3s ease-in-out .5s;
+}
+.cta-themed.cta-10:hover::before { transform: scaleY(0); }
+.cta-themed.cta-10:hover::after { transform: scaleX(0); }
+.cta-themed.cta-10:hover { color: #131211; }
+
+/* ---- 11 · Corner Bloom — by yaasiinaxmed ------------------------------- */
+
+.cta-themed.cta-11 {
+  --c: var(--brand);
+  border: 2px solid var(--c);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--brand-ink);
+  overflow: hidden;
+}
+/* Sized from the button, not in pixels: the original's 150px circle covered
+   its own 96px button but left ours half filled. */
+.cta-themed.cta-11::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  width: 150%;
+  aspect-ratio: 1;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--c);
+  transition: .4s all;
+}
+.cta-themed.cta-11:hover::before { top: -140%; left: -30%; }
+.cta-themed.cta-11:hover { color: #131211; }
+
+/* ---- 12 · Cut Corner — by niat786 --------------------------------------- */
+
+.cta-themed.cta-12 {
+  border-radius: .25rem;
+  color: #fff;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  background-image: linear-gradient(90deg, #131211, var(--brand-deep));
+  clip-path: polygon(0 0, 0 0, 100% 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 100%);
+  overflow: hidden;
+  transition: .2s .1s;
+}
+.cta-themed.cta-12:hover { padding-inline: 2.25rem; transition: all .3s ease-in; }
+
+/* ---- 13 · Corner Flyout — by Itskrish01 --------------------------------- */
+
+.cta-themed.cta-13 {
+  background: var(--brand);
+  border-radius: 6px;
+  color: #131211;
+  font-weight: 600;
+  overflow: hidden;
+}
+/* The panel that slides across behind the label. */
+.cta-themed.cta-13::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: #131211;
+  transform: translateX(-100%);
+  transition: transform .5s ease-in-out .2s;
+}
+/* Both corner marks, drawn as two squares that fly out on hover. */
+.cta-themed.cta-13::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: linear-gradient(var(--brand-deep), var(--brand-deep)),
+                    linear-gradient(var(--brand-deep), var(--brand-deep));
+  background-size: 1rem 1rem, 1rem 1rem;
+  background-position: top right, bottom left;
+  background-repeat: no-repeat;
+  transition: transform .5s ease-in-out, opacity .5s ease-in-out;
+}
+.cta-themed.cta-13:hover::before { transform: translateX(0); }
+.cta-themed.cta-13:hover::after { transform: scale(1.25); opacity: 0; }
+.cta-themed.cta-13:hover { color: #fff; }
+
+/* ---- 14 · Skew Fill — by mrhyddenn ------------------------------------- */
+
+.cta-themed.cta-14 {
+  background: #fff;
+  color: #131211;
+  font-weight: 600;
+  text-transform: uppercase;
+  transform: skew(-21deg);
+  overflow: hidden;
+}
+.cta-themed.cta-14 > * { transform: skew(21deg); }
+.cta-themed.cta-14::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 100%;
+  left: 0;
+  z-index: -1;
+  background: #141414;
+  opacity: 0;
+  transition: all .5s;
+}
+.cta-themed.cta-14:hover { color: #fff; }
+.cta-themed.cta-14:hover::before { left: 0; right: 0; opacity: 1; }
+
+/* ---- 15 · Circle Swell — by nathAd17 ----------------------------------- */
+
+.cta-themed.cta-15 {
+  background: #fff;
+  border: 2px solid #131211;
+  border-radius: 99rem;
+  color: #131211;
+  font-weight: 600;
+  overflow: hidden;
+}
+.cta-themed.cta-15::before {
+  content: "";
+  position: absolute;
+  left: -100%;
+  top: 50%;
+  z-index: -1;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--brand);
+  transform: translateY(-50%);
+  transition: all .7s;
+}
+.cta-themed.cta-15:hover::before { left: 0; transform: translateY(-50%) scale(1.5); }
+/* The original spins an arrow through 45deg; with a phone glyph that reads as
+   a fault, so the chip takes the ring and fills white instead. */
+.cta-themed.cta-15 .btn__pip {
+  border: 1px solid rgba(19, 18, 17, .5);
+  transition: background-color .3s linear, border-color .3s linear;
+}
+.cta-themed.cta-15:hover .btn__pip { background: #fff; border-color: #fff; }
+
+/* ---- 16 · Hard Shadow Skew — by mobinkakei ----------------------------- */
+
+.cta-themed.cta-16 {
+  background: var(--brand);
+  color: #131211;
+  border-radius: 0;
+  box-shadow: 6px 6px 0 #131211;
+  transform: skewX(-15deg);
+  transition: 1s;
+}
+.cta-themed.cta-16 > * { transform: skewX(15deg); }
+.cta-themed.cta-16:hover { transition: .5s; box-shadow: 10px 10px 0 #35302A; }
+.cta-themed.cta-16 .btn__pip { transition: .5s; margin-right: 0; }
+.cta-themed.cta-16:hover .btn__pip { margin-right: 1.5rem; }
+
+/* ---- 17 · Skew Grow — by SujitAdroja ----------------------------------- */
+
+.cta-themed.cta-17 {
+  border: 2px solid var(--brand);
+  background: #fff;
+  color: #131211;
+  font-weight: 700;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: all 1s;
+}
+.cta-themed.cta-17::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40px;
+  width: 0;
+  height: 100%;
+  z-index: -1;
+  background: var(--brand);
+  transform: skewX(45deg);
+  transition: all 1s;
+}
+.cta-themed.cta-17:hover::before { width: 160%; }
+
+/* ---- 18 · Ticket Notch -------------------------------------------------- */
+
+/* Bitten out at both ends, like a torn stub. The mask cuts the shape rather
+   than a border, so the notches read as holes rather than corners. */
+.cta-themed.cta-18 {
+  background: var(--brand);
+  color: #131211;
+  border-radius: 0;
+  padding-inline: 2.25rem;
+  -webkit-mask-image:
+    radial-gradient(circle 10px at 0 50%, transparent 98%, #000 100%),
+    radial-gradient(circle 10px at 100% 50%, transparent 98%, #000 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    radial-gradient(circle 10px at 0 50%, transparent 98%, #000 100%),
+    radial-gradient(circle 10px at 100% 50%, transparent 98%, #000 100%);
+  mask-composite: intersect;
+}
+.cta-themed.cta-18:hover { background: #131211; color: var(--brand); }
+.cta-themed.cta-18:focus-visible { outline-color: #131211; }
+
+/* ---- 19 · Split Action ------------------------------------------------- */
+
+/* The icon takes a full-height cell of its own beside the label, the way a
+   primary action is split in business software. On the form's button the
+   trailing arrow becomes that cell instead. */
+.cta-themed.cta-19 {
+  /* A shade off the header's own ink, with a hairline, so the split still
+     reads when the button sits on the dark bar. */
+  background: #1F1C19;
+  color: #fff;
+  border-radius: 4px;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .12);
+}
+.cta-themed.cta-19 .btn__pip,
+.cta-themed.cta-19:hover .btn__pip,
+.cta-themed.cta-19 .quote__submit-arrow {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  width: 3.25rem;
+  height: auto;
+  border-radius: 0;
+  background: var(--brand);
+  color: #131211;
+  font-size: .9375rem;
+}
+.cta-themed.cta-19 .cta-wrap { flex: 1; padding-inline: 1.5rem; }
+.cta-themed.cta-19:hover { background: #322E29; }
+.cta-themed.cta-19:hover .btn__pip,
+.cta-themed.cta-19:hover .quote__submit-arrow { background: #fff; }
+.cta-themed.cta-19:focus-visible { outline-color: var(--brand); }
+
+/* ---- 20 · Fine Rule ----------------------------------------------------- */
+
+/* The quiet one: a hairline card whose brand rule draws along the foot. For
+   pages where the CTA should read as considered rather than loud. */
+.cta-themed.cta-20 {
+  background: #fff;
+  color: #131211;
+  border-radius: 2px;
+  padding-bottom: calc(.75rem + 3px);
+  box-shadow: inset 0 0 0 1px rgba(19, 18, 17, .14);
+  overflow: hidden;
+}
+.cta-themed.cta-20::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1);
+}
+.cta-themed.cta-20 .btn__pip { color: var(--muted); transition: color .3s ease; }
+.cta-themed.cta-20:hover { box-shadow: inset 0 0 0 1px rgba(19, 18, 17, .3); }
+.cta-themed.cta-20:hover::after { transform: scaleX(1); }
+.cta-themed.cta-20:hover .btn__pip { color: var(--brand-ink); }
+
+/* ---- 21 · Elevated Ink -------------------------------------------------- */
+
+/* Depth rather than motion: a lit top edge, a cast shadow, and a small lift
+   on hover. The chip warms to brand as it rises. */
+.cta-themed.cta-21 {
+  background: linear-gradient(180deg, #2A2723 0%, #131211 100%);
+  color: #fff;
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .14),
+              0 10px 20px -10px rgba(19, 18, 17, .75);
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.cta-themed.cta-21 .btn__pip,
+.cta-themed.cta-21:hover .btn__pip { background: rgba(255, 255, 255, .14); color: #fff; }
+.cta-themed.cta-21:hover {
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2),
+              0 18px 30px -12px rgba(19, 18, 17, .8);
+}
+.cta-themed.cta-21:hover .btn__pip { background: var(--brand); color: #131211; }
+.cta-themed.cta-21:focus-visible { outline-color: var(--brand); }
+
+/* ---- 22 · Gradient Edge ------------------------------------------------- */
+
+/* No fill animation at all: the interest is in the edge. An ink face sits
+   inside a two-tone brand border, painted with padding-box over border-box,
+   and both warm a step on hover. */
+.cta-themed.cta-22 {
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background:
+    linear-gradient(#131211, #131211) padding-box,
+    linear-gradient(120deg, var(--brand) 0%, var(--brand-deep) 45%, var(--brand-ink) 100%) border-box;
+  color: #fff;
+  transition: background .3s ease, box-shadow .3s ease, color .3s ease;
+}
+.cta-themed.cta-22 .btn__pip,
+.cta-themed.cta-22:hover .btn__pip { color: var(--brand); }
+.cta-themed.cta-22:hover {
+  background:
+    linear-gradient(#211E1A, #211E1A) padding-box,
+    linear-gradient(120deg, #FFD34F 0%, var(--brand) 50%, var(--brand-deep) 100%) border-box;
+  box-shadow: 0 0 0 3px rgba(252, 185, 9, .18);
+}
+.cta-themed.cta-22:focus-visible { outline-color: var(--brand); }
+
+/* ---- 23 · Marching Dashes ----------------------------------------------- */
+
+/* The outline is four dashed background strips rather than a border, so the
+   dashes can travel around the button while the pointer is on it. */
+.cta-themed.cta-23 {
+  background-color: #fff;
+  color: #131211;
+  border-radius: 4px;
+  background-image:
+    repeating-linear-gradient(90deg, var(--brand) 0 9px, transparent 9px 18px),
+    repeating-linear-gradient(90deg, var(--brand) 0 9px, transparent 9px 18px),
+    repeating-linear-gradient(0deg, var(--brand) 0 9px, transparent 9px 18px),
+    repeating-linear-gradient(0deg, var(--brand) 0 9px, transparent 9px 18px);
+  background-size: 100% 2px, 100% 2px, 2px 100%, 2px 100%;
+  background-position: 0 0, 0 100%, 0 0, 100% 0;
+  background-repeat: no-repeat;
+  transition: background-color .3s ease;
+}
+.cta-themed.cta-23 .btn__pip { color: var(--brand-ink); }
+.cta-themed.cta-23:hover {
+  background-color: #FFFBEE;
+  animation: cta-ants .7s linear infinite;
+}
+
+@keyframes cta-ants {
+  to { background-position: 18px 0, -18px 100%, 0 -18px, 100% 18px; }
+}
+
+/* ---- 24 · Ripple Out ----------------------------------------------------- */
+
+/* Ambient rather than a state change: a brand ring leaves the button and
+   fades while the pointer rests on it, the way a call prompt asks to be
+   noticed. The face itself barely moves. */
+.cta-themed.cta-24 {
+  background: #131211;
+  color: #fff;
+  border-radius: 6px;
+  overflow: visible;
+}
+.cta-themed.cta-24 .btn__pip,
+.cta-themed.cta-24:hover .btn__pip { background: var(--brand); color: #131211; }
+.cta-themed.cta-24::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 2px solid var(--brand);
+  border-radius: inherit;
+  opacity: 0;
+}
+.cta-themed.cta-24:hover { background: #211E1A; }
+.cta-themed.cta-24:hover::after { animation: cta-ripple 1.5s ease-out infinite; }
+
+@keyframes cta-ripple {
+  0%   { transform: scale(1); opacity: .85; }
+  100% { transform: scale(1.22); opacity: 0; }
+}
+
+/* Motion is decoration here; every design reads at rest. */
+@media (prefers-reduced-motion: reduce) {
+  .cta-themed.cta-themed,
+  .cta-themed.cta-themed::before,
+  .cta-themed.cta-themed::after,
+  .cta-themed .cta-wrap::before,
+  .cta-themed .cta-wrap::after,
+  .cta-themed .cta-text,
+  .ctafab, .ctatoast {
+    animation: none !important;
+    transition-duration: .01ms !important;
+  }
+}

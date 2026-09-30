@@ -1,0 +1,6525 @@
+/* ==========================================================================
+   NY Roofing — Brooklyn landing page
+   Standalone sheet. Shares nothing with style.css / nyc2.css so the yellow
+   brand and the red Royal Renovators brand can never bleed into each other.
+   ========================================================================== */
+
+
+/* Tokens ------------------------------------------------------------------ */
+
+:root {
+  /* brand */
+  --brand: #FCB909;
+  /* Hover/active step. Straight brightness on #FCB909 goes muddy, so this
+     drops value and lifts saturation instead. */
+  --brand-deep: #E3A400;
+  /* #FCB909 on white is 1.7:1 — nowhere near text-safe. This is the same hue
+     pushed to 4.6:1 for the rare bit of yellow type on a light field. */
+  --brand-ink: #8A6200;
+
+  /* neutrals — warm-shifted so they sit with the yellow rather than against it */
+  --ink: #131211;
+  --ink-2: #3D3B37;
+  --muted: #6E6B64;
+  --white: #FFFFFF;
+  --surface: #FFFFFF;
+  --surface-2: #F7F6F3;
+  /* Nav hover / dropdown row hover. A flat grey rather than a black alpha, so
+     it stays #FAFAFA regardless of what sits behind it. */
+  --hover-tint: #FAFAFA;
+  --dark: #121110;
+  --dark-2: #1C1A18;
+
+  --on-dark: rgba(255, 255, 255, .82);
+  --line: rgba(19, 18, 17, .07);
+  /* One step up from --line, for the pieces that have to hold an edge on
+     their own: the header hairline, the dropdown card, the drawer rules. */
+  --line-strong: rgba(19, 18, 17, .1);
+  --line-dark: rgba(255, 255, 255, .14);
+
+  /* type */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semi: 600;
+  --fw-bold: 700;
+  --fw-black: 800;
+
+  /* Modular scale — 12 / 14 / 16 / 18 / 24 / 32. Every size below is a step on
+     it rather than a hand-tuned clamp, so the header reads as one hierarchy. */
+  --fs-12: .75rem;
+  --fs-14: .875rem;
+  --fs-16: 1rem;
+  --fs-18: 1.125rem;
+  --fs-24: 1.5rem;
+
+  /* 15px — two steps down from nyc2's 17px, which read a touch heavy against
+     the larger logo. Off the modular scale for the same reason 17px was. */
+  --fs-15: .9375rem;
+
+  --fs-utility: var(--fs-14);
+  --fs-nav: var(--fs-15);
+  --fs-body: var(--fs-16);
+
+  --tracking-utility: .1em;
+  --tracking-eyebrow: .16em;
+
+  /* spacing — 4/8 rhythm */
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+
+  /* layout */
+  --container-max: 112.5rem;
+  /* 70px gutters. Overridden to 20px on phones further down — 140px of gutter
+     on a 360px screen leaves the logo and the call button fighting for 220px. */
+  --edge: 4.375rem;
+  /* 72px. The old 100px bar was sized around a 76px logo; with the mark down
+     to 52px the bar sits 10px clear of it and the whole header lost 76px of
+     height once the utility strip above it went too. */
+  /* Row 1 is the trust strip; row 2 is the nav bar. The brand panel spans both. */
+  --nav-h: 5.5rem;
+  /* What sits above the hero: both rows plus the yellow rule. The hero is
+     sized against this so the first screen ends where the panel ends. */
+  --hero-offset: calc(var(--nav-h) + 3px);
+  /* How far the panel's right edge leans — the pitch of the cut. */
+  --pitch: 2.25rem;
+
+  /* radius / shadow */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  /* Hero panel — a deep radius is the reference layout's signature. */
+  --radius-2xl: 32px;
+  /* The panels are detached cards now rather than flush extensions of the bar,
+     so they need a shadow to sit above the page rather than in it. */
+  --shadow-menu: 0 18px 40px -24px rgba(19, 18, 17, .38),
+                 0 2px 6px -3px rgba(19, 18, 17, .07);
+  --shadow-header: 0 1px 0 var(--line), 0 6px 18px -14px rgba(19, 18, 17, .1);
+
+  /* motion */
+  --dur-fast: 160ms;
+  --dur-base: 280ms;
+  --dur-wipe: 500ms;
+  --ease-out: cubic-bezier(.22, .61, .36, 1);
+
+  /* layers */
+  --z-header: 40;
+  --z-drawer: 60;
+}
+
+
+/* Base -------------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background-color: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-regular);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Inter's optical-size and contextual-alternates axes; `cv11` gives the
+     single-storey g, which reads cleaner at nav sizes. */
+  font-feature-settings: 'cv11', 'ss01';
+}
+
+img { max-width: 100%; }
+
+/* ol as well as ul — an unreset <ol> carries browser margin and padding, which
+   pushed the About credentials 16px below the two columns beside it. */
+ul, ol { margin: 0; padding: 0; list-style: none; }
+
+p { margin: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  margin: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--edge);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  z-index: 100;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  background-color: var(--ink);
+  color: var(--white);
+  font-size: .875rem;
+  font-weight: var(--fw-semi);
+}
+
+.skip-link:focus-visible { top: var(--space-4); }
+
+
+/* Button — Uiverse skew wipe ---------------------------------------------- */
+
+/* The snippet's mechanic, kept intact: a full-bleed pseudo-element behind the
+   label, skewed 45° and scaled from 0 to 1 on the x-axis over half a second.
+   left/right:-20% is what stops the skewed edge exposing a corner mid-sweep.
+
+   Two variables carry every variant, so a variant only restates colour:
+     --btn-bg   capsule fill at rest   --btn-wipe  colour that sweeps in       */
+
+.btn {
+  --btn-bg: var(--ink);
+  --btn-ink: var(--white);
+  --btn-wipe: var(--brand);
+  --btn-ink-hover: var(--ink);
+  --btn-pip-bg: var(--white);
+  --btn-pip-ink: var(--ink);
+  --btn-ring: var(--white);
+  --btn-ring-hover: var(--ink);
+
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  /* One CTA box for the whole page, taken from the hero call button. The
+     header's call button uses it unchanged — see .header-call. */
+  gap: var(--space-2);
+  /* 44px minimum keeps the tap target honest. */
+  min-height: 3.125rem;
+  /* 8px left is exactly the chip's inset above and below, so it sits truly
+     centred; 28px right gives the label room to breathe. */
+  padding: .5rem 1.75rem .5rem .5rem;
+  border-radius: var(--radius-md);
+  background-color: var(--btn-bg);
+  color: var(--btn-ink);
+  overflow: hidden;
+  font-weight: var(--fw-semi);
+  line-height: 1.1;
+  white-space: nowrap;
+  cursor: pointer;
+  /* The keyline is always on — inset, so the box never changes size. */
+  box-shadow: inset 0 0 0 1px var(--btn-ring);
+  transition: color var(--dur-base) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+
+.btn:hover,
+.btn:focus-visible { box-shadow: inset 0 0 0 1px var(--btn-ring-hover); }
+
+.btn::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  background-color: var(--btn-wipe);
+  transform: skewX(-45deg) scale(0, 1);
+  transition: transform var(--dur-wipe) var(--ease-out);
+}
+
+.btn:hover,
+.btn:focus-visible { color: var(--btn-ink-hover); }
+
+.btn:hover::after,
+.btn:focus-visible::after { transform: skewX(-45deg) scale(1, 1); }
+
+.btn:active { transform: translateY(1px); }
+
+/* The pip inverts with the wipe: black disc / yellow glyph at rest, yellow
+   disc / black glyph once the sweep lands. */
+.btn__pip {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--btn-pip-bg);
+  color: var(--btn-pip-ink);
+  font-size: var(--fs-14);
+  transition: background-color var(--dur-base) var(--ease-out),
+              color var(--dur-base) var(--ease-out);
+}
+
+.btn:hover .btn__pip,
+.btn:focus-visible .btn__pip {
+  background-color: var(--btn-pip-bg);
+  color: var(--btn-pip-ink);
+}
+
+.btn__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  text-align: left;
+}
+
+.btn__kicker {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  opacity: .72;
+}
+
+.btn__number {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-semi);
+  /* Inter's default figures are proportional; tabular keeps the number from
+     shifting width between states, and -0.01em tightens the digit rhythm. */
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.01em;
+}
+
+/* Variants */
+.btn--sm { padding: .375rem 1rem .375rem .375rem; min-height: 2.5rem; }
+.btn--sm .btn__pip { width: 1.75rem; height: 1.75rem; }
+.btn--sm .btn__number { font-size: .875rem; }
+
+.btn--block { display: flex; width: 100%; justify-content: center; }
+
+
+/* Header shell ------------------------------------------------------------ */
+
+/* Two rows, and the order is the inverse of nyc2's: brand and actions on a
+   white row up top, the nav on a dark row beneath. nyc2 puts its thin strip
+   above and its logo in the nav bar, so the two never read as one template —
+   and giving the brand a row of its own is what lets the mark go from 52px to
+   72px without the bar swallowing the screen. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: var(--dark);
+  /* A dark header over a dark hero needs its own edge; the brand colour draws
+     it, as a roofline under the bar. */
+  border-bottom: 3px solid var(--brand);
+  transition: box-shadow var(--dur-base) var(--ease-out);
+}
+
+.site-header.is-scrolled { box-shadow: var(--shadow-header); }
+
+/* The panel is flush with the viewport on the left, so the row has no left
+   gutter of its own — the panel carries it. */
+.site-header__inner {
+  display: flex;
+  align-items: stretch;
+  max-width: var(--container-max);
+  margin-inline: auto;
+}
+
+.site-header__rows {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Row 2 — the nine links, then the call pinned to the right end. */
+.header-bar {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--nav-h);
+  /* The call button ends on the same right edge as every section's content. */
+  padding-inline: var(--space-3) var(--edge);
+}
+
+
+/* Brand ------------------------------------------------------------------- */
+
+/* The signature: a white panel the full height of the header, its right edge
+   cut on a pitch. The cut is the one shape that is already in the logo, so the
+   panel reads as the brand's own roofline rather than as a decoration. The
+   extra right padding is the room the cut takes. */
+.brand {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  /* The mark starts on the same left edge as every section's content. */
+  padding: .5rem calc(var(--space-4) + var(--pitch)) .5rem var(--edge);
+  background-color: var(--surface);
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--pitch)) 100%, 0 100%);
+  line-height: 0;
+}
+
+/* 80px — the largest the mark has been. It owns a column of its own, so the
+   only limit is the header's height. */
+.brand__mark {
+  display: block;
+  height: 4.5rem;
+  aspect-ratio: 1348 / 742;
+}
+
+.brand__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* Primary nav ------------------------------------------------------------- */
+
+.primary-nav { min-width: 0; }
+
+.primary-nav__list {
+  display: flex;
+  align-items: center;
+}
+
+.primary-nav__item { position: relative; }
+
+.primary-nav__link {
+  /* One value drives the padding and the underline's end points, so the rule
+     always stops exactly where the label does. */
+  /* Steep on purpose: 8px a side at the 80em breakpoint, where nine items, the
+     panel and the call button only just share the bar, opening to 16px by
+     1470px where there is room to spend. */
+  --pad: clamp(.5rem, -4.04rem + 5.56vw, 1.25rem);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .3125rem;
+  height: var(--nav-h);
+  padding-inline: var(--pad);
+  color: var(--on-dark);
+  font-size: var(--fs-nav);
+  font-weight: var(--fw-semi);
+  white-space: nowrap;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* A 2px rule under the label, grown from its centre. nyc2 tints the full bar
+   height and drops a 3px border across the whole item; keeping the feedback
+   inside the word is both quieter and unmistakably not that. */
+.primary-nav__link::after {
+  content: "";
+  position: absolute;
+  left: var(--pad);
+  right: var(--pad);
+  bottom: 1.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--brand);
+  transform: scaleX(0);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.primary-nav__link:hover,
+.primary-nav__link.is-current,
+.primary-nav__link[aria-expanded="true"] { color: var(--white); }
+
+.primary-nav__link:hover::after,
+.primary-nav__link.is-current::after,
+.primary-nav__link[aria-expanded="true"]::after { transform: scaleX(1); }
+
+.primary-nav__chevron {
+  flex: none;
+  margin-top: 1px;
+  font-size: .625rem;
+  color: rgba(255, 255, 255, .5);
+  transition: transform var(--dur-base) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.primary-nav__link:hover .primary-nav__chevron { color: var(--brand); }
+
+.primary-nav__link[aria-expanded="true"] .primary-nav__chevron {
+  color: var(--brand);
+  transform: rotate(180deg);
+}
+
+
+/* Dropdown panels --------------------------------------------------------- */
+
+/* Cards pinned under their own trigger — never full-bleed, never a screenful.
+   The widest of the three is 688px and roughly 340px tall. */
+/* Dark cards hung from a dark bar, a step lighter than the header so they read
+   as in front of it. */
+/* Flush under the header's yellow rule, so that rule is the card's top edge —
+   one line, not a second one floating 7px below the first. */
+.mega {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  z-index: 5;
+  padding: var(--space-3);
+  border: 1px solid var(--line-dark);
+  border-top: 0;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background-color: var(--dark-2);
+  box-shadow: 0 24px 48px -16px rgba(0, 0, 0, .55);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity var(--dur-base) var(--ease-out),
+              transform var(--dur-base) var(--ease-out);
+}
+
+/* Bridges the gap between bar and card, so a cursor travelling down never
+   lands outside the item and starts the close timer. */
+.mega::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -.875rem;
+  height: .875rem;
+}
+
+.mega[hidden] { display: none; }
+
+.mega.is-open { opacity: 1; transform: translateY(0); }
+
+/* Three links, five links — one column, each with a chip. */
+.mega--sm { min-width: 15.5rem; }
+
+.mega--sm .mega__list a {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .5rem .625rem;
+}
+
+.mega__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  background-color: rgba(252, 185, 9, .12);
+  color: var(--brand);
+  font-size: .8125rem;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+
+.mega--sm .mega__list a:hover .mega__icon {
+  background-color: var(--brand);
+  color: var(--ink);
+}
+
+/* Twenty-three links in three headed columns, then a foot that gives the card
+   something to do besides list. */
+.mega--wide {
+  width: min(42rem, calc(100vw - 2.5rem));
+  padding: var(--space-4) var(--space-5) 0;
+}
+
+.mega__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  padding-bottom: var(--space-4);
+}
+
+.mega--wide .mega__foot { margin-inline: calc(-1 * var(--space-5)); }
+
+.mega__heading {
+  margin-bottom: var(--space-2);
+  padding: 0 .5rem var(--space-2);
+  border-bottom: 1px solid var(--line-dark);
+  color: var(--brand);
+  font-size: .6875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.mega__list { display: grid; }
+
+/* A dash that draws in from the left on hover, and the label steps over to
+   make room for it — the nav's underline gesture, turned on its side. */
+.mega__list a {
+  position: relative;
+  display: block;
+  padding: .375rem .5rem;
+  border-radius: var(--radius-sm);
+  color: var(--on-dark);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  line-height: 1.4;
+  white-space: nowrap;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out),
+              padding-left var(--dur-base) var(--ease-out);
+}
+
+/* Eight rows a column were 32px each and read as a block; 40px with a hair of
+   space between gives each link a line of its own. */
+.mega--wide .mega__list { gap: .125rem; }
+
+.mega--wide .mega__list a { padding-block: .5625rem; }
+
+.mega--wide .mega__list a::before {
+  content: "";
+  position: absolute;
+  left: .5rem;
+  top: 50%;
+  width: 0;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--brand);
+  transition: width var(--dur-base) var(--ease-out);
+}
+
+.mega--wide .mega__list a:hover { padding-left: 1.375rem; }
+
+.mega--wide .mega__list a:hover::before { width: .625rem; }
+
+.mega__list a:hover {
+  background-color: rgba(255, 255, 255, .05);
+  color: var(--white);
+}
+
+/* The foot runs edge to edge on a deeper ink, ruled off from the columns. */
+.mega__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-inline: calc(-1 * var(--space-4));
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--line-dark);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background-color: var(--dark);
+}
+
+.mega__facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.mega__facts li {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: rgba(255, 255, 255, .68);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
+
+.mega__facts i { color: var(--brand); font-size: .75rem; }
+
+/* The header's call button, one size down. */
+.mega__call {
+  --btn-bg: var(--brand);
+  --btn-ink: var(--ink);
+  --btn-wipe: var(--ink);
+  --btn-ink-hover: var(--white);
+  --btn-ring: var(--brand);
+  --btn-ring-hover: var(--white);
+  --btn-pip-bg: var(--white);
+  --btn-pip-ink: var(--ink);
+
+  flex-shrink: 0;
+  min-height: 2.5rem;
+  padding: .375rem 1.125rem .375rem .375rem;
+}
+
+.mega__call:hover,
+.mega__call:focus-visible { box-shadow: 0 0 0 2px var(--white); }
+
+.mega__call .btn__pip {
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: .75rem;
+}
+
+.mega__call .btn__number { font-size: var(--fs-14); }
+
+
+/* Header actions ---------------------------------------------------------- */
+
+/* margin-left: auto rather than justify-content, so the actions stay pinned
+   right whether or not the nav is in the bar. */
+/* The hero's call button, verbatim: same --btn variables, same pip, same
+   wipe. Only the position is the header's. */
+.header-call {
+  --btn-bg: var(--brand);
+  --btn-ink: var(--ink);
+  --btn-wipe: var(--ink);
+  --btn-ink-hover: var(--white);
+  --btn-ring: var(--brand);
+  --btn-ring-hover: var(--white);
+  --btn-pip-bg: var(--white);
+  --btn-pip-ink: var(--ink);
+
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Outside the box, not inset: the black wipe is a pseudo-element painted over
+   the button's own background, and an inset ring sits in that background layer
+   — so the wipe covered it. An outer ring is never under the wipe. */
+.header-call:hover,
+.header-call:focus-visible { box-shadow: 0 0 0 2px var(--white); }
+
+/* The hero's phone button gets the same white ring on hover as the header's. */
+.hero__call:hover,
+.hero__call:focus-visible { box-shadow: 0 0 0 2px var(--white); }
+
+
+
+
+/* Square icon button — the word "Menu" beside it was another 60px of bar. */
+/* Icon and the word together in one outlined box — the word is what makes
+   it read as a control rather than a glyph, and the box holds the two as one. */
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  height: 2.75rem;
+  padding-inline: .875rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-strong);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+
+.nav-toggle:hover {
+  background-color: var(--surface-2);
+  border-color: rgba(19, 18, 17, .24);
+}
+
+.nav-toggle__word {
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  letter-spacing: .01em;
+}
+
+
+/* Socials ----------------------------------------------------------------- */
+
+/* Only the drawer footer and the site footer use these now that the utility
+   bar is gone, so they are defined on the light surface and flip for dark. */
+.socials {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.socials a {
+  display: grid;
+  place-items: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--ink-2);
+  font-size: .8125rem;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+}
+
+.socials a:hover {
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+
+/* On a dark field: pale outline, white glyph. */
+.socials--on-dark a {
+  border-color: var(--line-dark);
+  color: var(--on-dark);
+}
+
+.socials--on-dark a:hover { color: var(--ink); }
+
+/* Kept for the footer, which still names the old modifier. */
+.socials--dark a {
+  border-color: var(--line-strong);
+  color: var(--ink-2);
+}
+
+.socials--dark a:hover { color: var(--ink); }
+
+
+/* Mobile drawer ----------------------------------------------------------- */
+
+.mobile-nav {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-drawer);
+  background-color: rgba(19, 18, 17, .5);
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.mobile-nav[hidden] { display: none; }
+
+.mobile-nav.is-open { opacity: 1; }
+
+/* A 400px sheet rather than the full screen — the same "don't swallow the
+   viewport" note the client made about the desktop panels. */
+.mobile-nav__panel {
+  display: flex;
+  flex-direction: column;
+  width: min(25rem, 100%);
+  height: 100%;
+  margin-left: auto;
+  background-color: var(--surface);
+  transform: translateX(100%);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.mobile-nav.is-open .mobile-nav__panel { transform: translateX(0); }
+
+.mobile-nav__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  height: var(--nav-h);
+  padding-inline: var(--space-4) var(--space-4);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.brand--static { display: block; line-height: 0; }
+.brand--static .brand__mark { height: 2.5rem; }
+
+.mobile-nav__close {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--line-strong);
+  font-size: 1.0625rem;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.mobile-nav__close:hover { background-color: var(--surface-2); }
+
+.mobile-nav__body {
+  flex: 1;
+  padding: var(--space-3);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.mobile-nav__list { display: grid; }
+
+.mobile-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  padding: .625rem var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--ink);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-semi);
+  text-align: left;
+}
+
+.mobile-nav__link:hover { background-color: var(--surface-2); }
+
+.mobile-nav__chevron {
+  flex-shrink: 0;
+  color: var(--muted);
+  font-size: .625rem;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.mobile-nav__group[aria-expanded="true"] > .mobile-nav__trigger { color: var(--brand-ink); }
+
+.mobile-nav__group[aria-expanded="true"] .mobile-nav__chevron {
+  color: var(--brand-ink);
+  transform: rotate(180deg);
+}
+
+/* grid-template-rows 0fr → 1fr animates an unknown content height, which
+   max-height guesswork cannot do without either clipping or lag.
+
+   The trick sizes the FIRST grid row only — put it straight on the <ul> and
+   every link after the first lands in an implicit `auto` row and stays visible
+   while collapsed. Hence the wrapper: exactly one child to crush to zero. */
+.mobile-nav__subwrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-base) var(--ease-out);
+}
+
+.mobile-nav__group[aria-expanded="true"] .mobile-nav__subwrap { grid-template-rows: 1fr; }
+
+.mobile-nav__sub {
+  /* A 0fr row only collapses if its child can actually be crushed to zero. */
+  min-height: 0;
+  overflow: hidden;
+  margin-left: var(--space-4);
+  border-left: 2px solid var(--line-strong);
+}
+
+.mobile-nav__subhead {
+  padding: var(--space-3) var(--space-3) var(--space-1);
+  color: var(--brand-ink);
+  font-size: .6875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.mobile-nav__sub a {
+  display: block;
+  padding: .4375rem var(--space-3);
+  color: var(--ink-2);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+}
+
+.mobile-nav__sub a:hover { color: var(--brand-ink); }
+
+.mobile-nav__foot {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-top: 1px solid var(--line-strong);
+  background-color: var(--surface-2);
+}
+
+/* Same pill as the bar, full width. */
+.mobile-nav__call {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 3rem;
+  border-radius: 999px;
+  background-color: var(--ink);
+  color: var(--white);
+  overflow: hidden;
+  font-size: var(--fs-15);
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+.mobile-nav__call::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  background-color: var(--brand);
+  transform: skewX(-45deg) scale(0, 1);
+  transition: transform var(--dur-wipe) var(--ease-out);
+}
+
+.mobile-nav__call:hover { color: var(--ink); }
+
+.mobile-nav__call:hover::after,
+.mobile-nav__call:focus-visible::after { transform: skewX(-45deg) scale(1, 1); }
+
+.mobile-nav__quote {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(19, 18, 17, .18);
+  color: var(--ink);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.mobile-nav__quote:hover { background-color: var(--surface); }
+
+.mobile-nav__foot .socials { justify-content: center; }
+
+body.is-locked { overflow: hidden; }
+
+
+/* Breakpoints ------------------------------------------------------------- */
+
+/* Nine items at 15px plus a 94px logo and the actions need ~1170px of inner
+   width; at 3vw gutters that lands at 1280. Measured, not guessed — and 128px
+   earlier than the old header, which handed every 1440px laptop the burger. */
+@media (min-width: 80em) {
+  .nav-toggle { display: none; }
+}
+
+/* The panel, the strip and the dark bar are desktop only. Below the desktop
+   nav the header goes back to what it was: one white bar, the mark on the
+   left, and the burger. */
+@media (max-width: 79.99em) {
+  :root { --hero-offset: calc(5rem + 1px); }
+
+  .site-header {
+    background-color: var(--surface);
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .site-header__inner {
+    align-items: center;
+    gap: var(--space-4);
+    padding-inline: clamp(1.25rem, 3vw, var(--edge));
+  }
+
+  .brand {
+    padding: 0;
+    background-color: transparent;
+    clip-path: none;
+  }
+
+  .brand__mark { height: 3.75rem; }
+
+  .primary-nav { display: none; }
+
+  /* Pinned to the far right; with the nav and the number gone the bar is
+     otherwise empty, and the toggle was landing next to the mark. */
+  .header-bar {
+    justify-content: flex-end;
+    gap: var(--space-3);
+    min-height: 5rem;
+    padding: 0;
+  }
+
+  /* No number in the bar on a phone — the drawer leads with it and the floating
+     call button is always on screen, so the bar is the mark and the burger. */
+  .header-call { display: none; }
+}
+
+/* Below the desktop nav the panels are unreachable; the drawer carries them. */
+@media (max-width: 79.99em) {
+  .mega { display: none !important; }
+}
+
+
+
+/* 40px gutters are a desktop figure. Holding them on a phone costs 80px of a
+   360px screen, so the gutter steps down where the content needs the room. */
+@media (max-width: 47.99em) {
+  :root {
+    --edge: 1.25rem;
+    --hero-offset: calc(4.5rem + 1px);
+  }
+
+  .header-bar { min-height: 4.5rem; }
+
+  .brand__mark { height: 3.25rem; }
+}
+
+
+/* Reduced motion ---------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* The wipe is the button's only hover affordance, so keep the end state
+     rather than removing the feedback entirely. */
+  .btn:hover::after { transform: skewX(-45deg) scale(1, 1); }
+}
+
+
+/* ==========================================================================
+   Hero
+   Inset rounded media panel — the page frames the footage rather than being
+   swallowed by it. Content left, quote form right, both riding over the video.
+   ========================================================================== */
+
+.hero {
+  /* Flush to the header: the panel is full-bleed with square top corners, so
+     any gap here would read as a seam rather than as breathing room. The
+     bottom gap matches the page rhythm's half-gap. */
+  padding: 0 0 16px;
+}
+
+/* Full-bleed: no side margin, and square across the top so it meets the header
+   cleanly. The bottom keeps its radius, which is what stops the section reading
+   as an untreated block. */
+.hero__panel {
+  position: relative;
+  width: 100%;
+  /* Exactly the space left under the header, so the panel — and the form in
+     it — ends at the fold on every screen from a 13" laptop up. 76vh was a
+     share of the screen that ignored the header, which is why a 660px
+     viewport cut the form's submit button off. min-height, not height: if a
+     screen is ever too short for the content, it grows past the fold rather
+     than clipping. */
+  min-height: clamp(27rem, calc(100vh - var(--hero-offset)), 46rem);
+  min-height: clamp(27rem, calc(100svh - var(--hero-offset)), 46rem);
+  border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+  background-color: var(--dark);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* The crew work centre-right of frame; holding the frame slightly left of
+     centre keeps them between the two columns rather than behind the card. */
+  object-position: 42% 50%;
+  z-index: -2;
+}
+
+/* Angled: heaviest under the headline, clearing through the middle so the
+   crew stay legible between the columns, then darkening again on the right —
+   white type on frosted glass needs the footage behind it held down. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(100deg,
+      rgba(10, 10, 9, .94) 0%,
+      rgba(10, 10, 9, .86) 26%,
+      rgba(10, 10, 9, .5) 48%,
+      rgba(10, 10, 9, .46) 68%,
+      rgba(10, 10, 9, .62) 100%),
+    linear-gradient(to top, rgba(10, 10, 9, .55) 0%, transparent 40%);
+}
+
+/* The copy column is held to 44% so it always ends short of the seam's nearest
+   point (50%); the card centres in whatever is left, which puts it across the
+   seam on a laptop and wholly on the video on a wide monitor. */
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 26.5rem);
+  align-items: center;
+  gap: clamp(2rem, 1rem + 3vw, 4.5rem);
+  min-height: inherit;
+  /* The panel is edge-to-edge now, so the inner carries the page gutter —
+     that is what keeps the headline aligned with the logo above it. */
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  /* Vertical padding tracks the viewport's height: 21px on a 660px screen,
+     27px on a 950px one. The old 3vw figure was 57px on a laptop, which the
+     form could not afford. */
+  padding: clamp(1.25rem, .5rem + 2vh, 3.5rem) var(--edge);
+}
+
+/* Buttons and the three marks share a row where the column allows it, and
+   wrap to two where it does not. */
+.hero__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  /* The row gap is what separates the buttons from the trust marks once the
+     marks wrap beneath them — kept roomy, and scaled by height so a short
+     screen gives a little of it back. */
+  gap: clamp(1.5rem, 3.4vh, 2.25rem) clamp(1.25rem, 1rem + 1.4vw, 2.5rem);
+}
+
+
+/* Hero content ------------------------------------------------------------ */
+
+/* Frosted pill. backdrop-filter samples whatever is painted behind inside the
+   panel's stacking context — the video and its scrim — so the glass picks up
+   the footage rather than being a flat translucent block. The inset highlight
+   is what sells it as glass; without it the pill reads as plain opacity. */
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: clamp(.75rem, 2.6vh, 1.5rem);
+  padding: .4375rem .875rem;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 100px;
+  background-color: rgba(255, 255, 255, .1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+  backdrop-filter: blur(12px) saturate(140%);
+  color: var(--brand);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-black);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+
+.hero__title {
+  margin: 0 0 clamp(.875rem, 2.8vh, 1.75rem);
+  color: var(--white);
+  /* Two lines; 54px at the top end. The vh term is the ceiling on a short
+     screen — a 600px laptop viewport gets 52px, a 560px one 49px — so the two
+     lines give back the height the fold needs before anything else does. */
+  font-size: clamp(2.0625rem, min(1.2rem + 2.7vw, .75rem + 6.6vh), 3.375rem);
+  font-weight: var(--fw-black);
+  line-height: 1.24;
+  /* Inter needs negative tracking to stop large weights from looking loose. */
+  letter-spacing: -.035em;
+  text-wrap: balance;
+}
+
+.hero__lede {
+  max-width: 34rem;
+  margin-bottom: clamp(.625rem, 2vh, 1.25rem);
+  color: rgba(255, 255, 255, .92);
+  font-size: clamp(1.0625rem, .95rem + .5vw, 1.375rem);
+  font-weight: var(--fw-medium);
+  line-height: 1.45;
+  letter-spacing: -.01em;
+}
+
+.hero__support {
+  max-width: 34rem;
+  margin-bottom: clamp(.875rem, 3vh, 2rem);
+  color: rgba(255, 255, 255, .72);
+  font-size: var(--fs-16);
+  line-height: 1.6;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+/* Kept yellow by exception, with the white keyline on permanently. */
+.hero__call {
+  --btn-bg: var(--brand);
+  --btn-ink: var(--ink);
+  --btn-wipe: var(--ink);
+  --btn-ink-hover: var(--white);
+  /* Brand ring on the brand fill — reads borderless until the black wipe
+     lands, where it flips white. */
+  --btn-ring: var(--brand);
+  --btn-ring-hover: var(--white);
+}
+
+/* Secondary action: outline only, so there is never a question which of the
+   two is primary. */
+.hero__ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 3.125rem;
+  padding-inline: var(--space-6);
+  border: 1px solid rgba(255, 255, 255, .38);
+  border-radius: var(--radius-md);
+  color: var(--white);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-bold);
+  transition: background-color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out);
+}
+
+.hero__ghost i { font-size: var(--fs-12); transition: transform var(--dur-fast) var(--ease-out); }
+
+.hero__ghost:hover {
+  background-color: var(--white);
+  border-color: var(--white);
+  color: var(--ink);
+}
+
+.hero__ghost:hover i { transform: translateX(3px); }
+
+.hero__marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+}
+
+.hero__marks li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: rgba(255, 255, 255, .82);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+}
+
+/* Fixed width so the three labels start on a common left edge despite the
+   glyphs having different natural widths. */
+.hero__marks i {
+  width: 1rem;
+  color: var(--brand);
+  font-size: var(--fs-14);
+  text-align: center;
+}
+
+
+/* Quote card -------------------------------------------------------------- */
+
+/* Frosted glass, the same glass as the eyebrow pill: the blur samples the
+   footage and scrim painted behind it inside the panel's stacking context,
+   and the inset highlight along the top edge is what sells it as glass rather
+   than as a translucent block. */
+.quote {
+  position: relative;
+  padding: clamp(.875rem, 1.8vh, 1.25rem) clamp(1.125rem, .9rem + 1.2vw, 1.75rem);
+  border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, .1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 30px 60px -24px rgba(10, 10, 9, .6);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+/* Brand-yellow brackets on the four corners: two short ticks per corner, each
+   starting where the rounded corner ends so the bracket frames the curve
+   rather than being clipped by it. Eight gradient layers on one pseudo-element,
+   which keeps the markup clean and the card's own border and glass untouched. */
+.quote::before {
+  --tick: 1.75rem;
+  --bar: 2px;
+  --r: var(--radius-lg);
+
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand)),
+    linear-gradient(var(--brand), var(--brand));
+  background-size:
+    var(--tick) var(--bar), var(--bar) var(--tick),
+    var(--tick) var(--bar), var(--bar) var(--tick),
+    var(--tick) var(--bar), var(--bar) var(--tick),
+    var(--tick) var(--bar), var(--bar) var(--tick);
+  background-position:
+    top 0 left var(--r),     top var(--r) left 0,
+    top 0 right var(--r),    top var(--r) right 0,
+    bottom 0 left var(--r),  bottom var(--r) left 0,
+    bottom 0 right var(--r), bottom var(--r) right 0;
+  background-repeat: no-repeat;
+}
+
+/* The fields and title sit above the brackets. */
+.quote > * { position: relative; z-index: 1; }
+
+/* Where the browser cannot blur, the card falls back to solid ink — the type
+   inside is set for a dark ground either way. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .quote { background-color: rgba(18, 17, 16, .9); }
+}
+
+.quote__title {
+  margin-bottom: clamp(.625rem, 1.6vh, 1rem);
+  color: var(--white);
+  font-size: var(--fs-24);
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  letter-spacing: -.02em;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+/* Two across, the message and the button at full width. */
+.quote__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.5rem, 1.4vh, .875rem) var(--space-3);
+}
+
+.quote__message,
+.quote__submit { grid-column: 1 / -1; }
+
+/* Fields on glass: a lighter pane for each input, white type, and the label
+   in white rather than the page's ink. */
+.quote .field__label { color: rgba(255, 255, 255, .86); }
+
+.quote .field__input {
+  border-color: rgba(255, 255, 255, .24);
+  background-color: rgba(255, 255, 255, .12);
+  color: var(--white);
+}
+
+.quote .field__input::placeholder { color: rgba(255, 255, 255, .5); }
+
+.quote .field__input:hover { border-color: rgba(255, 255, 255, .4); }
+
+.quote .field__input:focus {
+  border-color: var(--brand);
+  background-color: rgba(255, 255, 255, .16);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(252, 185, 9, .28);
+}
+
+.quote .field__input--area {
+  min-height: clamp(3.25rem, 8vh, 4.25rem);
+  padding-top: .625rem;
+  resize: vertical;
+}
+
+.quote__done-title { color: var(--white); }
+.quote__done-text { color: rgba(255, 255, 255, .72); }
+.quote__done-text a { color: var(--brand); }
+
+/* 16px rather than 12px: the gap doubles as the slot an error message drops
+   into, so it has to clear one line of 11px text. */
+.quote__form { display: grid; gap: var(--space-4); }
+
+@media (max-width: 26em) {
+  .quote__form { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Every vertical measure in the bar is a clamp on vh: full size on a tall
+   monitor, compact on a 660px laptop, nothing hidden. */
+.quote .field { gap: clamp(.25rem, .8vh, .5rem); }
+
+.quote .field__input { min-height: clamp(2.25rem, 5.6vh, 2.75rem); }
+
+.quote__submit { min-height: clamp(2.5rem, 6.4vh, 3.25rem); }
+
+/* Positioning context for the error, which is taken out of flow below. */
+.field { position: relative; display: grid; gap: var(--space-2); }
+
+/* Visible labels, not placeholder-only — a placeholder vanishes the moment
+   someone starts typing, which is exactly when they need the label. */
+.field__label {
+  color: var(--ink-2);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.field__input {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background-color: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--fs-16);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.field__input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(252, 185, 9, .28);
+}
+
+.field__input--area {
+  min-height: 0;
+  padding-top: var(--space-3);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* Placeholders are examples, not labels — held back in both colour and size
+   so nobody reads them as a filled value. Sized on the placeholder itself
+   rather than the input, because dropping the input under 16px makes iOS zoom
+   the page on focus. */
+.field__input::placeholder {
+  color: #9C9990;
+  font-size: var(--fs-14);
+  opacity: 1;
+}
+
+.field__wrap { position: relative; }
+
+.field__input--select {
+  appearance: none;
+  padding-right: var(--space-8);
+  cursor: pointer;
+}
+
+.field__chevron {
+  position: absolute;
+  top: 50%;
+  right: var(--space-4);
+  transform: translateY(-50%);
+  color: var(--brand-ink);
+  font-size: var(--fs-12);
+  pointer-events: none;
+}
+
+/* Error sits with its field, not collected at the top of the form — and out
+   of flow, so showing one cannot reflow the fields below it. Its whole job is
+   to fit the gap above the next field, hence 11px and a single short line. */
+.field__error[hidden] { display: none; }
+
+.field__error {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 3px;
+  color: #B3261E;
+  font-size: .6875rem;
+  font-weight: var(--fw-semi);
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.field.is-invalid .field__input { border-color: #B3261E; }
+
+.field.is-invalid .field__input:focus { box-shadow: 0 0 0 3px rgba(179, 38, 30, .22); }
+
+.quote__submit {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 3.5rem;
+  margin-top: var(--space-1);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  background-color: var(--ink);
+  color: var(--white);
+  overflow: hidden;
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  transition: color var(--dur-base) var(--ease-out);
+}
+
+/* Same skew wipe as every other CTA, so the page keeps one button language. */
+.quote__submit::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -20%;
+  right: -20%;
+  top: 0;
+  bottom: 0;
+  background-color: var(--brand);
+  transform: skewX(-45deg) scale(0, 1);
+  transition: transform var(--dur-wipe) var(--ease-out);
+}
+
+.quote__submit:hover,
+.quote__submit:focus-visible { color: var(--ink); }
+
+.quote__submit:hover::after,
+.quote__submit:focus-visible::after { transform: skewX(-45deg) scale(1, 1); }
+
+.quote__submit-arrow {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--white);
+  color: var(--ink);
+  font-size: var(--fs-12);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.quote__submit:hover .quote__submit-arrow { transform: translateX(3px); }
+
+.quote__fine {
+  color: var(--muted);
+  font-size: var(--fs-12);
+  line-height: 1.5;
+}
+
+/* `display` on a class beats the [hidden] attribute's own display:none, so the
+   attribute has to be restated or the success panel renders on page load. */
+.quote__done { display: grid; gap: var(--space-3); padding-block: var(--space-4); }
+.quote__done[hidden] { display: none; }
+.quote__form[hidden] { display: none; }
+
+.quote__done-mark {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+}
+
+.quote__done-title {
+  color: var(--ink);
+  font-size: var(--fs-18);
+  font-weight: var(--fw-bold);
+}
+
+.quote__done-text { color: var(--muted); font-size: var(--fs-14); line-height: 1.6; }
+.quote__done-text a { color: var(--brand-ink); font-weight: var(--fw-bold); }
+
+
+/* Hero breakpoints -------------------------------------------------------- */
+
+/* The form card stops being a side column before the type has to shrink. */
+@media (max-width: 61.99em) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-7);
+  }
+
+  .hero__panel { min-height: 0; }
+
+  .hero__scrim {
+    background:
+      linear-gradient(180deg, rgba(10, 10, 9, .9) 0%, rgba(10, 10, 9, .72) 45%, rgba(10, 10, 9, .92) 100%);
+  }
+
+  /* Single column, so the copy reads better centred than ranged left. */
+  .hero__content {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .hero__title,
+  .hero__lede,
+  .hero__support { margin-inline: auto; }
+
+  .hero__actions,
+  .hero__marks { justify-content: center; }
+}
+
+@media (max-width: 47.99em) {
+  .hero { padding-bottom: var(--space-6); }
+  .hero__actions { gap: var(--space-3); }
+  /* Buttons size to their label rather than stretching the full width. */
+  .hero__call,
+  .hero__ghost { width: auto; }
+}
+
+
+/* Reduced motion ---------------------------------------------------------- */
+
+/* The script also refuses to autoplay under this preference; the poster frame
+   carries the hero instead. */
+@media (prefers-reduced-motion: reduce) {
+  .hero__ghost:hover i,
+  .quote__submit:hover .quote__submit-arrow { transform: none; }
+}
+
+
+/* ==========================================================================
+   Stats strip
+   ========================================================================== */
+
+.stats-strip { padding-block: 16px 40px; }
+
+.stats-strip__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+}
+
+/* The rule sits on the item rather than between siblings, so the four columns
+   stay exactly equal — a gap plus a border would widen the outer two. */
+.stats-strip__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-inline: clamp(1rem, .3rem + 1.6vw, 2rem);
+}
+
+.stats-strip__item:first-child { padding-left: 0; }
+.stats-strip__item:last-child { padding-right: 0; }
+.stats-strip__item + .stats-strip__item { border-left: 1px solid var(--line); }
+
+.stats-strip__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: #FBEFD2;
+  color: var(--brand);
+  font-size: 1.375rem;
+}
+
+.stats-strip__body {
+  display: grid;
+  gap: .125rem;
+  min-width: 0;
+}
+
+.stats-strip__num {
+  font-size: clamp(1.5rem, 1.28rem + .7vw, 1.9375rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.02em;
+  line-height: 1.1;
+  color: var(--ink);
+  /* Tabular so the digits do not jitter while the count-up runs. */
+  font-variant-numeric: tabular-nums;
+}
+
+.stats-strip__label {
+  font-size: var(--fs-15);
+  line-height: 1.35;
+  color: var(--ink-2);
+}
+
+@media (max-width: 61.99em) {
+  .stats-strip__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Clear the row rule first, then re-draw only the one still mid-row. */
+  .stats-strip__item + .stats-strip__item { border-left: 0; }
+  .stats-strip__item:nth-child(even) { border-left: 1px solid var(--line); }
+  .stats-strip__item:nth-child(odd) { padding-left: 0; }
+  .stats-strip__item:nth-child(n + 3) {
+    margin-top: var(--space-5);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--line);
+  }
+}
+
+@media (max-width: 35.99em) {
+  .stats-strip__list { grid-template-columns: minmax(0, 1fr); }
+  .stats-strip__item { padding-inline: 0; }
+  .stats-strip__item:nth-child(even) { border-left: 0; }
+  .stats-strip__item + .stats-strip__item {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+}
+
+
+/* ==========================================================================
+   Services ticker
+   ========================================================================== */
+
+/* Full-bleed: the strip runs the whole viewport width, so the loop reads as
+   continuous rather than as a contained block with two visible ends. No fill
+   and no border — the type and the asterisks carry it on the page ground. */
+.ticker {
+  /* Parked for now — remove this one line to bring the strip back. */
+  display: none;
+
+  margin-inline: 0;
+  margin-bottom: var(--space-8);
+  overflow: hidden;
+  padding-block: var(--space-4);
+  color: var(--ink);
+}
+
+/* width: max-content stops the flex track from being squeezed to the viewport,
+   which would break the -50% maths the seamless loop depends on. */
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 38s linear infinite;
+}
+
+/* Courtesy pause so a name can actually be read. */
+.ticker:hover .ticker__track,
+.ticker:focus-within .ticker__track { animation-play-state: paused; }
+
+.ticker__list { display: flex; align-items: center; }
+
+.ticker__list li {
+  display: flex;
+  align-items: center;
+  /* gap: 0 on purpose — the icon hugs its own label via its margin, and the
+     separation between services comes from padding-right. With a flex gap the
+     icon sat equidistant between two labels and read as belonging to neither. */
+  gap: 0;
+  padding-right: var(--space-8);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-black);
+  /* All-caps carries display tracking; without it the letterforms crowd. */
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Service icon ahead of each label. Sized under the type so it reads as a
+   marker rather than competing with the word it belongs to. */
+.ticker__ico {
+  flex-shrink: 0;
+  margin-right: .625rem;
+  color: var(--brand-deep);
+  font-size: .875rem;
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Motion here is decoration, so it stops entirely — the first few services
+   stay readable in place. */
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track { animation: none; }
+}
+
+
+/* ==========================================================================
+   Page sections
+   Metrics calibrated against nyc2: 700-weight left-aligned heads, one shared
+   band rhythm, hairline cards that shift border colour instead of lifting,
+   and static hatched media frames that read as reserved slots.
+   ========================================================================== */
+
+/* One vertical rhythm for every band below the ticker. */
+/* 40px per side, so any two adjacent sections leave exactly 80px between
+   their content. */
+.section { padding-block: 40px; }
+
+/* One rhythm for every section, tinted or not: 40px of its own padding top
+   and bottom and no margin, so two neighbours always meet at exactly 80px of
+   content-to-content space and nothing stacks on top of that. */
+.svcs,
+.diff,
+.signs,
+.contact {
+  margin-block: 0;
+  padding-block: 40px;
+}
+
+/* Every band below the ticker keeps the full .section rhythm — no per-pair
+   collapsing, so the gaps read equal all the way down. */
+
+.section-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  color: var(--brand-ink);
+}
+
+.section-eyebrow::before {
+  content: '';
+  width: 1.75rem;
+  height: 2px;
+  background-color: var(--brand);
+}
+
+/* Brand-ink fails on dark; the label goes soft white, the rule keeps yellow. */
+.section-eyebrow--ondark { color: rgba(255, 255, 255, .84); }
+
+.section-title {
+  max-width: 26ch;
+  margin: var(--space-4) 0 0;
+  font-size: clamp(1.75rem, 1.15rem + 1.9vw, 2.75rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.02em;
+  line-height: 1.22;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.section-title--sm { font-size: clamp(1.5rem, 1.1rem + 1.2vw, 2.125rem); }
+
+/* Second half of a heading in the one place yellow can carry type: large,
+   bold, and darkened to the readable step of the brand hue. */
+.accent { color: var(--brand-deep); }
+
+.section-lede {
+  max-width: 62ch;
+  margin-top: var(--space-5);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Head row: title left, its action or side-note sharing the baseline right. */
+.section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-5) var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.section-head__note {
+  max-width: 34ch;
+  padding-bottom: .375rem;
+  font-size: .9375rem;
+  line-height: 1.6;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Media frame — a reserved slot, deliberately static. Hatched at 45°, the
+   angle of the logo's roof faces. Swap the note for an <img> when the real
+   photograph lands; aspect-ratio already holds the space. */
+.media-frame {
+  position: relative;
+  border-radius: var(--radius-xl);
+  background-color: #F2F0EC;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(19, 18, 17, .04) 0 10px,
+    transparent 10px 24px);
+  overflow: hidden;
+}
+
+/* Photograph fills the frame; its placeholder note switches off. */
+.media-frame__image + .media-frame__note { display: none; }
+
+.media-frame__image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media-frame__note {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .625rem;
+  color: rgba(19, 18, 17, .38);
+}
+
+.media-frame__note i { font-size: 1.75rem; }
+
+.media-frame__note span {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-medium);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.media-frame--dark {
+  background-color: #1E1C1A;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, .045) 0 10px,
+    transparent 10px 24px);
+}
+
+.media-frame--dark .media-frame__note { color: rgba(255, 255, 255, .35); }
+
+
+/* Services ----------------------------------------------------------------- */
+
+/* Same ground as the Signs band. */
+.svcs { background-color: #FCFCFB; }
+
+/* Head splits: label + heading hold the left, the answering line sits right
+   on the baseline of the heading's last row. */
+.svcs__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  align-items: end;
+  gap: var(--space-5) clamp(2rem, 1rem + 3vw, 4rem);
+  margin-bottom: clamp(2.25rem, 1.8rem + 1.6vw, 3.5rem);
+}
+
+.svcs__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.svcs__title {
+  margin: 0;
+  /* Measure in em, so the two-line break holds as the clamp resizes the type. */
+  max-width: 13.5em;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.svcs__accent { color: var(--brand); }
+
+.svcs__lede {
+  margin: 0;
+  padding-bottom: .375rem;
+  font-size: var(--fs-18);
+  line-height: 1.65;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.svcs__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+/* Card: image, then a badge straddling its lower edge, then copy and a
+   footer that pins to the bottom so every row lines up. No shadow — the
+   hairline and the fill shift on hover carry the depth. */
+.svc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.svc:hover { border-color: var(--brand); background-color: var(--hover-tint); }
+
+.svc__top { position: relative; }
+
+.svc__media {
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+}
+
+.svc__icon {
+  position: absolute;
+  left: var(--space-3);
+  bottom: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 3.75rem;
+  height: 3.75rem;
+  /* Half the badge sits below the image edge. */
+  transform: translateY(50%);
+  border-radius: 50%;
+  background-color: var(--white);
+  color: var(--ink);
+  font-size: 1.375rem;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.svc:hover .svc__icon { background-color: var(--brand); color: var(--ink); }
+
+.svc__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-3);
+  /* Top padding clears the half-badge that overhangs the image. */
+  padding: calc(1.875rem + var(--space-4)) var(--space-3) var(--space-3);
+}
+
+.svc__title {
+  margin: 0;
+  font-size: clamp(1.25rem, 1.14rem + .34vw, 1.4375rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.015em;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+.svc__title a { text-decoration: none; color: inherit; }
+
+/* Stretched link — the whole card is the hit target. */
+.svc__title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.svc__title a:focus-visible { outline: none; }
+
+.svc__title a:focus-visible::after {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.svc__text {
+  margin: 0;
+  font-size: var(--fs-15);
+  line-height: 1.65;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.svc__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: auto;
+  padding-top: var(--space-5);
+}
+
+.svc__more {
+  font-size: var(--fs-15);
+  font-weight: var(--fw-bold);
+  color: var(--ink);
+  /* Brand rule under the label rather than a default underline, so the
+     colour and offset stay under our control. */
+  border-bottom: 2px solid var(--brand);
+  padding-bottom: .125rem;
+}
+
+.svc__arrow {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .875rem;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.svc:hover .svc__arrow {
+  transform: translateX(4px);
+  background-color: var(--ink);
+  color: var(--white);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .svc:hover .svc__arrow { transform: none; }
+}
+
+
+/* Process ------------------------------------------------------------------ */
+
+.process-sec__head {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  /* Room for the numbered badge that overhangs the first card's top edge. */
+  margin-bottom: clamp(3.5rem, 3rem + 2vw, 5rem);
+}
+
+.process-sec__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.process-sec__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.process-sec__accent { color: var(--brand); }
+
+.process-sec__steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.pstep {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Top padding clears the badge that straddles the card edge. */
+  padding: 3.25rem var(--space-5) var(--space-6);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  text-align: center;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+/* The badge sits half above the card, ringed so it reads as a marker pinned
+   to the edge rather than a circle floating inside it. */
+.pstep__num {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  box-shadow: 0 0 0 5px rgba(252, 185, 9, .26);
+  color: var(--ink);
+  font-size: var(--fs-18);
+  font-weight: var(--fw-black);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -.02em;
+}
+
+/* Short brand tick under the badge, the same device the mock uses to tie the
+   number to the card below it. */
+.pstep::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 2.375rem;
+  transform: translateX(-50%);
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background-color: var(--brand);
+}
+
+/* Dotted-ended connector between consecutive cards, drawn on the gap. */
+.pstep + .pstep::after {
+  content: '';
+  position: absolute;
+  right: 100%;
+  top: 6.75rem;
+  width: var(--space-5);
+  height: 5px;
+  /* A 5px-tall strip: a 1px rule down the middle plus a dot at each end. */
+  background:
+    linear-gradient(var(--brand), var(--brand)) center / 100% 1px no-repeat,
+    radial-gradient(circle 2.5px at 2.5px 50%, var(--brand) 99%, transparent) left / 50% 100% no-repeat,
+    radial-gradient(circle 2.5px at calc(100% - 2.5px) 50%, var(--brand) 99%, transparent) right / 50% 100% no-repeat;
+}
+
+.pstep__icon {
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: var(--space-5);
+  border-radius: 50%;
+  background-color: var(--surface-2);
+  color: var(--ink);
+  font-size: 1.75rem;
+  line-height: 1;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.pstep:hover .pstep__icon { background-color: var(--brand); color: var(--ink); }
+
+.pstep__title {
+  margin: 0;
+  font-size: 1.1875rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.pstep__text {
+  margin-top: var(--space-3);
+  font-size: var(--fs-15);
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+
+/* Why us — side-by-side contrast ------------------------------------------- */
+
+/* The brand yellow at a wash, so the band reads as warm rather than grey. */
+.diff { background-color: rgba(252, 185, 9, .07); }
+
+/* Split head across the full width. */
+.diff__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  align-items: end;
+  gap: var(--space-5) clamp(2rem, 1rem + 3vw, 4rem);
+  margin-bottom: clamp(2rem, 1.6rem + 1.4vw, 3rem);
+}
+
+.diff__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.diff__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.diff__accent { color: var(--brand); }
+
+.diff__lede {
+  margin: 0;
+  padding-bottom: .375rem;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Three cards: what usually happens, what we do, then the quote banner. */
+.diff__cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  /* Stretch, so the two comparison cards always match height. */
+  align-items: stretch;
+}
+
+.dcard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+}
+
+.dcard__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  padding: var(--space-4) clamp(1.25rem, .9rem + 1.1vw, 1.75rem);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.dcard__mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  font-size: .75rem;
+}
+
+/* The alternative: muted ground, red marks. */
+.dcard--usual .dcard__head {
+  background-color: var(--surface-2);
+  color: var(--muted);
+}
+
+.dcard--usual .dcard__mark {
+  background-color: rgba(211, 47, 47, .12);
+  color: #D32F2F;
+}
+
+/* Ours: the brand bar, since this is the column being argued for. */
+.dcard--ours .dcard__head {
+  background-color: var(--brand);
+  color: var(--ink);
+}
+
+.dcard--ours .dcard__mark {
+  background-color: var(--ink);
+  color: var(--white);
+}
+
+.dcard__list {
+  display: grid;
+  flex: 1;
+  grid-auto-rows: 1fr;
+}
+
+.dcard__list li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) clamp(1.25rem, .9rem + 1.1vw, 1.75rem);
+  font-size: var(--fs-15);
+  line-height: 1.5;
+}
+
+.dcard__list li + li { border-top: 1px solid var(--line); }
+
+.dcard--usual .dcard__list li { color: var(--muted); }
+
+/* Red cross against each of the alternatives. */
+.dcard--usual .dcard__list i {
+  color: #D32F2F;
+  font-size: .9375rem;
+}
+
+.dcard--ours .dcard__list li {
+  color: var(--ink);
+  font-weight: var(--fw-medium);
+}
+
+/* Tinted brand disc with a brand-ink glyph; the header's mark keeps its own
+   black-and-white treatment. */
+.diff__icon {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-color: rgba(252, 185, 9, .16);
+  color: var(--brand-ink);
+  font-size: .8125rem;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.dcard--ours .dcard__list li:hover .diff__icon {
+  background-color: var(--brand);
+  color: var(--ink);
+}
+
+/* Banner closes the set, spanning both columns. */
+.diff__cards .diff__banner { grid-column: 1 / -1; margin-top: 0; }
+
+/* Closing banner: a light panel with the copy left and one action card on
+   the right. The photograph and scrim were fighting the type at this size. */
+.diff__banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.5rem, 1rem + 2vw, 3rem);
+  margin-top: 0;
+  padding: clamp(1.5rem, 1.1rem + 1.4vw, 2.5rem);
+  border-radius: var(--radius-xl);
+  background-color: var(--ink);
+  color: var(--on-dark);
+}
+
+/* Pattern ground: the 45° hatch the page's dark frames use, crossed with a
+   faint dot field and a brand glow rising from the lower-left corner. */
+.diff__banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    radial-gradient(36rem 20rem at 0% 100%, rgba(252, 185, 9, .16), transparent 65%),
+    radial-gradient(rgba(255, 255, 255, .07) 1px, transparent 1px),
+    repeating-linear-gradient(45deg,
+      rgba(255, 255, 255, .045) 0 12px,
+      transparent 12px 30px);
+  background-size: 100% 100%, 22px 22px, auto;
+}
+
+.diff__banner-copy { display: grid; justify-items: start; }
+
+.diff__banner-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0 0 var(--space-3);
+  padding: .4375rem .875rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .16);
+  color: var(--brand);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.diff__banner-title {
+  margin: 0;
+  font-size: clamp(1.875rem, 1.35rem + 1.9vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: var(--white);
+  text-wrap: balance;
+}
+
+.diff__banner-accent { color: var(--brand); }
+
+
+.diff__banner-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-5);
+  margin-top: var(--space-5);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, .78);
+}
+
+.diff__banner-meta li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.diff__banner-meta i { color: var(--brand); font-size: .875rem; }
+
+/* Action card: translucent panel with both ways in. */
+.diff__banner-action {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: var(--space-3);
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: var(--radius-lg);
+  background-color: rgba(255, 255, 255, .05);
+}
+
+.diff__banner-label {
+  margin: 0;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .62);
+}
+
+.diff__banner-tel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--white);
+  font-size: clamp(1.25rem, 1.15rem + .4vw, 1.5rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.diff__banner-tel:hover { color: var(--brand); }
+
+.diff__banner-tel-icon {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .875rem;
+}
+
+/* "or" with a rule either side, so it does not float. */
+.diff__banner-or {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  margin: 0;
+  font-size: var(--fs-12);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .45);
+}
+
+.diff__banner-or::before,
+.diff__banner-or::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: rgba(255, 255, 255, .14);
+}
+
+.diff__banner-action .btn {
+  --btn-bg: var(--brand);
+  --btn-ink: var(--ink);
+  --btn-wipe: var(--white);
+  --btn-ink-hover: var(--ink);
+  --btn-ring: transparent;
+  --btn-ring-hover: var(--white);
+
+  padding: .5rem 1.75rem;
+}
+
+/* Systems ------------------------------------------------------------------ */
+
+.systems { background-color: var(--surface); }
+
+/* Centred head: eyebrow, then the title. */
+.systems__head {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  margin-bottom: clamp(1.5rem, 1.2rem + 1vw, 2.5rem);
+}
+
+.systems__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0;
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.systems__title {
+  margin: var(--space-4) 0 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.15;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.systems__accent { color: var(--brand); }
+
+/* The picker: a centred row of tabs on the off-white, the live panel on white
+   beneath, all inside one rounded frame so the two read as one instrument. */
+.systab {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-2xl);
+  background-color: var(--surface);
+  overflow: hidden;
+}
+
+.systab__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .5rem 1.25rem;
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--line);
+  background-color: #FBFAF8;
+}
+
+.systab__tab {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: .75rem .875rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  color: var(--ink-2);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.systab__tab:hover {
+  background-color: var(--surface);
+  color: var(--ink);
+}
+
+.systab__tab:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: -3px;
+}
+
+/* The live tab goes black with its icon in yellow, so the chosen system is
+   the one dark shape in the rail. */
+.systab__tab.is-active {
+  background-color: var(--ink);
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+.systab__tab.is-active .systab__tab-sub { color: rgba(255, 255, 255, .62); }
+
+.systab__tab-icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: 1rem;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.systab__tab.is-active .systab__tab-icon {
+  background-color: var(--brand);
+  color: var(--ink);
+}
+
+.systab__tab-text { display: grid; gap: .125rem; min-width: 0; }
+
+.systab__tab-name {
+  font-size: var(--fs-15);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  line-height: 1.2;
+}
+
+.systab__tab-sub {
+  font-size: var(--fs-12);
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+.systab__panels { min-width: 0; }
+
+.systab__panel {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+  align-items: center;
+  gap: clamp(1.5rem, 1rem + 1.6vw, 2.75rem);
+  height: 100%;
+  padding: clamp(1.25rem, 1rem + 1vw, 2rem);
+  animation: systab-in .35s var(--ease-out) both;
+}
+
+.systab__panel[hidden] { display: none; }
+
+.systab__panel:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: -3px;
+}
+
+@keyframes systab-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .systab__panel { animation: none; }
+}
+
+.systab__photo {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-xl);
+}
+
+.systab__name {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.systab__text {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Three facts across on a hairline. */
+.systab__facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-5) 0;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.systab__facts div { display: grid; gap: .125rem; }
+
+.systab__facts dt {
+  font-size: .6875rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.systab__facts dd {
+  margin: 0;
+  font-size: var(--fs-14);
+  font-weight: var(--fw-semi);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+/* The panel's action is the page's own button. */
+.systab__cta { width: fit-content; }
+
+/* Tablets: the tabs become a scrolling row, left-aligned so the first is
+   never clipped behind the frame's edge. */
+@media (max-width: 61.99em) {
+  .systab__tabs {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .systab__tabs::-webkit-scrollbar { display: none; }
+
+  .systab__tab { flex: none; padding: .625rem .875rem .625rem .625rem; }
+  .systab__tab-sub { display: none; }
+  .systab__tab-icon { width: 2.125rem; height: 2.125rem; font-size: .875rem; }
+
+  .systab__panel { grid-template-columns: minmax(0, 1fr); }
+  .systab__photo { aspect-ratio: 16 / 9; }
+}
+
+@media (max-width: 47.99em) {
+  .systab__facts { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+}
+
+
+/* Signs -------------------------------------------------------------------- */
+
+/* Same faint brand warmth as the Services band. */
+.signs { background-color: #FCFCFB; }
+
+.signs__inner {
+  display: grid;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(2.5rem, 1.2rem + 3.4vw, 5rem);
+  align-items: center;
+}
+
+.signs__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.signs__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.signs__accent { color: var(--brand); }
+
+.signs__lede {
+  max-width: 52ch;
+  margin: var(--space-4) 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+/* Caution note in a tinted panel, the section's one loud moment. */
+.signs__note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background-color: rgba(252, 185, 9, .14);
+}
+
+.signs__note p {
+  margin: 0;
+  font-size: var(--fs-15);
+  font-weight: var(--fw-medium);
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.signs__note-icon {
+  margin-top: .125rem;
+  color: var(--brand-deep);
+  font-size: 1.125rem;
+}
+
+.signs__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+/* Outlined pill, so the secondary action has a visible edge beside the
+   filled button rather than floating as bare text. */
+.signs__tel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 3.125rem;
+  padding-inline: var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.signs__tel i { color: var(--brand-ink); }
+
+.signs__tel:hover { background-color: var(--brand); border-color: var(--brand); }
+
+/* Cards in pairs — two per row, three rows. */
+.signs__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.sign {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.sign:hover { border-color: rgba(211, 47, 47, .45); background-color: var(--hover-tint); }
+
+/* These are warnings, so the marks read red rather than brand yellow. */
+.sign__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: var(--space-2);
+  border-radius: 50%;
+  background-color: rgba(211, 47, 47, .1);
+  color: #D32F2F;
+  font-size: 1.0625rem;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+.sign:hover .sign__icon { background-color: #D32F2F; color: var(--white); }
+
+.sign__title {
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  line-height: 1.35;
+  color: var(--ink);
+}
+
+.sign__text {
+  font-size: var(--fs-15);
+  line-height: 1.55;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+
+/* CTA band — contained dark panel ------------------------------------------ */
+
+/* Full-bleed band; the container inside keeps the content on the page grid. */
+/* Same rhythm as every other section: its own padding, no margin. */
+.cta-band {
+  margin-block: 0;
+  padding-block: 40px;
+}
+
+.cta-band__panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--dark);
+  color: var(--on-dark);
+}
+
+/* Centred: copy stacked over the action card, both on the page's axis. */
+.cta-band__inner {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: clamp(2rem, 1.5rem + 1.6vw, 3.25rem);
+  padding-block: clamp(3.5rem, 2.7rem + 2.8vw, 5.75rem);
+}
+
+.cta-band__copy { display: grid; justify-items: center; }
+
+/* Photograph fills the band; the scrim holds the type contrast over it. */
+/* The hero's footage, behind the scrim. object-fit covers the band at any
+   aspect ratio; the poster shows until the file arrives. */
+.cta-band__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cta-band__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(56rem 28rem at 0% 100%, rgba(252, 185, 9, .12), transparent 62%),
+    linear-gradient(rgba(12, 11, 10, .66), rgba(12, 11, 10, .66));
+}
+
+.cta-band__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .16);
+  color: var(--brand);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.cta-band__title {
+  max-width: 22ch;
+  margin: var(--space-3) 0 0;
+  font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.75rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.02em;
+  line-height: 1.1;
+  color: var(--white);
+  text-wrap: balance;
+}
+
+.cta-band__accent { color: var(--brand); }
+
+.cta-band__text {
+  max-width: 56ch;
+  margin-top: var(--space-4);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--on-dark);
+  text-wrap: pretty;
+}
+
+.cta-band__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-4);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, .78);
+}
+
+.cta-band__meta li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.cta-band__meta i { color: var(--brand); }
+
+/* Action card in its original translucent-panel language, but laid out as a
+   row: call block, an "or" divider, then the button. */
+.cta-band__action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4) var(--space-5);
+  width: auto;
+  padding: var(--space-4) clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: var(--radius-xl);
+  /* Frosted plate: the footage moves behind it, so the card needs its own
+     ground to stay legible. */
+  background-color: rgba(255, 255, 255, .16);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+.cta-band__action-call {
+  display: grid;
+  justify-items: center;
+  gap: .25rem;
+}
+
+.cta-band__action-label {
+  margin: 0;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semi);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .82);
+}
+
+.cta-band__phone {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--white);
+  font-size: clamp(1.25rem, 1.15rem + .4vw, 1.5rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.cta-band__phone:hover { color: var(--brand); }
+
+.cta-band__phone-icon {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .875rem;
+}
+
+/* Vertical rule either side now that the card runs horizontally. */
+.cta-band__action-or {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--fs-12);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .7);
+}
+
+.cta-band__action-or::before,
+.cta-band__action-or::after {
+  content: '';
+  width: 1px;
+  height: .75rem;
+  background-color: rgba(255, 255, 255, .35);
+}
+
+/* White fill on the dark band, wiping to brand on hover. */
+.cta-band__action .btn {
+  --btn-bg: var(--white);
+  --btn-ink: var(--ink);
+  --btn-wipe: var(--brand);
+  --btn-ink-hover: var(--ink);
+  --btn-ring: transparent;
+  --btn-ring-hover: var(--ink);
+
+  padding: .5rem 1.75rem;
+}
+
+
+/* Areas we serve ----------------------------------------------------------- */
+
+/* Parked on request — remove this display rule to bring the section back. */
+.areas { display: none; }
+
+/* Dark band — plain black ground, no hatch. */
+.areas {
+  background-color: var(--dark);
+  color: var(--on-dark);
+}
+
+.areas__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2.5rem, 1.4rem + 2.8vw, 4.5rem);
+}
+
+.areas__map { display: grid; }
+
+.areas__img { width: 100%; height: auto; }
+
+.areas__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .16);
+  color: var(--brand);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.areas__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--white);
+  text-wrap: balance;
+}
+
+.areas__accent { color: var(--brand); }
+
+.areas__lede {
+  max-width: 52ch;
+  margin: var(--space-4) 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--on-dark);
+  text-wrap: pretty;
+}
+
+.areas__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.areas__list a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: .8125rem;
+  border-bottom: 1px solid var(--line-dark);
+  font-size: 1rem;
+  font-weight: var(--fw-medium);
+  text-decoration: none;
+  color: var(--white);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.areas__list a:hover { color: var(--brand); }
+
+.areas__list a > i:first-child { font-size: .875rem; color: var(--brand); }
+
+.areas__go {
+  font-size: .75rem;
+  color: rgba(255, 255, 255, .3);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.areas__list a:hover .areas__go { color: var(--brand); }
+
+.areas__note {
+  margin-top: var(--space-6);
+  font-size: var(--fs-15);
+  line-height: 1.6;
+  color: var(--on-dark);
+}
+
+.areas__note i { margin-right: .375rem; color: var(--brand); font-size: .875rem; }
+
+.areas__note a {
+  color: var(--brand);
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+}
+
+.areas__note a:hover { text-decoration: underline; }
+
+
+/* Testimonials ------------------------------------------------------------- */
+
+/* Shared carousel head: eyebrow + title left, controls right. */
+.testi__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-5) var(--space-7);
+  margin-bottom: clamp(2rem, 1.6rem + 1.2vw, 3rem);
+}
+
+/* Pill eyebrow, matching the rest of the page's section heads. */
+.testi__head .section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+}
+
+.testi__head .section-eyebrow::before { content: none; }
+
+/* 3. Shorter measure so the line breaks instead of running the full head. */
+.testi__title { max-width: 13em; }
+
+.slider-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.slider-nav__btn {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
+  font-size: .9375rem;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+
+.slider-nav__btn:hover {
+  background-color: var(--brand);
+  border-color: var(--brand);
+}
+
+/* Swiper adds this class at either end of the run. */
+.slider-nav__btn.swiper-button-disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.slider-nav__btn.swiper-button-disabled:hover {
+  background-color: transparent;
+  border-color: var(--line);
+}
+
+.testi-swiper .swiper-slide,
+.blog-swiper .swiper-slide { height: auto; }
+
+/* Quote mark sits behind the text rather than above it, so the card starts on
+   the stars and reads top to bottom without an ornament in the way. */
+.review {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 0;
+  padding: var(--space-6);
+  overflow: hidden;
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.review:hover { border-color: var(--brand); }
+
+.review__mark {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  font-size: 2.5rem;
+  color: rgba(252, 185, 9, .22);
+}
+
+.review__stars {
+  display: flex;
+  gap: 2px;
+  color: var(--brand-deep);
+  font-size: .8125rem;
+}
+
+.review__text {
+  margin: var(--space-4) 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  letter-spacing: -.005em;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+/* Pushed to the bottom so the attributions line up across a row of cards
+   whatever length each quote runs to. */
+.review__by {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: auto;
+  padding-top: var(--space-5);
+}
+
+.review__avatar {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-color: var(--dark);
+  color: var(--brand);
+  font-size: .875rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: .02em;
+}
+
+.review__name {
+  display: block;
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-bold);
+}
+
+.review__meta {
+  display: block;
+  margin-top: .125rem;
+  color: var(--muted);
+  font-size: .8125rem;
+}
+
+
+/* Blog --------------------------------------------------------------------- */
+
+/* "Read more" as a small outlined pill; the card's hover fills it, since the
+   whole card is the link. */
+.bcard__more {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  width: fit-content;
+  margin-top: var(--space-2);
+  padding: .5rem .9375rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  color: var(--ink);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+.bcard__more i {
+  font-size: .75rem;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.bcard:hover .bcard__more { border-color: var(--brand); background-color: var(--brand); }
+.bcard:hover .bcard__more i { transform: translateX(3px); }
+
+/* Plain flow by default — DOM order is head, cards, arrows, which is what
+   small screens want. Desktop switches to a two-area grid so the arrows ride
+   beside the heading. */
+.blog__aside {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+@media (min-width: 62em) {
+  .blog .container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'head controls'
+      'cards cards';
+    align-items: end;
+  }
+
+  .blog .testi__head { grid-area: head; }
+  /* Swiper sizes itself from content unless the width is pinned; as a grid
+     item that let the track blow past the container. */
+  .blog .blog-swiper {
+    grid-area: cards;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .blog__aside {
+    grid-area: controls;
+    justify-content: flex-end;
+    margin-top: 0;
+    margin-bottom: clamp(2rem, 1.6rem + 1.2vw, 3rem);
+  }
+}
+
+.bcard {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  height: 100%;
+  padding: var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background-color: var(--surface);
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.bcard:hover { border-color: var(--brand-deep); }
+
+.bcard__img {
+  aspect-ratio: 16 / 10;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-lg);
+}
+
+/* Author chip and date share one line above the title. */
+.bcard__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.bcard__admin {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  padding: .25rem .625rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .16);
+  color: var(--brand-ink);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.bcard__admin i { font-size: .625rem; }
+
+.bcard__date {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semi);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.bcard__title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  line-height: 1.35;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.bcard__title a { text-decoration: none; }
+
+.bcard__title a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.bcard__title a:focus-visible { outline: none; }
+
+.bcard__title a:focus-visible::after {
+  outline: 3px solid var(--brand);
+  outline-offset: 3px;
+}
+
+
+/* FAQ ---------------------------------------------------------------------- */
+
+.faq__head {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  margin-bottom: clamp(2.25rem, 1.8rem + 1.6vw, 3.5rem);
+}
+
+.faq__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.faq__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.faq__accent { color: var(--brand); }
+
+.faq__lede {
+  max-width: 56ch;
+  margin: var(--space-4) 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.faq__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  /* Open answers change card heights; start-aligned rows keep the columns
+     from stretching their shorter neighbour to match. */
+  align-items: start;
+}
+
+.qa {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background-color: var(--surface);
+  overflow: hidden;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.qa[open],
+.qa:hover { border-color: var(--brand); }
+
+.qa__q {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  line-height: 1.4;
+  cursor: pointer;
+  list-style: none;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.qa__q::-webkit-details-marker { display: none; }
+
+/* A step dimmer than the shared tint, so the row visibly responds. */
+.qa__q:hover { background-color: #F9F8F6; }
+
+.qa__num {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-black);
+  font-variant-numeric: tabular-nums;
+}
+
+.qa__toggle {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  color: var(--brand-ink);
+  font-size: .75rem;
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+/* The plus rotates into a cross when the card opens. */
+.qa[open] .qa__toggle {
+  transform: rotate(45deg);
+  background-color: var(--brand);
+  border-color: var(--brand);
+  color: var(--ink);
+}
+
+/* Indented to the question's own left edge, past the number disc. */
+.qa__a {
+  padding: 0 var(--space-5) var(--space-5) calc(var(--space-5) + 2.5rem + var(--space-4));
+  color: var(--ink-2);
+  font-size: var(--fs-16);
+  line-height: 1.65;
+}
+
+/* Footer card — the escape hatch under the grid. */
+.faq__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  margin-top: var(--space-5);
+  padding: clamp(1.5rem, 1.1rem + 1.2vw, 2.25rem);
+  border-radius: var(--radius-xl);
+  background-color: rgba(252, 185, 9, .12);
+}
+
+.faq__foot-copy {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.faq__foot-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: 1.375rem;
+}
+
+.faq__foot-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+
+.faq__foot-text {
+  margin: .25rem 0 0;
+  font-size: var(--fs-15);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.faq__foot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* Outlined pill to match the filled button beside it. */
+.faq__foot-tel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 3.125rem;
+  padding-inline: var(--space-5);
+  border: 1px solid rgba(19, 18, 17, .25);
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--ink);
+  font-size: 1.1875rem;
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease-out);
+}
+
+.faq__foot-tel i { color: var(--brand-ink); }
+
+.faq__foot-tel:hover { background-color: var(--brand); border-color: var(--brand); }
+
+
+/* Contact ------------------------------------------------------------------ */
+
+/* Same ground as the Signs band. */
+.contact { background-color: #FCFCFB; }
+
+.contact__head {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  margin-bottom: clamp(2.25rem, 1.8rem + 1.6vw, 3.5rem);
+}
+
+.contact__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.contact__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.contact__accent { color: var(--brand); }
+
+.contact__lede {
+  max-width: 56ch;
+  margin: var(--space-4) 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+/* The card sits on the band's faint tint — a hairline is all the separation
+   it needs, so the hero card's ring-and-drop shadow comes off here. */
+.contact__form-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+/* The form fills the card, and the message field takes whatever height the
+   info column leaves over — so the two columns bottom out together. Targeting
+   the textarea's own row rather than a row index keeps this correct however
+   many fields a given page's form has. */
+.contact__form-card .quote__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.contact__form-card .field:has(.field__input--area) {
+  display: flex;
+  flex-direction: column;
+  /* This is the row that absorbs whatever height the info column leaves. */
+  flex: 1;
+  min-height: 0;
+}
+
+.contact__form-card .field__input--area {
+  flex: 1;
+  min-height: 6rem;
+  resize: none;
+}
+
+/* Info column ---- */
+
+.contact__side {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.contact__cards { flex: none; }
+
+/* Takes whatever height the form column leaves, so the two bottom out level. */
+.contact__map-card { flex: 1; min-height: 0; }
+
+.contact__cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.contact__cards li { display: grid; }
+
+/* The link fills the card, so the whole card is the hit target. */
+.contact__card {
+  display: grid;
+  justify-items: start;
+  align-content: start;
+  gap: var(--space-2);
+  height: 100%;
+  padding: var(--space-5);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out);
+}
+
+a.contact__card:hover { border-color: var(--brand); background-color: var(--hover-tint); }
+
+a.contact__card:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.contact__chip {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  margin-bottom: var(--space-2);
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: 1.125rem;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+a.contact__card:hover .contact__chip { background-color: var(--ink); color: var(--white); }
+
+.contact__card-title {
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  color: var(--ink);
+}
+
+.contact__card-value {
+  font-size: var(--fs-15);
+  font-weight: var(--fw-medium);
+  line-height: 1.55;
+  color: var(--ink-2);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+a.contact__card:hover .contact__card-value { color: var(--ink); }
+
+/* Map card ---- */
+
+/* No title row and no frame — the embed is the card, so its own corners do
+   the containing. */
+.contact__map-card {
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.contact__map {
+  position: relative;
+  height: 100%;
+  min-height: 15rem;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.contact__map-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* The form is an opaque white sheet here, not the hero's glass: on the pale
+   band the glass had nothing to blur behind it and read as a grey wash that
+   sank into the page. */
+.contact__form-card {
+  border: 2px solid rgba(19, 18, 17, .09);
+  background-color: var(--surface);
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.contact__form-card::before { content: none; }
+
+.contact__form-card .quote__title { color: var(--ink); }
+.contact__form-card .field__label { color: var(--ink-2); }
+
+.contact__form-card .field__input {
+  border-color: var(--line-strong);
+  background-color: var(--surface);
+  color: var(--ink);
+}
+
+.contact__form-card .field__input::placeholder { color: var(--muted); }
+.contact__form-card .field__input:hover { border-color: rgba(19, 18, 17, .28); }
+
+.contact__form-card .field__input:focus {
+  border-color: var(--brand);
+  background-color: var(--surface);
+  box-shadow: 0 0 0 3px rgba(252, 185, 9, .25);
+}
+
+/* The submit sits at its own width on the left rather than spanning the
+   card — a full-width bar under four narrow fields read as a banner. */
+.contact__form-card .quote__submit {
+  align-self: flex-start;
+  width: auto;
+  min-width: 17rem;
+  gap: var(--space-5);
+}
+
+.contact__form-card .quote__done-title { color: var(--ink); }
+.contact__form-card .quote__done-text { color: var(--ink-2); }
+.contact__form-card .quote__done-text a { color: var(--brand-ink); }
+
+
+
+/* Floating call button ----------------------------------------------------- */
+
+/* Fixed to the lower-right. At rest it is an exact 56px rounded square with a
+   black handset on brand yellow; hover or focus slides the number out beside
+   it. No flex gap — a gap would sit in the box even while the label is
+   clipped to zero, which is what stopped the collapsed state being square. */
+.call-fab {
+  position: fixed;
+  right: clamp(1rem, .6rem + 1.2vw, 1.75rem);
+  bottom: calc(clamp(1rem, .6rem + 1.2vw, 1.75rem) + env(safe-area-inset-bottom, 0px));
+  /* Above the header and drawer, and clear of the phone's bottom browser UI
+     and any iOS home indicator. */
+  z-index: 90;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  height: 3.5rem;
+  padding: .375rem;
+  border-radius: var(--radius-lg);
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.call-fab__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  color: var(--ink);
+  font-size: 1.25rem;
+}
+
+/* Laid out but clipped to nothing until wanted, so the collapsed button stays
+   exactly square. The horizontal padding arrives with the label. */
+.call-fab__label {
+  display: block;
+  max-width: 0;
+  padding-inline: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-width var(--dur-base) var(--ease-out),
+    padding-inline var(--dur-base) var(--ease-out),
+    opacity var(--dur-fast) var(--ease-out);
+}
+
+.call-fab:hover .call-fab__label,
+.call-fab:focus-visible .call-fab__label {
+  max-width: 12rem;
+  padding-inline: .75rem .375rem;
+  opacity: 1;
+}
+
+/* Slightly smaller on phones, where it sits closer to the thumb and has less
+   screen to spare. */
+@media (max-width: 47.99em) {
+  .call-fab { height: 3rem; }
+
+  .call-fab__icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.0625rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .call-fab__label { transition: opacity var(--dur-fast) var(--ease-out); }
+}
+
+
+/* Footer ------------------------------------------------------------------- */
+
+.site-footer {
+  background-color: var(--dark);
+  color: var(--on-dark);
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1.3fr);
+  gap: clamp(2rem, 1rem + 3vw, 4rem);
+  padding-block: clamp(3rem, 2.3rem + 2.2vw, 4.5rem);
+}
+
+.site-footer__logo {
+  width: auto;
+  height: 5.25rem;
+  margin-bottom: var(--space-4);
+}
+
+.site-footer__socials {
+  margin-top: var(--space-4);
+  gap: var(--space-2);
+}
+
+.site-footer__about {
+  max-width: 44ch;
+  margin-bottom: 0;
+  font-size: .9375rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, .72);
+}
+
+/* Trust badges, now in the bottom bar: one horizontal row beside the
+   copyright rather than a stacked trio under the brand blurb. */
+.site-footer__badges {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+}
+
+.site-footer__badges li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-14);
+  line-height: 1.3;
+  color: rgba(255, 255, 255, .72);
+}
+
+.site-footer__badge-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid var(--line-dark);
+  background-color: rgba(255, 255, 255, .04);
+  color: var(--brand);
+  font-size: .875rem;
+}
+
+/* Column heading with a short brand rule under it, as in the mock. */
+.site-footer__heading {
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-3);
+  color: var(--white);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-bold);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.site-footer__heading::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2rem;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--brand);
+}
+
+.site-footer__col a {
+  color: rgba(255, 255, 255, .72);
+  font-size: .9375rem;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+.site-footer__col a:hover { color: var(--brand); }
+
+/* Quick links: label left, chevron right, hairline between rows. */
+.site-footer__links { display: grid; }
+
+.site-footer__links li + li { border-top: 1px solid var(--line-dark); }
+
+.site-footer__links a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+}
+
+.site-footer__links i { font-size: .625rem; color: var(--brand); }
+
+/* Services: roof glyph leading each row. */
+.site-footer__services { display: grid; }
+
+.site-footer__services li + li { border-top: 1px solid var(--line-dark); }
+
+.site-footer__services a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-3);
+}
+
+.site-footer__services i { font-size: .8125rem; color: var(--brand); }
+
+/* Contact rows: outlined icon discs, hairline between rows. */
+.site-footer__contact { display: grid; }
+
+.site-footer__contact li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  color: rgba(255, 255, 255, .72);
+  font-size: .9375rem;
+  line-height: 1.6;
+}
+
+.site-footer__contact li + li { border-top: 1px solid var(--line-dark); }
+
+.site-footer__contact-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  border: 1px solid var(--line-dark);
+  color: var(--brand);
+  font-size: 1rem;
+}
+
+.site-footer__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--brand);
+  color: rgba(255, 255, 255, .72);
+  font-size: .9375rem;
+}
+
+.site-footer__copy {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.site-footer__bar-icon { color: var(--brand); }
+
+
+/* ==========================================================================
+   Contact page (nyroofing-contact.html)
+   ========================================================================== */
+
+/* Page head — a compact banner, not a hero. The photograph carries the
+   context; the scrim keeps the type readable over it. */
+.phead {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Real height, so the crumb, title and line clear the band's edges. */
+  padding-block: clamp(2.75rem, 2rem + 3.2vw, 5.5rem);
+  background-color: var(--dark);
+  color: var(--on-dark);
+}
+
+.phead__media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: url('https://www.nyroofing.com/wp-content/uploads/2026/02/DJI_20260106_114235_207-1024x768.jpg');
+  background-size: cover;
+  /* Biased up the frame so the crew stays in the crop. */
+  background-position: center 28%;
+}
+
+.phead__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(48rem 24rem at 0% 100%, rgba(252, 185, 9, .12), transparent 62%),
+    linear-gradient(rgba(12, 11, 10, .72), rgba(12, 11, 10, .72));
+}
+
+.phead__inner { display: grid; justify-items: start; }
+
+.phead__crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--fs-14);
+  color: rgba(255, 255, 255, .62);
+}
+
+.phead__crumbs li + li::before {
+  content: '/';
+  margin-right: var(--space-3);
+  color: rgba(255, 255, 255, .3);
+}
+
+.phead__crumbs a {
+  color: var(--brand);
+  font-weight: var(--fw-semi);
+  text-decoration: none;
+}
+
+.phead__crumbs a:hover { text-decoration: underline; }
+
+.phead__title {
+  margin: var(--space-4) 0 0;
+  font-size: clamp(2rem, 1.35rem + 2.2vw, 3.25rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.12;
+  color: var(--white);
+  text-wrap: balance;
+}
+
+.phead__accent { color: var(--brand); }
+
+.phead__text {
+  max-width: 56ch;
+  margin: var(--space-4) 0 0;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--on-dark);
+  text-wrap: pretty;
+}
+
+/* Contact details — one panel, rows divided by hairlines. The icon sits in a
+   rounded square rather than a disc, so it reads as a different device from
+   the landing page's cards. */
+.cdetails {
+  display: grid;
+  padding-inline: clamp(1.125rem, .9rem + .8vw, 1.5rem);
+  background-color: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+}
+
+.cdetail + .cdetail { border-top: 1px solid var(--line); }
+
+/* The link fills the row, so the whole row is the hit target. */
+.cdetail__link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Trailing arrow, muted until the row is hovered. */
+.cdetail__go {
+  font-size: .75rem;
+  color: rgba(19, 18, 17, .25);
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+a.cdetail__link:hover .cdetail__go {
+  transform: translateX(3px);
+  color: var(--brand-ink);
+}
+
+a.cdetail__link:focus-visible {
+  outline: 3px solid var(--brand);
+  outline-offset: -3px;
+  border-radius: var(--radius-md);
+}
+
+.cdetail__icon {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-md);
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+
+a.cdetail__link:hover .cdetail__icon { background-color: var(--ink); color: var(--white); }
+
+a.cdetail__link:hover .cdetail__value { color: var(--brand-ink); }
+
+.cdetail__body { display: grid; gap: .125rem; min-width: 0; }
+
+.cdetail__label {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--tracking-utility);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cdetail__value {
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -.01em;
+  line-height: 1.35;
+  color: var(--ink);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+
+/* No title row and no frame — the embed is the card, so its own corners do
+   the containing. */
+.page-contact .contact__map-card {
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.page-contact .contact__map {
+  aspect-ratio: auto;
+  height: 100%;
+  min-height: 11rem;
+  border-radius: var(--radius-xl);
+}
+
+
+/* Contact page, small screens ---------------------------------------------- */
+
+@media (max-width: 61.99em) {
+  /* The section was tuned to fit one desktop screen; on a phone it just needs
+     to stack cleanly, so the viewport-derived map height and the fixed
+     textarea come off. */
+  .page-contact .contact__grid { grid-template-columns: minmax(0, 1fr); }
+
+  .page-contact .contact__map { min-height: 14rem; }
+
+  .page-contact .contact__form-card .field:has(.field__input--area) { flex: 1; }
+
+  .page-contact .contact__form-card .field__input--area { min-height: 6rem; }
+
+  /* Head band type comes down with the rest of the page. */
+  .page-contact .phead__title { font-size: clamp(1.75rem, 1.3rem + 2.2vw, 2.5rem); }
+  .page-contact .phead__text { font-size: 1rem; }
+}
+
+@media (max-width: 47.99em) {
+  .cdetail__link { grid-template-columns: auto minmax(0, 1fr); }
+  .cdetail__go { display: none; }
+}
+
+
+/* Responsive fixes --------------------------------------------------------- */
+
+@media (max-width: 61.99em) {
+  /* 4. Why-us banner: one centred column instead of copy-left / card-right. */
+  .diff__banner {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    text-align: center;
+  }
+
+  .diff__banner-copy { justify-items: center; }
+
+  .diff__banner-meta { justify-content: center; }
+
+  .diff__banner-action { width: min(100%, 22rem); }
+
+  /* 5. Video banner: the row was crowding, so the two ways in stack with the
+     "or" between them. */
+  .cta-band__action {
+    flex-direction: column;
+    width: min(100%, 22rem);
+  }
+
+  .cta-band__action-or {
+    grid-auto-flow: column;
+    width: 100%;
+  }
+
+  .cta-band__action-or::before,
+  .cta-band__action-or::after {
+    width: auto;
+    height: 1px;
+    flex: 1;
+  }
+
+  .cta-band__action .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 6. Eyebrows were sitting larger than the headings they label. */
+  .svcs__eyebrow,
+  .diff__eyebrow,
+  .signs__eyebrow,
+  .contact__eyebrow,
+  .faq__eyebrow,
+  .process-sec__eyebrow,
+  .areas__eyebrow,
+  .abt__eyebrow {
+    padding: .375rem .75rem;
+    font-size: var(--fs-12);
+    letter-spacing: .08em;
+  }
+
+  /* 8. FAQ closing banner: icon on top, everything centred. */
+  .faq__foot {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .faq__foot-copy { flex-direction: column; align-items: center; }
+
+  .faq__foot-actions { justify-content: center; }
+
+  /* 9. Contact detail cards: one per row rather than three squeezed across. */
+  .contact__cards { grid-template-columns: minmax(0, 1fr); }
+
+  .contact__card {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+  }
+
+  .contact__chip { grid-row: 1 / 3; margin-bottom: 0; }
+}
+
+
+/* Section breakpoints ------------------------------------------------------ */
+
+@media (max-width: 61.99em) {
+  .diff__head { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .diff__cards { grid-template-columns: minmax(0, 1fr); }
+
+  .faq__grid { grid-template-columns: minmax(0, 1fr); }
+  .areas__inner { grid-template-columns: minmax(0, 1fr); }
+  .contact__grid { grid-template-columns: minmax(0, 1fr); }
+
+  .about__inner { grid-template-columns: minmax(0, 1fr); }
+
+  .signs__inner { grid-template-columns: minmax(0, 1fr); }
+
+  .svcs__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .process-sec__steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* Extra row gap: the badge overhangs the card top by half its height. */
+    row-gap: 3.5rem;
+  }
+  /* The connector would otherwise reach back across the row break. */
+  .pstep:nth-child(odd)::after { content: none; }
+
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .section-head { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .svcs__head { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .section-head__note { padding-bottom: 0; }
+
+  .site-footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 47.99em) {
+
+  .svcs__grid,
+  .process-sec__steps,
+  .signs__grid,
+  .about__points { grid-template-columns: minmax(0, 1fr); }
+
+  /* One column: there is no horizontal gap left for a connector to sit in. */
+  .pstep::after { content: none; }
+  .process-sec__steps { row-gap: 3.5rem; }
+
+  .about__media { padding-bottom: 24%; }
+  .about__badge { left: var(--space-2); top: 78%; }
+
+  .site-footer__grid { grid-template-columns: minmax(0, 1fr); }
+  .site-footer__bar { justify-content: center; text-align: center; }
+}
+
+
+/* Phone link, shared with the FAQ column. */
+.about__tel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.about__tel i {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-sm);
+  background-color: rgba(252, 185, 9, .16);
+  color: var(--brand-ink);
+  font-size: .875rem;
+}
+
+.about__tel:hover { color: var(--brand-ink); }
+
+
+/* ==========================================================================
+   About
+   Soft rounded panels carry the structure — no hairline rules in this
+   section. Radii step down from the hero's 32px so the curves read as one
+   family rather than four unrelated roundings.
+   ========================================================================== */
+
+/* Chip rather than a rule-and-label: the tinted pill is the highlight on its
+   own, so the shared .section-eyebrow marker is cancelled entirely. */
+/* Shorter band than the shared .section rhythm: this section is meant to be
+   taken in without scrolling, and the padding was the cheapest 40px to find. */
+.local { padding-block: clamp(2.25rem, 1.8rem + 1.4vw, 3.25rem); }
+
+.local__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+}
+
+.local__eyebrow::before { content: none; }
+
+.local__title {
+  max-width: 20ch;
+  margin: var(--space-3) 0 var(--space-4);
+  font-size: clamp(1.625rem, 1.15rem + 1.6vw, 2.5rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.15;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.local__grid {
+  display: grid;
+  grid-template-columns: minmax(0, .85fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(2rem, 1.2rem + 2.6vw, 3.5rem);
+  /* stretch, so both columns end on the same line. The media column then
+     distributes that height itself: card at its natural size, frame taking
+     whatever is left. */
+  align-items: stretch;
+}
+
+.local__media {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+/* The hero's radius, so the biggest shapes on the page match. No fixed ratio:
+   the frame fills the height left once the stats card is placed, which is what
+   squares the two columns off against each other. */
+.local__shot {
+  min-height: 12rem;
+  border-radius: var(--radius-2xl);
+}
+
+/* Dark panel under the photograph: the section's only dark surface, which is
+   what stops the pale column reading as one flat block. */
+.local__card {
+  padding: clamp(1.25rem, 1rem + .9vw, 1.75rem);
+  border-radius: var(--radius-2xl);
+  background-color: var(--dark);
+  color: var(--on-dark);
+}
+
+/* Two by two on internal rules. Without the divisions the four figures read
+   as a loose cluster; the rules are what make it a plate. */
+.local__card-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+}
+
+.local__card-stats li { padding: var(--space-4) var(--space-3); }
+
+/* First cell of each row loses its left padding, last gains none — so the
+   figures line up with the card's own edges rather than floating inside it. */
+.local__card-stats li:nth-child(odd) {
+  padding-left: 0;
+  border-right: 1px solid var(--line-dark);
+}
+
+.local__card-stats li:nth-child(even) { padding-right: 0; padding-left: var(--space-5); }
+
+.local__card-stats li:nth-child(-n+2) {
+  padding-top: 0;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.local__card-stats li:nth-child(n+3) { padding-bottom: 0; }
+
+.local__card-num {
+  display: block;
+  color: var(--white);
+  font-size: 1.5rem;
+  font-weight: var(--fw-black);
+  letter-spacing: -.02em;
+  line-height: 1;
+  /* Tabular so the digits do not jitter while the count-up runs. */
+  font-variant-numeric: tabular-nums;
+}
+
+.local__card-sub {
+  font-size: .55em;
+  font-weight: var(--fw-semi);
+  color: rgba(255, 255, 255, .6);
+}
+
+.local__card-label {
+  display: block;
+  margin-top: .375rem;
+  color: rgba(255, 255, 255, .68);
+  font-size: .75rem;
+  font-weight: var(--fw-semi);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.local__lede {
+  margin: 0;
+  max-width: 54ch;
+  /* 18px — large enough not to read thin against the heading, without the
+     extra line the 19px setting cost the column. */
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
+.local__text {
+  max-width: 58ch;
+  margin: var(--space-4) 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.local__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* Filled tiles, not a bordered row — the fill separates them from the prose
+   above, so nothing needs a rule. */
+.local__contact {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  /* Deliberate breathing space above the closing pair — the copy is short
+     enough now that the block would otherwise run straight into the CTAs. */
+  margin-top: var(--space-7);
+}
+
+.local__contact li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-xl);
+  /* Lighter than --surface-2: these sit next to a lot of white, and the
+     heavier tint read as a panel rather than a quiet holder. */
+  background-color: #FBFAF8;
+}
+
+.local__contact-chip {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .875rem;
+}
+
+.local__contact-value {
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-bold);
+  line-height: 1.4;
+}
+
+a.local__contact-value:hover { color: var(--brand-ink); }
+
+/* White arrow on the primary's black chip — yellow-on-black repeated the
+   button's own fill and read as a smudge at this size. */
+.local__actions > .btn:first-child { --btn-pip-ink: var(--white); }
+
+/* Secondary of the pair: black rather than yellow, so the primary keeps the
+   brand fill and there is never a question which is which. Same skew wipe. */
+.local__actions-alt {
+  --btn-bg: var(--ink);
+  --btn-ink: var(--white);
+  --btn-wipe: var(--brand);
+  --btn-ink-hover: var(--ink);
+  --btn-pip-bg: var(--white);
+  --btn-pip-ink: var(--ink);
+  --btn-ring: var(--white);
+}
+
+/* The generic hover swaps the chip's two colours, which would land a yellow
+   glyph on the black chip — the same yellow the wipe has just filled the
+   button with. White separates it from both. */
+.local__actions-alt:hover .btn__pip,
+.local__actions-alt:focus-visible .btn__pip { color: var(--white); }
+
+/* White arrow on the primary's black chip — yellow-on-black repeated the
+   button's own fill and read as a smudge at this size. */
+.local__actions > .btn:first-child { --btn-pip-ink: var(--white); }
+
+/* Secondary of the pair: black rather than yellow, so the primary keeps the
+   brand fill and there is never a question which is which. Same skew wipe. */
+.local__actions-alt {
+  --btn-bg: var(--ink);
+  --btn-ink: var(--white);
+  --btn-wipe: var(--brand);
+  --btn-ink-hover: var(--ink);
+  --btn-pip-bg: var(--white);
+  --btn-pip-ink: var(--ink);
+  --btn-ring: var(--white);
+}
+
+/* Phone link, shared with the FAQ column. */
+.about__tel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--ink);
+  font-size: 1.125rem;
+  font-weight: var(--fw-bold);
+  font-variant-numeric: tabular-nums;
+}
+
+.about__tel i {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-sm);
+  background-color: rgba(252, 185, 9, .16);
+  color: var(--brand-ink);
+  font-size: .875rem;
+}
+
+.about__tel:hover { color: var(--brand-ink); }
+
+
+/* ==========================================================================
+   About — built to the supplied mock
+   ========================================================================== */
+
+/* Old version parked; the rebuilt section below replaces it. */
+.local { display: none; }
+
+/* No tinted band and no card fill — the section sits on the page ground and
+   takes its side spacing from .container like every other section. */
+.abt { padding-block: 40px; }
+
+.abt__card { padding: 0; }
+
+.abt__grid {
+  display: grid;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 1.2rem + 2.6vw, 3.75rem);
+}
+
+
+/* Media ------------------------------------------------------------------- */
+
+/* Room on the right and below for the inset photograph to overhang. */
+.abt__media {
+  --abt-overhang: clamp(1rem, 2.5vw, 1.75rem);
+
+  position: relative;
+  margin: 0;
+  padding: 0 var(--abt-overhang) var(--abt-overhang) 0;
+}
+
+.abt__shots { position: relative; }
+
+.abt__shot {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 4 / 4.6;
+  border-radius: var(--radius-xl);
+}
+
+/* The second photograph: framed in the page's white so it separates from the
+   first, and hung over its lower-right corner. */
+.abt__shot--second {
+  position: absolute;
+  right: calc(-1 * var(--abt-overhang));
+  bottom: calc(-1 * var(--abt-overhang));
+  z-index: 2;
+  width: 62%;
+  aspect-ratio: 4 / 3;
+  border: 5px solid var(--surface);
+  border-radius: var(--radius-lg);
+}
+
+/* Flush into the frame's top-left corner, in the page's own white and with no
+   shadow — so it reads as a notch cut out of the photograph rather than a card
+   floating on top of it. Only the inner corner is rounded. */
+.abt__badge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0 var(--space-5) var(--space-4) 0;
+  border-radius: 0 0 var(--radius-lg) 0;
+  background-color: var(--surface);
+  font-size: .875rem;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.abt__badge strong {
+  display: block;
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-bold);
+}
+
+.abt__badge-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-md);
+  background-color: var(--brand);
+  color: var(--white);
+  font-size: .9375rem;
+}
+
+
+/* Content ----------------------------------------------------------------- */
+
+/* Tinted pill instead of a rule underneath — the fill is the highlight, and
+   it sizes to its own text rather than the column. */
+.abt__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.abt__title {
+  margin: var(--space-4) 0 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.abt__title-accent { color: var(--brand); }
+
+.abt__text {
+  margin: var(--space-5) 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.abt__text a,
+.abt__mission-text a {
+  color: var(--brand-deep);
+  font-weight: var(--fw-semi);
+}
+
+.abt__text a:hover,
+.abt__mission-text a:hover { text-decoration: underline; }
+
+/* Mission panel: label and body split by a hairline, on a tinted ground. */
+.abt__mission {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  padding: var(--space-4) var(--space-5);
+  border: 1px solid rgba(252, 185, 9, .38);
+  border-radius: var(--radius-lg);
+  background-color: #FFFBF0;
+}
+
+.abt__mission-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--white);
+  font-size: 1.125rem;
+}
+
+.abt__mission-label {
+  padding-right: var(--space-4);
+  border-right: 1px solid rgba(252, 185, 9, .45);
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+}
+
+.abt__mission-text {
+  font-size: .9375rem;
+  line-height: 1.6;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Address / contact pair */
+.abt__info {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.abt__info li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  font-size: .9375rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.abt__info strong {
+  display: block;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: var(--fw-bold);
+}
+
+.abt__info a { color: inherit; }
+.abt__info a:hover { color: var(--brand-deep); }
+
+.abt__info-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-deep);
+  font-size: 1.0625rem;
+}
+
+.abt__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* The pair's transparent half: outlined at rest, brand fill on hover. */
+.abt__btn--alt {
+  --btn-bg: transparent;
+  --btn-ink: var(--ink);
+  --btn-wipe: var(--brand);
+  --btn-ink-hover: var(--ink);
+  --btn-pip-bg: var(--brand);
+  --btn-pip-ink: var(--ink);
+  --btn-ring: rgba(19, 18, 17, .3);
+  --btn-ring-hover: var(--ink);
+}
+
+
+/* Breakpoints ------------------------------------------------------------- */
+
+@media (max-width: 61.99em) {
+  .abt__grid { grid-template-columns: minmax(0, 1fr); }
+  .abt__shot--main { aspect-ratio: 16 / 10; }
+  .abt__shot--second { width: 50%; }
+}
+
+@media (max-width: 47.99em) {
+  .abt__mission { grid-template-columns: auto minmax(0, 1fr); }
+  /* Label drops under the icon and loses its divider once stacked. */
+  .abt__mission-label {
+    grid-column: 2;
+    padding-right: 0;
+    border-right: 0;
+  }
+  .abt__mission-text { grid-column: 1 / -1; }
+
+  .abt__info { grid-template-columns: minmax(0, 1fr); }
+
+}
+
+
+/* ==========================================================================
+   CTA design — "Bubble Rise" (ctaselection.html, 07)
+   Lifted verbatim from css/ctaselection.css: the reset that strips the page's
+   skewed slab, then the design itself. Every .btn and .quote__submit on the
+   page carries `cta-themed cta-07`, so this is the page's button now rather
+   than a preview layer.
+   ========================================================================== */
+
+/* Reset: strips the page's skewed slab so the design starts from a clean box.
+   Doubled class for specificity over .btn and .quote__submit. */
+.cta-themed.cta-themed {
+  position: relative;
+  /* No display here on purpose: .btn and .quote__submit bring their own, and
+     setting it would override the page hiding .header-call on small screens. */
+  align-items: center;
+  justify-content: center;
+  gap: .625rem;
+  min-height: 3.25rem;
+  padding: .75rem 1.75rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-align: center;
+  text-transform: none;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: visible;
+  isolation: isolate;
+  transform: none;
+  cursor: pointer;
+  transition: background-color .3s ease, color .3s ease, border-color .3s ease,
+              box-shadow .3s ease, transform .3s ease;
+}
+
+.cta-themed.cta-themed::before,
+.cta-themed.cta-themed::after { content: none; }
+
+.cta-themed.cta-themed:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+/* The header's button sits in a fixed bar beside nine nav items, so it keeps
+   a smaller face than the rest — otherwise the menu runs out of room. */
+.header-call.cta-themed.cta-themed { font-size: .9375rem; padding-inline: 1.25rem; }
+
+/* The icon chip loses the page's plate and simply follows the colour. The
+   hover selector is repeated because the page's own `.btn:hover .btn__pip`
+   outranks a plain descendant rule and would put its white plate back. */
+.cta-themed:hover .btn__pip,
+.cta-themed:focus-visible .btn__pip,
+.cta-themed .btn__pip {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: .875rem;
+  transition: background-color .3s ease, color .3s ease, transform .3s ease, margin .3s ease;
+}
+
+/* The label, normalised across both kinds of CTA. */
+.cta-themed .cta-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  text-align: center;
+}
+
+.cta-themed .cta-text { display: block; font: inherit; letter-spacing: inherit; }
+.cta-themed .quote__submit-arrow { width: auto; height: auto; background: none; color: inherit; }
+
+/* ---- 07 · Bubble Rise — by cssbuttons-io -------------------------------- */
+
+.cta-themed.cta-07 {
+  border: 1px solid #4f4f4f;
+  border-radius: 4px;
+  background: #fff;
+  color: #131211;
+  overflow: hidden;
+  transition: all .2s ease-in;
+}
+.cta-themed.cta-07::before,
+.cta-themed.cta-07::after {
+  content: "";
+  position: absolute;
+  display: block;
+  z-index: -1;
+  border-radius: 50%;
+  transition: all .5s .1s cubic-bezier(.55, 0, .1, 1);
+}
+.cta-themed.cta-07::before {
+  left: 50%;
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background: rgba(19, 18, 17, .05);
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+}
+.cta-themed.cta-07::after {
+  left: 55%;
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background: var(--brand);
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+}
+.cta-themed.cta-07:hover { border-color: var(--brand); }
+.cta-themed.cta-07:hover::before { top: -35%; background: var(--brand); transform: translateX(-50%) scaleY(1.3) scaleX(.8); }
+.cta-themed.cta-07:hover::after { top: -45%; background: var(--brand); transform: translateX(-50%) scaleY(1.3) scaleX(.8); }
+
+
+
+/* ==========================================================================
+   Batch 2 — 25 Aug 2026
+   ========================================================================== */
+
+/* Header type (2, 3) ------------------------------------------------------- */
+
+/* The bar lost an item when Home came off, so the menu can afford a full step
+   up. Solid white rather than the 82% on-dark tint: at this size the labels
+   are the header's main structure, and the tint was reading as disabled next
+   to the white call button. */
+/* Size is set with the bar-fit rules further down; only the colour is decided
+   here. */
+.primary-nav__link { color: var(--white); }
+
+.primary-nav__chevron { color: rgba(255, 255, 255, .72); }
+
+/* Dropdown links match the bar above them, so nothing in the header reads as
+   a second, quieter tier. */
+.mega__list a { color: var(--white); }
+
+.mega__list a:hover { color: var(--white); }
+
+
+/* CTA colour (22) ---------------------------------------------------------- */
+
+/* Bubble Rise, but on the brand yellow the page's buttons were black on. The
+   two rising discs invert to ink instead of yellow — on a yellow face a yellow
+   bubble would not read, and the ink fill keeps the gesture visible. */
+.cta-themed.cta-07 {
+  border-color: var(--brand);
+  background: var(--brand);
+  color: var(--ink);
+}
+
+.cta-themed.cta-07::before { background: rgba(19, 18, 17, .12); }
+.cta-themed.cta-07::after { background: var(--ink); }
+
+.cta-themed.cta-07:hover {
+  border-color: var(--ink);
+  color: var(--white);
+}
+
+.cta-themed.cta-07:hover::before,
+.cta-themed.cta-07:hover::after { background: var(--ink); }
+
+
+/* Banner type (8, 10) ------------------------------------------------------ */
+
+/* Both banners are the page's two big asks, and both were making them in
+   12px and 14px. One step up on each, and the "call us" labels come up with
+   the numbers they introduce. */
+.diff__banner-meta,
+.cta-band__meta {
+  font-size: var(--fs-16);
+  font-weight: var(--fw-semi);
+  color: rgba(255, 255, 255, .88);
+}
+
+.diff__banner-label,
+.cta-band__action-label {
+  font-size: var(--fs-14);
+  letter-spacing: .1em;
+  color: rgba(255, 255, 255, .9);
+}
+
+
+/* Projects (9) ------------------------------------------------------------- */
+
+/* Six tiles on a four-column grid: the opener takes a 2x2 block and the rest
+   fall in around it, so the block reads as one composition rather than as a
+   row of equal cards. Captions sit on the photograph behind a gradient, and
+   the index number in the corner is the same device the FAQ cards use. */
+.projects { background-color: #FCFCFB; }
+
+.projects__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  align-items: end;
+  gap: var(--space-5) clamp(2rem, 1rem + 3vw, 4rem);
+  margin-bottom: clamp(2rem, 1.6rem + 1.4vw, 3rem);
+}
+
+.projects__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-bottom: var(--space-3);
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.projects__title {
+  margin: 0;
+  max-width: 13.5em;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.projects__accent { color: var(--brand); }
+
+.projects__lede {
+  margin: 0;
+  padding-bottom: .375rem;
+  font-size: var(--fs-18);
+  line-height: 1.65;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+
+.projects__mosaic {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: clamp(8.5rem, 5.5rem + 8vw, 12rem);
+  gap: var(--space-3);
+}
+
+.proj:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+.proj:nth-child(2) { grid-column: span 2; }
+.proj:nth-child(5),
+.proj:nth-child(6) { grid-column: span 2; }
+
+.proj {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background-color: var(--ink);
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.proj__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow, 520ms) var(--ease-out);
+}
+
+.proj:hover .proj__img { transform: scale(1.05); }
+
+/* Two stops rather than a flat wash: the photograph stays a photograph at the
+   top of the tile and only darkens where the caption needs it to. */
+.proj__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top,
+    rgba(10, 10, 9, .88) 0%,
+    rgba(10, 10, 9, .55) 32%,
+    rgba(10, 10, 9, 0) 62%);
+}
+
+.proj__num {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  display: grid;
+  place-items: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding-inline: .5rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-black);
+  letter-spacing: .06em;
+}
+
+.proj__body {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  gap: .1875rem;
+  padding: var(--space-4);
+}
+
+.proj__tag {
+  justify-self: start;
+  margin-bottom: .25rem;
+  padding: .1875rem .5rem;
+  border-radius: var(--radius-sm);
+  background-color: rgba(252, 185, 9, .92);
+  color: var(--ink);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-black);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.proj__name {
+  font-size: var(--fs-18);
+  font-weight: var(--fw-bold);
+  line-height: 1.25;
+  color: var(--white);
+}
+
+.proj__meta {
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  color: rgba(255, 255, 255, .78);
+}
+
+.projects__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+  margin-top: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--line);
+}
+
+.projects__foot-text {
+  max-width: 46ch;
+  margin: 0;
+  font-size: var(--fs-16);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+@media (max-width: 60em) {
+  .projects__head { grid-template-columns: minmax(0, 1fr); }
+
+  .projects__mosaic { grid-auto-rows: 10rem; }
+}
+
+@media (max-width: 40em) {
+  .projects__mosaic {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: 13rem;
+  }
+
+  .proj:nth-child(1) { grid-row: span 1; }
+
+  .proj:nth-child(1),
+  .proj:nth-child(2),
+  .proj:nth-child(5),
+  .proj:nth-child(6) { grid-column: span 1; }
+}
+
+
+/* About, rebuilt column (6) ------------------------------------------------ */
+
+/* Four one-line points where a tinted mission panel and two contact cards
+   used to stack. Hairlines rather than boxes: the column already carries a
+   card edge of its own. */
+.abt__points {
+  display: grid;
+  gap: .625rem;
+  margin: var(--space-5) 0 0;
+  padding: var(--space-4) 0 0;
+  border-top: 1px solid var(--line);
+}
+
+.abt__points li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: .75rem;
+  font-size: var(--fs-15);
+  font-weight: var(--fw-medium);
+  line-height: 1.45;
+  color: var(--ink-2, var(--ink));
+}
+
+.abt__points-icon {
+  display: grid;
+  place-items: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: .75rem;
+}
+
+
+/* Contact section (13) ----------------------------------------------------- */
+
+/* The form was half the band and ran wider than the fields inside it needed.
+   Pulling it in leaves a clear gutter between the details and the card rather
+   than two blocks butted together. */
+@media (min-width: 62em) {
+  .contact__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 27rem);
+    gap: clamp(2rem, 1.2rem + 3vw, 4.5rem);
+  }
+}
+
+
+/* Footer (14, 16) ---------------------------------------------------------- */
+
+/* The estimate ask, in the brand colour, closing the contact column. */
+.site-footer__col .site-footer__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  width: 100%;
+  min-height: 3rem;
+  margin-top: var(--space-4);
+  padding: .625rem 1.25rem;
+  border-radius: var(--radius-md);
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: var(--fs-15);
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              transform var(--dur-fast) var(--ease-out);
+}
+
+.site-footer__col .site-footer__cta:hover {
+  background-color: #FFD34D;
+  transform: translateY(-2px);
+}
+
+.site-footer__col .site-footer__cta i { font-size: .875rem; }
+
+/* 16 — the bar was sitting a full block below the columns; half of that is
+   enough to keep it separate. */
+.site-footer__bar { padding-block: var(--space-4) var(--space-5); }
+
+
+/* ==========================================================================
+   Batch 3 — 29 Aug 2026
+   ========================================================================== */
+
+/* Header spacing (1) ------------------------------------------------------- */
+
+/* Home came off the bar, so there is an item's worth of room to give back —
+   but not at every width. Below about 1400px the labels at their full size
+   overran the track and "Contact" disappeared under the call button, so both
+   the size and the padding are fluid: widest at 1600px and up, closing to a
+   size that still fits at the 80em breakpoint where the burger takes over. */
+.primary-nav__link {
+  --pad: clamp(.5rem, -3.25rem + 5vw, 1.75rem);
+  font-size: clamp(.9375rem, .5625rem + .5vw, 1.0625rem);
+}
+
+/* A gutter that belongs to the menu, so the last label can never sit against
+   the button however tight the bar gets. */
+.primary-nav { padding-right: clamp(.75rem, 1.4vw, 1.75rem); }
+
+
+/* About points (2) --------------------------------------------------------- */
+
+/* Four points in one column ran the block deeper than the photographs beside
+   it. Two by two fits the column and pairs them: what we work on with how we
+   price it, response with credentials. */
+@media (min-width: 48em) {
+  .abt__points {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .875rem var(--space-5);
+  }
+}
+
+
+/* Projects foot (3) -------------------------------------------------------- */
+
+/* One centred action where a paragraph and a button used to share the row. */
+.projects__foot {
+  justify-content: center;
+  padding-top: var(--space-6);
+}
+
+
+/* Contact page columns (4) ------------------------------------------------- */
+
+/* Scoped to the contact page's body class: the homepage's Get-in-Touch band
+   shares these class names and keeps its own proportions.
+
+   Capping the details box alone left the slack inside its own track, so the
+   two halves still read about 100px apart. Both tracks are sized here and the
+   pair is centred, which makes the gutter exactly the 32px asked for and the
+   only gap in the row. */
+@media (min-width: 62em) {
+  .page-contact .contact__grid {
+    grid-template-columns: minmax(0, 40rem) minmax(0, 27rem);
+    justify-content: center;
+    gap: 2rem;
+  }
+}
+
+
+/* Header call button on hover (2) ------------------------------------------ */
+
+/* Bubble Rise fills with the ink on hover, and the bar behind it is ink too —
+   so the button dissolved into the header exactly when it was being pointed
+   at. A white edge holds it. The selector carries four classes because the
+   design's own reset sets box-shadow: none at three. */
+.header-call.cta-themed.cta-07:hover,
+.header-call.cta-themed.cta-07:focus-visible {
+  border-color: var(--white);
+  box-shadow: 0 0 0 1px var(--white);
+}
+
+
+/* Contact page form layout ------------------------------------------------- */
+
+/* Name beside phone, email beside address, then the message and the button
+   across both — six stacked rows made the card taller than the details column
+   beside it for no reason.
+
+   The homepage's contact card lays its form out as a flex column so the
+   textarea can absorb whatever height the info column leaves and the two
+   bottom out level; that is not wanted here, where the details column is
+   capped, so this is scoped to the contact page and undoes the flex sizing
+   those rules put on the message row. */
+/* One field per row. The homepage's contact card lays its form out as a flex
+   column so the textarea can absorb whatever height the info column leaves and
+   the two bottom out level; here the fields set the height and the map takes
+   up the difference, so the flex sizing those rules put on the message row is
+   undone below. */
+@media (min-width: 34em) {
+  .page-contact .contact__form-card .quote__form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+
+  .page-contact .contact__form-card .field:has(.field__input--area) {
+    display: grid;
+    flex: none;
+    grid-column: 1 / -1;
+  }
+
+  .page-contact .contact__form-card .field__input--area {
+    flex: none;
+    min-height: 7rem;
+    resize: vertical;
+  }
+
+  .page-contact .contact__form-card .quote__submit { grid-column: 1 / -1; }
+}
+
+
+/* ==========================================================================
+   Batch 4 — 29 Aug 2026
+   ========================================================================== */
+
+/* Contact detail cards (4) ------------------------------------------------- */
+
+/* The three details were white boxes with a yellow disc stacked over a title —
+   the same object the service cards, the sign cards and the FAQ cards on this
+   page already are, so they read as a fourth grid rather than as the address.
+
+   They are ink slabs now, laid out as rows: a square yellow glyph on the left,
+   a small label and the value itself stacked beside it. Filled, so the block
+   holds the band the way the header holds the top of the page, and the value
+   is the largest thing in the card because it is the thing being looked up. */
+.contact__card {
+  position: relative;
+  grid-template-columns: auto minmax(0, 1fr);
+  justify-items: stretch;
+  align-items: center;
+  gap: .1875rem var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border: 0;
+  border-radius: var(--radius-lg);
+  background-color: var(--ink);
+  color: var(--white);
+  overflow: hidden;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
+}
+
+/* A rule that draws across the foot on hover — the nav's underline gesture,
+   which is how the rest of the page says "this goes somewhere". */
+.contact__card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: var(--brand);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+a.contact__card:hover {
+  border-color: transparent;
+  background-color: var(--ink);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 34px -22px rgba(0, 0, 0, .8);
+}
+
+a.contact__card:hover::after { transform: scaleX(1); }
+
+.contact__chip {
+  grid-row: 1 / 3;
+  width: 2.875rem;
+  height: 2.875rem;
+  margin-bottom: 0;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+}
+
+a.contact__card:hover .contact__chip { background-color: var(--white); color: var(--ink); }
+
+.contact__card-title {
+  align-self: end;
+  font-size: .6875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .5);
+}
+
+.contact__card-value {
+  align-self: start;
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  line-height: 1.4;
+  color: var(--white);
+}
+
+a.contact__card:hover .contact__card-value { color: var(--brand); }
+
+/* The hours row goes nowhere, so it keeps the quieter face. */
+.contact__card--static { background-color: var(--dark-2); }
+
+
+/* Footer CTA hover (3) ----------------------------------------------------- */
+
+/* A slightly lighter yellow and a 2px lift was barely a state change. It
+   inverts instead — ink face, brand type, brand ring — which is the same
+   swap the ink cards above make, so the two read as one idea. */
+.site-footer__col .site-footer__cta:hover,
+.site-footer__col .site-footer__cta:focus-visible {
+  background-color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--brand);
+  color: var(--brand);
+  transform: none;
+}
+
+
+/* Contact page map height (5) ---------------------------------------------- */
+
+/* The map was taking whatever height the form left over, and the form is short
+   — so it collapsed to its 11rem floor. A real floor of its own, and the
+   column grows past the form rather than the map shrinking to fit it. */
+.page-contact .contact__map { min-height: 24rem; }
+
+@media (max-width: 61.99em) {
+  .page-contact .contact__map { min-height: 20rem; }
+}
+
+
+/* ==========================================================================
+   Contact page — one board
+   ==========================================================================
+
+   The page was three separate objects at three widths: a white details card,
+   a map card under it and a form card beside them, none of which lined up and
+   the map taking whatever height it could get. They are two halves of one
+   bordered rectangle now — the details and map on an ink panel, the form on
+   the white — so the halves share the card's top and bottom edge and the map
+   is sized by the layout rather than by a min-height guess. */
+
+.page-contact .cboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 68rem;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background-color: var(--surface);
+}
+
+@media (min-width: 62em) {
+  .page-contact .cboard { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+}
+
+/* Head at its natural height, map absorbing the rest. The floor is 19rem
+   because Google drops its own place card below roughly 300px of map height,
+   and that card is the only thing naming the listing on the map. */
+.page-contact .cboard__side {
+  display: grid;
+  grid-template-rows: auto minmax(19rem, 1fr);
+  min-width: 0;
+  background-color: var(--ink);
+  color: var(--white);
+}
+
+.page-contact .cboard__head { padding: clamp(1.25rem, 1rem + 1vw, 1.75rem); }
+
+.page-contact .cboard__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0;
+  color: var(--brand);
+  font-size: .6875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.page-contact .cboard__eyebrow i { font-size: .4375rem; }
+
+.page-contact .cboard__title {
+  margin: .5rem 0 0;
+  font-size: clamp(1.375rem, 1.15rem + .9vw, 1.75rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.03em;
+  line-height: 1.15;
+  color: var(--white);
+}
+
+/* The rows keep their markup; only the surface under them changes. */
+.page-contact .cboard__head .cdetails {
+  margin-top: var(--space-4);
+  padding-inline: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+.page-contact .cboard__head .cdetail + .cdetail { border-top-color: rgba(255, 255, 255, .16); }
+
+.page-contact .cboard__head .cdetail__link { padding-block: .875rem; }
+
+.page-contact .cboard__head .cdetail__label { color: rgba(255, 255, 255, .5); }
+
+.page-contact .cboard__head .cdetail__value { color: var(--white); }
+
+.page-contact .cboard__head a.cdetail__link:hover .cdetail__value { color: var(--brand); }
+
+.page-contact .cboard__head .cdetail__go { color: rgba(255, 255, 255, .4); }
+
+
+/* The map ------------------------------------------------------------------ */
+
+.page-contact .cboard__map {
+  position: relative;
+  min-height: 19rem;
+  overflow: hidden;
+  background-color: var(--dark-2);
+}
+
+.page-contact .cboard__map iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 19rem;
+  border: 0;
+}
+
+/* The form ----------------------------------------------------------------- */
+
+/* The card is the board's right half now, so its own frame comes off. */
+.page-contact .cboard__form {
+  min-width: 0;
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  border: 0;
+  border-radius: 0;
+  background-color: var(--surface);
+  box-shadow: none;
+}
+
+.page-contact .cboard__form::before { content: none; }
+
+/* Rows were a full 16px apart on top of each field's own label gap, which read
+   as four loose blocks rather than one form. */
+@media (min-width: 34em) {
+  .page-contact .cboard__form .quote__form {
+    gap: .75rem;
+    margin-top: var(--space-4);
+  }
+}
+
+.page-contact .cboard__form .field { gap: .25rem; }
+
+.page-contact .cboard__form .field__input--area { min-height: 6rem; }
+
+.page-contact .cboard__form .quote__submit { margin-top: .25rem; }
+
+
+/* ==========================================================================
+   Hero — diagonal slab, glass quote
+   ==========================================================================
+
+   The page is cut on a diagonal. A yellow slab holds the copy on the left, the
+   footage runs behind everything and shows on the right, and the quote sits
+   over it as a pane of glass rather than as a solid card.
+
+   The whole section is sized to the viewport minus the sticky bar, so the
+   headline, the call button and the complete form all land above the fold. */
+
+.vhero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  /* 3px is the bar's brand rule, which is part of its height. */
+  min-height: calc(100svh - var(--nav-h) - 3px);
+  padding-block: clamp(1.5rem, 1.2rem + 1.6vw, 2.75rem);
+  overflow: hidden;
+  background-color: var(--dark);
+  isolation: isolate;
+}
+
+/* Nothing sits beside the footage on the right any more, so the frame comes
+   back towards centre. Pushed a layer deeper than the shared rule puts it, so
+   the scrim can sit between the video and the slab. */
+.vhero__video {
+  object-position: 56% 45%;
+  z-index: -3;
+}
+
+/* Only over the video half — the slab is opaque and needs no help. It has to
+   sit under the slab, not over it: at the same depth the later element wins
+   and the scrim was greying out the brand colour. */
+.vhero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(to top, rgba(10, 9, 8, .55), rgba(10, 9, 8, .12) 55%, rgba(10, 9, 8, .35));
+}
+
+/* The two clipped layers that make the slash. The under layer is cut a shade
+   wider than the slab, so what shows between the two edges is a stripe running
+   the full height of the section. With the slab now ink, the brand moves onto
+   that stripe — one yellow line down the join instead of a yellow half.
+   --lean is how far the diagonal travels between top and bottom; --slash is
+   where it starts. */
+.vhero__edge,
+.vhero__slab {
+  --slash: 55%;
+  --lean: 10%;
+
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.vhero__edge {
+  background-color: var(--brand);
+  clip-path: polygon(0 0, calc(var(--slash) + 1.6%) 0, calc(var(--slash) - var(--lean) + 1.6%) 100%, 0 100%);
+}
+
+.vhero__slab {
+  background-color: var(--ink);
+  clip-path: polygon(0 0, var(--slash) 0, calc(var(--slash) - var(--lean)) 100%, 0 100%);
+}
+
+/* Corner marks on the flat ink. Both are children of the clipped slab, so the
+   diagonal trims them at the join and neither can spill onto the footage. Each
+   fades out on the diagonal it points along, so the pattern dies into the
+   ground rather than ending on a hard edge. */
+.vhero__slab::before,
+.vhero__slab::after {
+  content: "";
+  position: absolute;
+  display: block;
+}
+
+/* Top left: a dot grid. */
+.vhero__slab::before {
+  top: 0;
+  left: 0;
+  width: clamp(9rem, 17vw, 15rem);
+  height: clamp(9rem, 17vw, 15rem);
+  background-image: radial-gradient(circle, rgba(252, 185, 9, .55) 1.35px, transparent 1.45px);
+  background-size: .9375rem .9375rem;
+  -webkit-mask-image: linear-gradient(135deg, #000 8%, transparent 68%);
+          mask-image: linear-gradient(135deg, #000 8%, transparent 68%);
+}
+
+/* Bottom left: the same yellow as hatching, so the two corners read as one
+   treatment at two weights rather than as two ideas. */
+.vhero__slab::after {
+  bottom: 0;
+  left: 0;
+  width: clamp(8rem, 15vw, 13rem);
+  height: clamp(6rem, 11vw, 9.5rem);
+  background-image: repeating-linear-gradient(45deg, rgba(252, 185, 9, .32) 0 1px, transparent 1px .625rem);
+  -webkit-mask-image: linear-gradient(45deg, #000 8%, transparent 72%);
+          mask-image: linear-gradient(45deg, #000 8%, transparent 72%);
+}
+
+
+/* Copy on the slab --------------------------------------------------------- */
+
+.vhero__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 31rem);
+  align-items: center;
+  gap: clamp(1.5rem, 1rem + 3vw, 4rem);
+  width: 100%;
+}
+
+/* Held clear of the diagonal: the slash is at its narrowest at the foot of the
+   column, and this is the measure that keeps the marks row inside it. */
+/* Tracks the viewport as well as capping: the diagonal is a percentage of the
+   section, so a fixed measure that clears it at 1500px crosses it at 1280. */
+.vhero__copy {
+  max-width: min(37rem, 40vw);
+  padding-right: clamp(.5rem, 1.4vw, 1.5rem);
+}
+
+/* White on ink all the way down, with the brand kept for accents — on flat
+   ink the yellow is worth more as a highlight than as a body colour. */
+.vhero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 var(--space-3);
+  padding: .4375rem .875rem;
+  border-radius: var(--radius-md);
+  background-color: #fff;
+  color: var(--ink);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-black);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.vhero__title {
+  margin: 0;
+  font-size: clamp(2.125rem, 1.35rem + 2.7vw, 3.75rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -.04em;
+  line-height: 1.12;
+  color: var(--white);
+}
+
+/* The second line in brand: on flat ink it is the only other value the slab
+   carries, so it splits the headline without a second typeface or weight. */
+.vhero__title-alt { color: var(--brand); }
+
+.vhero__lede {
+  max-width: 34ch;
+  margin: var(--space-5) 0 0;
+  font-size: clamp(1.0625rem, .96rem + .34vw, 1.25rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, .76);
+  text-wrap: pretty;
+}
+
+/* Two actions on one row: the call is the primary and the estimate sits beside
+   it in white. The call keeps the page's own yellow face — on ink it needs no
+   inversion, so the override that used to sit further down is gone. */
+.vhero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(.5rem, .25rem + .55vw, .875rem);
+  margin-top: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+}
+
+.vhero__second {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: .625rem;
+  min-height: 3.125rem;
+  padding: .5rem clamp(1rem, .6rem + .95vw, 1.5rem);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-md);
+  background-color: var(--white);
+  color: var(--ink);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-bold);
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-decoration: none;
+  transition: color .3s ease-in-out, border-color .3s ease-in-out;
+}
+
+/* Two discs parked below the button, scaled wide so their tops read as a flat
+   rising edge rather than as circles. The timing is Bubble Rise's own. */
+.vhero__second::before,
+.vhero__second::after {
+  content: "";
+  position: absolute;
+  display: block;
+  z-index: -1;
+  border-radius: 50%;
+  transition: all .5s .1s cubic-bezier(.55, 0, .1, 1);
+}
+
+.vhero__second::before {
+  left: 50%;
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background: rgba(19, 18, 17, .12);
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+}
+
+.vhero__second::after {
+  left: 55%;
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background: var(--ink);
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+}
+
+.vhero__second i {
+  font-size: .875rem;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.vhero__second:hover,
+.vhero__second:focus-visible {
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.vhero__second:hover::before,
+.vhero__second:focus-visible::before {
+  top: -35%;
+  background: var(--ink);
+  transform: translateX(-50%) scaleY(1.3) scaleX(.8);
+}
+
+.vhero__second:hover::after,
+.vhero__second:focus-visible::after {
+  top: -45%;
+  background: var(--ink);
+  transform: translateX(-50%) scaleY(1.3) scaleX(.8);
+}
+
+.vhero__second:hover i,
+.vhero__second:focus-visible i { transform: translateX(4px); }
+
+/* Both actions fill with ink on hover, and ink on an ink slab is no edge at
+   all — the rule goes white so each button keeps its shape while filled. The
+   selector carries a fourth class only to outrank the shared cta-07 hover. */
+.cta-themed.cta-07.vhero__call:hover,
+.cta-themed.cta-07.vhero__call:focus-visible {
+  border-color: var(--white);
+}
+
+.vhero__marks {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: clamp(.625rem, .35rem + .9vw, 1.25rem);
+  margin-top: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+}
+
+.vhero__marks li {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: clamp(.8125rem, .68rem + .34vw, 1rem);
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+  color: var(--white);
+}
+
+/* A brand disc under each glyph — the yellow the slab lost, put back where it
+   does the most work, so the three claims read as marks rather than as a run
+   of icon-and-label. */
+.vhero__marks i {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: clamp(1.625rem, 1.4rem + .5vw, 1.875rem);
+  height: clamp(1.625rem, 1.4rem + .5vw, 1.875rem);
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: clamp(.6875rem, .6rem + .22vw, .8125rem);
+}
+
+
+/* The glass quote ---------------------------------------------------------- */
+
+/* A pane, not a card: the footage reads through it, and only the border and
+   the lit top edge say where it is. */
+.gform {
+  padding: clamp(1.125rem, .95rem + .9vw, 1.75rem);
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(155deg, rgba(255, 255, 255, .2), rgba(255, 255, 255, .08));
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .5),
+    0 30px 70px -34px rgba(0, 0, 0, .75);
+  color: var(--white);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .gform { background: rgba(18, 17, 16, .9); }
+}
+
+.gform__title {
+  margin: 0 0 var(--space-3);
+  font-size: clamp(1.375rem, 1.15rem + .9vw, 1.75rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -.03em;
+  line-height: 1.15;
+  color: var(--white);
+  /* Capitalised to match the buttons, which already title-case their labels. */
+  text-transform: capitalize;
+  text-align: center;
+}
+
+/* The line under the title follows it to centre — left-aligned beneath a
+   centred heading it read as a stray. */
+.gform__sub {
+  margin: 0 0 var(--space-2);
+  font-size: var(--fs-14);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, .78);
+  text-align: center;
+}
+
+.gform__form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.gform__form .field { gap: .3125rem; min-width: 0; }
+.gform__form .field--wide { grid-column: 1 / -1; }
+
+.gform__form .field__label {
+  font-size: var(--fs-12);
+  font-weight: var(--fw-black);
+  letter-spacing: .06em;
+  color: rgba(255, 255, 255, .82);
+}
+
+/* Wells rather than boxes: a translucent fill and a hairline, so the fields
+   belong to the pane instead of sitting on it. */
+.gform__form .field__input {
+  width: 100%;
+  min-height: 2.875rem;
+  padding: .5rem .75rem;
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: var(--radius-sm);
+  background-color: rgba(255, 255, 255, .14);
+  color: var(--white);
+  font: inherit;
+  font-size: var(--fs-15);
+  font-weight: var(--fw-medium);
+  transition: border-color var(--dur-fast) var(--ease-out),
+              background-color var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-fast) var(--ease-out);
+}
+
+.gform__form .field__input::placeholder { color: rgba(255, 255, 255, .58); }
+
+.gform__form .field__input:hover { border-color: rgba(255, 255, 255, .5); }
+
+.gform__form .field__input:focus,
+.gform__form .field__input:focus-visible {
+  outline: 0;
+  border-color: var(--brand);
+  background-color: rgba(255, 255, 255, .2);
+  box-shadow: 0 0 0 3px rgba(252, 185, 9, .3);
+}
+
+/* The message well. The gform input rule is two classes deep and outranks the
+   shared --area rule, so the height it needs is set here rather than there. */
+.gform__form .field__input--area {
+  min-height: 5.25rem;
+  padding-top: .5rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.gform__form .field__error {
+  margin: 0;
+  font-size: var(--fs-12);
+  font-weight: var(--fw-semi);
+  color: #FFC9C9;
+}
+
+.gform__form .field.is-invalid .field__input { border-color: #FFC9C9; }
+
+.gform__submit {
+  grid-column: 1 / -1;
+  min-height: 3.125rem;
+  margin-top: .25rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-black);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.gform__submit:hover { background-color: #FFD34D; }
+
+
+.gform__done { margin: 0; text-align: center; color: var(--white); }
+
+
+/* Responsive --------------------------------------------------------------- */
+
+@media (max-width: 74em) {
+  /* The diagonal steepens as the columns tighten, so the copy keeps its width
+     without the marks row crossing the slash. */
+  /* The larger heading needs a wider measure to stay on two lines, so the
+     slash gives some width back here rather than the copy losing it. */
+  .vhero__edge,
+  .vhero__slab { --slash: 62%; --lean: 10%; }
+
+  .vhero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 25rem); }
+
+  .vhero__copy { max-width: 30rem; }
+}
+
+@media (max-width: 62em) {
+  /* Stacked, a diagonal across the whole section would cut the copy in half.
+     The clipped layers come off and the copy carries the ink band itself,
+     bled past the container's gutters — which ends the band exactly where the
+     copy ends, so the glass form sits wholly on the footage rather than
+     straddling the join. */
+  .vhero {
+    min-height: 0;
+    padding-block: 0;
+  }
+
+  .vhero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .vhero__edge,
+  .vhero__slab { display: none; }
+
+  .vhero__marks { flex-wrap: wrap; }
+
+  .vhero__copy {
+    position: relative;
+    max-width: none;
+    margin-inline: calc(-1 * var(--edge));
+    padding: clamp(2rem, 1.6rem + 2vw, 3rem) var(--edge) clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem);
+    border-bottom: 4px solid var(--brand);
+    background-color: var(--ink);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* The slab's corner marks, carried over to the band that stands in for it.
+     Both corners ride one pseudo-element here — the band is short enough that a
+     second layer would land in the middle of the copy. */
+  .vhero__copy::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+      radial-gradient(circle, rgba(252, 185, 9, .55) 1.35px, transparent 1.45px),
+      repeating-linear-gradient(45deg, rgba(252, 185, 9, .3) 0 1px, transparent 1px .625rem);
+    background-size: .9375rem .9375rem, clamp(7rem, 34vw, 11rem) clamp(5rem, 22vw, 8rem);
+    background-position: 0 0, 100% 100%;
+    background-repeat: repeat, no-repeat;
+    -webkit-mask-image: linear-gradient(135deg, #000 0, transparent 40%),
+                        linear-gradient(315deg, #000 0, transparent 32%);
+            mask-image: linear-gradient(135deg, #000 0, transparent 40%),
+                        linear-gradient(315deg, #000 0, transparent 32%);
+    -webkit-mask-composite: source-over;
+            mask-composite: add;
+    pointer-events: none;
+  }
+
+  .gform {
+    margin-block: clamp(1.75rem, 1.4rem + 1.6vw, 2.5rem) clamp(2rem, 1.6rem + 2vw, 3rem);
+  }
+}
+
+@media (max-width: 40em) {
+  .gform__form { grid-template-columns: minmax(0, 1fr); }
+}
+
