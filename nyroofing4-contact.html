@@ -24,7 +24,7 @@
   <!-- Standalone sheet. This page shares no CSS with index/nyc2 so the new
        brand palette can never leak into the Royal Renovators pages. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="css/nyroofing4.css?v=13">
+  <link rel="stylesheet" href="css/nyroofing4.css?v=15">
 </head>
 <body class="page-contact">
 
@@ -142,20 +142,10 @@
                 </div>
               </li>
               <li class="primary-nav__item"><a class="primary-nav__link" href="nyroofing4.html#projects">Projects</a></li>
-              <li class="primary-nav__item primary-nav__item--menu">
-                <button class="primary-nav__link" type="button" aria-expanded="false" aria-controls="menu-resources">
-                  Resources
-                  <i class="primary-nav__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
-                </button>
-                <div class="mega mega--sm" id="menu-resources" hidden>
-                  <ul class="mega__list">
-                    <li><a href="nyroofing4.html#blog"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-newspaper"></i></span><span>Blog</span></a></li>
-                    <li><a href="nyroofing4.html#faqs"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-circle-question"></i></span><span>FAQs</span></a></li>
-                  </ul>
-                </div>
-              </li>
-              <li class="primary-nav__item"><a class="primary-nav__link" href="nyroofing4.html#about">About</a></li>
-              <li class="primary-nav__item"><a class="primary-nav__link" href="nyroofing4-contact.html">Contact</a></li>
+              <li class="primary-nav__item"><a class="primary-nav__link" href="nyroofing4.html#faqs">FAQ</a></li>
+              <li class="primary-nav__item"><a class="primary-nav__link" href="nyroofing4.html#blog">Blog</a></li>
+              <li class="primary-nav__item"><a class="primary-nav__link" href="nyroofing4.html#about">About Us</a></li>
+              <li class="primary-nav__item"><a class="primary-nav__link" href="nyroofing4-contact.html">Contact Us</a></li>
 
             
 </ul>
@@ -166,6 +156,12 @@
           <a class="btn cta-themed cta-07 header-call" href="tel:+16468380441">
             <span class="btn__pip" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
             <span class="btn__text cta-wrap"><span class="btn__number cta-text">(646) 838-0441</span></span>
+          </a>
+
+          <!-- Phones and tablets: the number leaves the bar, so a square call
+               button sits beside the menu toggle (Oct 5 call). -->
+          <a class="header-tel" href="tel:+16468380441" aria-label="Call NY Roofing on (646) 838-0441">
+            <i class="fa-solid fa-phone" aria-hidden="true"></i>
           </a>
 
           <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav">
@@ -262,20 +258,10 @@
             </div>
           </li>
           <li><a class="mobile-nav__link" href="nyroofing4.html#projects">Projects</a></li>
-          <li class="mobile-nav__group" aria-expanded="false">
-            <button class="mobile-nav__link mobile-nav__trigger" type="button">
-              Resources
-              <i class="mobile-nav__chevron fa-solid fa-chevron-down" aria-hidden="true"></i>
-            </button>
-            <div class="mobile-nav__subwrap">
-              <ul class="mobile-nav__sub">
-                <li><a href="nyroofing4.html#blog">Blog</a></li>
-                <li><a href="nyroofing4.html#faqs">FAQs</a></li>
-              </ul>
-            </div>
-          </li>
-          <li><a class="mobile-nav__link" href="nyroofing4.html#about">About</a></li>
-          <li><a class="mobile-nav__link" href="nyroofing4-contact.html">Contact</a></li>
+          <li><a class="mobile-nav__link" href="nyroofing4.html#faqs">FAQ</a></li>
+          <li><a class="mobile-nav__link" href="nyroofing4.html#blog">Blog</a></li>
+          <li><a class="mobile-nav__link" href="nyroofing4.html#about">About Us</a></li>
+          <li><a class="mobile-nav__link" href="nyroofing4-contact.html">Contact Us</a></li>
 
         
 </ul>
@@ -322,7 +308,7 @@
             <li aria-current="page">Contact</li>
           </ol>
         </nav>
-        <h1 class="phead__title">Contact <span class="phead__accent">NY Roofing</span></h1>
+        <h1 class="phead__title">Contact <span class="phead__accent">Us</span></h1>
         <p class="phead__text">
           Roofing questions or a free estimate? Call us 24/7
         </p>
@@ -393,7 +379,7 @@
           </aside>
 
           <div class="quote contact__form-card cboard__form">
-            <p class="quote__title">Get A Free Quote</p>
+            <p class="quote__title"><span class="quote__title-box">Get A Free Quote</span></p>
 
             <form class="quote__form" id="contact-form" action="#" method="post" novalidate>
               <div class="field">
@@ -403,7 +389,7 @@
                 <p class="field__error" data-error-for="c-name" hidden></p>
               </div>
               <div class="field">
-                <label class="field__label" for="c-phone">Best Phone Number</label>
+                <label class="field__label" for="c-phone">Phone</label>
                 <input class="field__input" id="c-phone" name="phone" type="tel"
                        autocomplete="tel" inputmode="tel" placeholder="(646) 555-0148" required>
                 <p class="field__error" data-error-for="c-phone" hidden></p>
@@ -427,9 +413,10 @@
                           placeholder="A leak, a new roof, or something else? Tell us what you need&hellip;"></textarea>
               </div>
               <button class="quote__submit cta-themed cta-07" type="submit">
-                <span class="cta-wrap"><span class="quote__submit-label cta-text">Get A Free Estimate</span></span>
+                <span class="cta-wrap"><span class="quote__submit-label cta-text">Get My Free Estimate</span></span>
                 <span class="quote__submit-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
               </button>
+              <p class="form-callback">We&rsquo;ll call you back within the hour</p>
             </form>
 
             <div class="quote__done" id="contact-done" hidden>
@@ -615,6 +602,7 @@
         </p>
         <ul class="site-footer__marks" aria-label="Ratings, accreditation and credentials">
           <li class="site-footer__google"><img src="images/Google__G__logo.svg.webp" alt="Google" width="1280" height="1280" decoding="async"><span><strong>5.0</strong> <span class="star" aria-hidden="true">&#9733;</span><span class="visually-hidden">out of 5 on Google</span></span></li>
+          <li class="site-footer__yelp"><img src="images/yelp-badge.png" alt="People love us on Yelp" width="540" height="539" loading="lazy" decoding="async"></li>
           <li class="site-footer__bbb"><img class="bbb-logo" src="images/bbb-accredited-640.png" alt="BBB Accredited Business" width="640" height="360" decoding="async"></li>
           <li class="site-footer__chip"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i>Licensed &amp; Insured</li>
           <li class="site-footer__chip mob-hide"><i class="fa-solid fa-bolt" aria-hidden="true"></i>Emergency Services</li>
