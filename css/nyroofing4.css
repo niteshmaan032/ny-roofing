@@ -6998,8 +6998,331 @@ a.contact__card:hover .contact__card-value { color: var(--brand); }
 
 /* Contact page ------------------------------------------------------------ */
 
-/* Form card: bold outline, and a black square box around just the words
-   "Get A Free Quote". */
+/* Shorter banner: the breadcrumb moves to the right so the title starts at
+   the top, and the intro is one line. */
+.page-contact .phead { padding-block: clamp(1rem, .8rem + .9vw, 1.6rem); }
+.page-contact .phead__inner { position: relative; }
+.page-contact .phead__crumbs { position: absolute; right: 0; top: .2rem; }
+.page-contact .phead__title { margin-top: 0; padding-right: 11rem; }
+.page-contact .phead__text { margin-top: .5rem; }
+@media (max-width: 40em) {
+  .page-contact .phead__crumbs { position: static; margin-bottom: .5rem; }
+  .page-contact .phead__title { padding-right: 0; }
+}
+
+/* Board: both titles start on the same line now that the eyebrow is gone. */
+.page-contact .cboard__title { margin-top: 0; }
+.page-contact .cboard__form .quote__title { margin-top: 0; }
+
+/* FAQ block moves up a little. */
+.page-contact .faq__head { margin-bottom: .875rem; }
+.page-contact .process-sec { padding-bottom: 10px; }
+
+/* Forms: Name + Best Phone side by side, then Address + Email (contact page)
+   on one row, the message and button full width. Stacked under 34em. */
+@media (min-width: 34em) {
+  .contact__form-card .quote__form,
+  .page-contact .contact__form-card .quote__form,
+  .page-contact .cboard__form .quote__form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .75rem var(--space-3);
+  }
+  .contact__form-card .field:has(.field__input--area),
+  .page-contact .contact__form-card .field:has(.field__input--area) { grid-column: 1 / -1; flex: none; }
+  .contact__form-card .quote__submit { grid-column: 1 / -1; }
+}
+
+/* Contact page breadcrumb sits inside the content edge, not the padding. */
+.page-contact .phead__crumbs { right: var(--edge); }
+
+/* Phone: no white between the yellow banner and the black CTA band. */
+@media (max-width: 40em) {
+  .diff { padding-bottom: 0; }
+  .diff__pairs { margin-bottom: .75rem; }
+}
+
+/* Contact page form: tighter rows, labels closer to inputs, shorter fields. */
+.contact__form-card .quote__form { gap: .75rem; }
+.contact__form-card .field { gap: .25rem; }
+.contact__form-card .field__input { min-height: 2.5rem; padding: .375rem .875rem; }
+.contact__form-card .field__input--area { min-height: 5rem; }
+.contact__form-card .quote__submit { margin-top: .25rem; }
+/* The card's spare height goes to the message row only; labels and inputs
+   keep their natural height instead of being stretched row by row. */
+.contact__form-card .quote__form { grid-template-rows: auto auto minmax(6rem, 1fr) auto; align-content: stretch; }
+.contact__form-card .field { align-content: start; grid-template-rows: auto auto; }
+.contact__form-card .field:has(.field__input--area) { grid-template-rows: auto 1fr; }
+.contact__form-card .field__label { line-height: 1.2; }
+.contact__form-card .field__input { min-height: 2.5rem; height: auto; }
+.contact__form-card .field__input--area { height: 100%; min-height: 6rem; }
+/* Message box at a fixed, modest height; the form no longer fills the card. */
+.contact__form-card .quote__form { grid-template-rows: auto auto auto auto; align-content: start; }
+.contact__form-card .field:has(.field__input--area) { grid-template-rows: auto auto; flex: none; }
+.contact__form-card .field__input--area { height: 7.5rem; min-height: 7.5rem; }
+/* The map fills whatever the shorter form leaves, no more. */
+.contact__side .contact__map, .contact__map { min-height: 10rem; flex: 1 1 auto; }
+.contact__side .contact__map iframe, .contact__map iframe { min-height: 0; height: 100%; }
+.contact__form-card .quote__form { gap: 20px; }
+.page-contact .contact__map-card, .contact__map-card { min-height: 10rem; flex: 1 1 auto; }
+.page-contact .contact__map, .contact__map { min-height: 0; height: 100%; }
+.page-contact .contact__map-frame, .contact__map-frame { min-height: 0; height: 100%; }
+/* Contact page card: 20px between form rows, and the map only fills what the
+   form column leaves instead of forcing the card taller. */
+.page-contact .contact__form-card .quote__form { gap: 20px !important; }
+.page-contact .cboard__map, .cboard__map { min-height: 6rem !important; height: auto !important; flex: 1 1 auto; }
+.page-contact .cboard__map iframe, .cboard__map iframe { height: 100%; min-height: 0; }
+/* Shorter map floor so the card closes up toward the shorter form. */
+.page-contact .cboard__side { grid-template-rows: auto minmax(14rem, 1fr); }
+.page-contact .cboard__map { min-height: 14rem !important; }
+.page-contact .cboard__map iframe { min-height: 14rem; }
+
+/* The homepage's phone section order must not reach the contact page: there
+   the form and map stay directly under the page head, then the steps and FAQs. */
+@media (max-width: 40em) {
+  .page-contact main { display: block; }
+  .page-contact .contact, .page-contact .faq, .page-contact .process-sec { order: 0; }
+}
+
+
+/* ==========================================================================
+   Round 5: client call of 23 Sep 2026
+   ========================================================================== */
+
+/* N23: logo missing and the page scrolling sideways on the client's iPhone.
+   The mark's box had a height and an aspect-ratio but no width, so its width
+   came only from the ratio; Safari resolves that to 0 inside the header's flex
+   row, which hides the logo. Explicit widths (height × 1348/742) fix it.
+   Horizontal overflow is clipped at the root as a safety net: html takes
+   hidden (it propagates to the viewport, so the sticky header still works)
+   and body takes clip, which does not make it a scroll container. */
+.brand__mark { width: calc(4.5rem * 1348 / 742); flex: none; }
+.brand--static .brand__mark { width: calc(2.5rem * 1348 / 742); }
+@media (max-width: 79.99em) { .brand__mark { width: calc(3.75rem * 1348 / 742); } }
+@media (max-width: 47.99em) { .brand__mark { width: calc(3.25rem * 1348 / 742); } }
+html { overflow-x: hidden; }
+body { overflow-x: clip; }
+/* The 17rem submit was the one element wider than a small phone. */
+.contact__form-card .quote__submit { min-width: min(17rem, 100%); }
+
+/* N01 / N02: floating call button is phone-only, and green there. */
+@media (min-width: 48em) { .call-fab { display: none; } }
+@media (max-width: 47.99em) {
+  .call-fab { background-color: #00F631; color: var(--ink); }
+  .call-fab:focus-visible { background-color: #00D82A; }
+}
+
+/* N03: hero quote card sits a little higher. */
+@media (min-width: 62em) { .gform { margin-top: -1.5rem; } }
+
+/* N05: a bullet before each of the four About points. */
+.abt__points.mob-hide li { grid-template-columns: auto minmax(0, 1fr); gap: .625rem; }
+.abt__points.mob-hide li::before {
+  content: ""; width: .4375rem; height: .4375rem; border-radius: 50%;
+  background-color: var(--brand);
+}
+
+/* N07: one large project and four small ones. */
+@media (min-width: 40.01em) {
+  .proj:nth-child(2),
+  .proj:nth-child(5) { grid-column: span 1; }
+}
+
+/* N09: most of the gap between "View All Projects" and the services. */
+.projects { padding-bottom: 0; }
+.svcs { padding-top: 14px; }
+
+/* N11: Services to Why NY Roofing, and the cards to the CTA, pulled up. */
+.svcs { padding-bottom: 14px; }
+.diff { padding-top: 14px; }
+.diff__cards { row-gap: .75rem; }
+
+/* N12: no white strip above the video band, and its content sits higher.
+   N14: the reviews follow it more closely. */
+.cta-band { padding-top: 0; padding-bottom: 12px; }
+.cta-band__inner { padding-top: clamp(1.25rem, 1rem + .9vw, 2rem); }
+
+/* N13: copy on the left, the call card on the right. */
+@media (min-width: 62em) {
+  .cta-band__inner {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    justify-items: start;
+    align-items: center;
+    text-align: left;
+  }
+  .cta-band__copy { justify-items: start; }
+  .cta-band__meta { justify-content: flex-start; }
+  .cta-band__action { justify-self: end; }
+}
+
+/* N15: testimonials heading on one line. */
+@media (min-width: 62em) { .testi .testi__title { max-width: none; white-space: nowrap; } }
+
+/* N16: blog pulled up under the reviews. */
+.blog { padding-top: 0; }
+
+/* N18 / N19: office card keeps "Brooklyn, NY 11215" together, and every
+   card's icon sits level with its label. */
+.nowrap { white-space: nowrap; }
+.contact__chip { align-self: start; }
+
+/* N28: social icons clear of the rule under them on phones. */
+@media (max-width: 40em) { .site-footer__socials { margin-bottom: 1.25rem; } }
+
+/* N29: the footer's estimate button stays visible when Contact is folded. */
+@media (max-width: 40em) {
+  .site-footer__col > .site-footer__cta.site-footer__cta--always { display: inline-flex; margin: .75rem 0 1rem; }
+}
+
+/* N33: footer address on one line where the column has room. */
+@media (min-width: 80em) { .site-footer__addr { white-space: nowrap; font-size: .875rem; } }
+
+/* N34: mobile menu trust row, Licensed & Insured | 24/7 Emergency Service. */
+.mobile-nav__lic { flex-wrap: wrap; gap: .5rem; font-size: .875rem; }
+.mobile-nav__sep { width: 1px; height: 1rem; background-color: currentColor; opacity: .3; margin-inline: .25rem; }
+
+/* N25 / N27: less white space between sections on phones. */
+@media (max-width: 40em) {
+  .abt { padding-bottom: 6px; }
+  .projects { padding-top: 6px; }
+  .blog { padding-top: 0; }
+  .testi { padding-bottom: 0; }
+}
+
+/* Contact page ------------------------------------------------------------ */
+
+/* N30: details and form are two separate cards with white space between. */
+.page-contact .cboard {
+  gap: clamp(1rem, .75rem + 1vw, 1.75rem);
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.page-contact .cboard__side { border-radius: var(--radius-xl); overflow: hidden; }
+.page-contact .cboard__form {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+}
+
+/* N31: steps keep only their numbered badges. */
+.page-contact .pstep { padding-top: 2.5rem; }
+.page-contact .pstep::before { top: 2rem; }
+.page-contact .pstep + .pstep::after { top: 3.25rem; }
+
+/* N35 / N36: on phones the form leads straight into the steps, and the four
+   steps become a sideways slider showing about two at a time. */
+@media (max-width: 47.99em) {
+  .page-contact .contact { padding-bottom: 8px; }
+  .page-contact .process-sec { padding-top: 8px; }
+  .page-contact .process-sec__steps {
+    display: flex;
+    gap: .75rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Room for the badges that overhang each card's top edge. */
+    padding: 1.75rem .125rem .5rem;
+    row-gap: 0;
+  }
+  .page-contact .process-sec__steps::-webkit-scrollbar { display: none; }
+  .page-contact .pstep {
+    flex: 0 0 calc(50% - .375rem);
+    scroll-snap-align: start;
+    padding: 2.25rem .75rem 1rem;
+  }
+  .page-contact .pstep__title { font-size: 1rem; }
+  .page-contact .pstep__text { font-size: .875rem; }
+}
+
+
+/* ==========================================================================
+   Oct 5 call (Sean) — homepage and contact page
+   ========================================================================== */
+
+/* Header: square yellow call button beside the menu toggle on phones and
+   tablets, where the number button leaves the bar (Brooklyn's pattern). */
+.header-tel { display: none; }
+@media (max-width: 79.99em) {
+  .header-tel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-left: auto;
+    border: 1px solid var(--brand);
+    border-radius: 6px;
+    background-color: var(--brand);
+    color: var(--ink);
+    font-size: 1.125rem;
+    text-decoration: none;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .header-tel:hover,
+  .header-tel:focus-visible { background-color: var(--ink); color: var(--brand); }
+}
+
+/* Every form: the call-back promise under the button. */
+.form-callback {
+  grid-column: 1 / -1;
+  margin: .125rem 0 0;
+  text-align: center;
+  font-size: .8125rem;
+  font-weight: var(--fw-semi);
+  color: var(--muted);
+}
+.gform__form .form-callback { margin-top: -.25rem; color: rgba(255, 255, 255, .9); }
+
+/* Every form: Name and Phone share a line on phones too. */
+@media (max-width: 40em) {
+  .gform__form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 33.99em) {
+  .contact__form-card .quote__form,
+  .page-contact .cboard__form .quote__form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .875rem .75rem;
+  }
+  .contact__form-card .quote__form > :not(.field:nth-child(-n+2)) { grid-column: 1 / -1; }
+}
+
+/* Hero trust row: Google, BBB, Yelp, then Licensed & Insured. On phones the
+   three marks share a line and Licensed & Insured drops below them. */
+.vhero__yelp img { display: block; width: 3.25rem; height: 3.25rem; }
+@media (max-width: 40em) {
+  .vhero__proof { gap: .75rem 1.25rem; }
+  .vhero__lic { flex-basis: 100%; }
+}
+
+/* Phones: a thin line with space between About and Recent Work; View All
+   Projects sits with the carousel; a line and space before Roofing Systems. */
+@media (max-width: 40em) {
+  .abt { padding-bottom: 1rem; }
+  .projects { padding-top: 1rem; padding-bottom: 1.25rem; }
+  .systems { padding-top: 1.25rem; }
+  .projects > .container::before,
+  .systems > .container::before {
+    content: ""; display: block; height: 1px; margin-bottom: 1.25rem;
+    background-color: rgba(19, 18, 17, .14);
+  }
+  .projects__foot { margin-top: .75rem; padding-top: 0; border-top: 0; }
+}
+
+/* Footer bar: Yelp beside the Google rating. On phones the marks close up
+   and stop 4rem short of the edge, so Licensed & Insured never runs under
+   the green call button: on narrower phones it wraps to its own line. */
+.site-footer__yelp img { display: block; width: 1.75rem; height: 1.75rem; }
+@media (max-width: 40em) {
+  .site-footer__marks { gap: .5rem; max-width: calc(100% - 4rem); }
+  .site-footer__yelp img { width: 1.5rem; height: 1.5rem; }
+}
+
+/* Contact page form card (Oct 5): bold outline, and a black square box around
+   just the words "Get A Free Quote". The board layout itself is unchanged. */
 .page-contact .cboard__form { border: 2px solid var(--ink); }
 .page-contact .cboard__form .quote__title { text-align: center; }
 .quote__title-box {
