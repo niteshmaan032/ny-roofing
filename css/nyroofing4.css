@@ -7290,12 +7290,10 @@ body { overflow-x: clip; }
   .contact__form-card .quote__form > :not(.field:nth-child(-n+2)) { grid-column: 1 / -1; }
 }
 
-/* Hero trust row: Google, BBB, Yelp, then Licensed & Insured. On phones the
-   three marks share a line and Licensed & Insured drops below them. */
+/* Hero trust row (client order, Oct 12): Google, Licensed & Insured, BBB, Yelp. */
 .vhero__yelp img { display: block; width: 3.25rem; height: 3.25rem; }
 @media (max-width: 40em) {
   .vhero__proof { gap: .75rem 1.25rem; }
-  .vhero__lic { flex-basis: 100%; }
 }
 
 /* Phones: a thin line with space between About and Recent Work; View All
