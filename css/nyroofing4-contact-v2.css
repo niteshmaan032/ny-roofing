@@ -1,0 +1,526 @@
+/* ==========================================================================
+   NY Roofing: Contact Us v2 (Oct 12 call, Sean). Loaded after nyroofing4.css,
+   only by nyroofing4-contact-v2.html.
+
+   Top: the layout of the Royal contact page Sean approved (a heading band
+   with the marks opposite; a 2 : 3 row with the video and two tiles left,
+   the form right), drawn in NY Roofing's yellow and black with the form as
+   the hero. Below: Reviews, then NY Roofing's own "What Happens Next" and
+   FAQ sections (markup and classes as on nyroofing4-contact.html), with the
+   office section styled to match them.
+   ========================================================================== */
+
+.page-contact-v2 {
+  --ch-band: #FFF6D8;                 /* pale brand-yellow band */
+  --ch-line: rgba(19, 18, 17, .12);
+}
+
+/* The homepage's phone ordering must not reach this page. */
+.page-contact-v2 main { display: block; }
+
+
+/* Tiles: the original contact card look (ink, yellow chip, white text). ------ */
+
+.ch-tile {
+  display: flex;
+  align-items: center;
+  gap: .875rem;
+  min-width: 0;
+  padding: .75rem 1rem;
+  border-radius: 12px;
+  background-color: var(--ink);
+  color: var(--white);
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+a.ch-tile:hover,
+a.ch-tile:focus-visible { background-color: #26231F; }
+a.ch-tile:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+
+.ch-tile__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 8px;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .9375rem;
+}
+.ch-tile__body {
+  display: grid;
+  gap: .125rem;
+  min-width: 0;
+  font-style: normal;
+}
+.ch-tile__label {
+  font-size: .6875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .6);
+}
+.ch-tile__value {
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  color: var(--white);
+  text-decoration: none;
+}
+a.ch-tile__value:hover,
+a.ch-tile__value:focus-visible,
+a.ch-tile:hover .ch-tile__value { color: var(--brand); }
+.ch-tile__go { margin-left: auto; color: var(--brand); font-size: .875rem; }
+
+
+/* 1. Heading band ------------------------------------------------------------- */
+
+.ch__band {
+  padding-block: clamp(.75rem, .6rem + .4vw, 1rem);
+  border-bottom: 1px solid rgba(227, 164, 0, .35);
+  background-color: var(--ch-band);
+}
+.ch__band-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem 2.5rem;
+}
+.ch__title {
+  margin: 0 0 .25rem;
+  font-size: clamp(1.625rem, 1.2rem + 1.3vw, 2.25rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -.035em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+/* A brand marker under "NY Roofing": yellow, but the words stay black and
+   readable on the pale band. */
+.ch__accent {
+  padding-inline: .125em;
+  background-image: linear-gradient(transparent 58%, var(--brand) 58%, var(--brand) 92%, transparent 92%);
+  color: var(--ink);
+}
+.ch__lede {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: var(--fw-medium);
+  line-height: 1.5;
+  color: var(--ink);
+}
+.ch__lede a {
+  color: var(--ink);
+  font-weight: var(--fw-black);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-color: var(--brand-deep);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* The marks sit on white chips so each reads crisply on the tint. */
+.ch__marks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ch__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 3.25rem;
+  padding: .375rem .875rem;
+  border: 1px solid rgba(19, 18, 17, .12);
+  border-radius: 10px;
+  background-color: var(--white);
+  color: var(--ink);
+}
+.ch__mark--google img { width: 1.75rem; height: 1.75rem; }
+.ch__mark--google strong { font-size: 1.125rem; font-weight: var(--fw-black); }
+.ch__star { color: var(--brand-deep); font-size: 1.0625rem; }
+.ch__mark--bbb img { display: block; width: auto; height: 2.125rem; }
+.ch__mark--yelp { padding-inline: .5rem; }
+.ch__mark--yelp img { display: block; width: 2.5rem; height: 2.5rem; }
+.ch__mark--lic { font-size: .9375rem; font-weight: var(--fw-bold); }
+.ch__mark--lic i { color: var(--brand-deep); }
+
+
+/* 2. Main contact row -------------------------------------------------------- */
+
+.ch__main {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: stretch;
+  gap: 2rem;
+  padding-block: .875rem clamp(1.5rem, 1rem + 1.4vw, 2.5rem);
+}
+
+.ch__left {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  min-width: 0;
+}
+
+/* The video fills what the form leaves; a brand rule along its foot. */
+.ch__video {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 17rem;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background: var(--ink) url('../images/roof-hero-poster.jpg') center / cover no-repeat;
+  box-shadow: 0 24px 44px -30px rgba(19, 18, 17, .55);
+}
+.ch__video::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 5px;
+  background-color: var(--brand);
+}
+.ch__video-el {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 45%;
+}
+
+.ch__tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+/* The form: the hero of the page. Solid brand yellow, black frame. ---------- */
+
+.ch-form {
+  position: relative;
+  min-width: 0;
+  padding: .75rem 1.75rem .75rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-xl);
+  background-color: var(--brand);
+  color: var(--ink);
+  box-shadow: 0 30px 60px -34px rgba(19, 18, 17, .6);
+}
+
+.ch-form__head {
+  margin-bottom: .5rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid rgba(19, 18, 17, .22);
+  text-align: center;
+}
+.ch-form__title {
+  margin: 0;
+  font-size: clamp(1.375rem, 1.2rem + .6vw, 1.5rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: var(--ink);
+  text-transform: capitalize;
+}
+.ch-form__title .quote__title-box {
+  padding: .1875rem .875rem;
+  border: 2px solid var(--ink);
+  background-color: var(--white);
+}
+
+.ch-form__form[hidden] { display: none; }
+
+.ch-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .625rem 1rem;
+}
+.ch-form__grid .field { gap: .25rem; min-width: 0; }
+.ch-form__grid .field--wide { grid-column: 1 / -1; }
+
+.ch-form .field__label {
+  color: var(--ink);
+  font-size: .75rem;
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  letter-spacing: .1em;
+}
+.ch-form .field__input {
+  min-height: 2.5rem;
+  padding: .3125rem .875rem;
+  border: 1px solid rgba(19, 18, 17, .3);
+  border-radius: 8px;
+  background-color: var(--white);
+  color: var(--ink);
+}
+.ch-form .field__input::placeholder { color: #6E6A62; }
+.ch-form .field__input:hover { border-color: rgba(19, 18, 17, .55); }
+.ch-form .field__input:focus,
+.ch-form .field__input:focus-visible {
+  outline: 0;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(19, 18, 17, .2);
+}
+.ch-form .field__input--area { height: 3.25rem; min-height: 3.25rem; }
+
+/* Errors in dark red on the yellow. */
+.ch-form .field__error { color: #7A0F0A; font-weight: var(--fw-bold); }
+.ch-form .field.is-invalid .field__input { border-color: #9B1C14; border-width: 2px; }
+
+/* Black pill: the strongest contrast the yellow allows. */
+.ch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  min-height: 3rem;
+  padding: .375rem 1.75rem .375rem .375rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background-color: var(--ink);
+  color: var(--white);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.ch-btn__pip {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .8125rem;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.ch-btn:hover,
+.ch-btn:focus-visible { background-color: var(--white); color: var(--ink); }
+.ch-btn:hover .ch-btn__pip,
+.ch-btn:focus-visible .ch-btn__pip { transform: translateX(2px); }
+.ch-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.ch-form__submit {
+  display: flex;
+  width: min(100%, 29rem);
+  margin: .625rem auto 0;
+}
+.ch-form__callback {
+  margin: .375rem 0 0;
+  text-align: center;
+  font-size: .875rem;
+  font-weight: var(--fw-bold);
+  color: var(--ink);
+}
+
+.ch-form__done { justify-items: center; text-align: center; }
+.ch-form__done .quote__done-mark { background-color: var(--ink); color: var(--brand); }
+.ch-form__done .quote__done-text,
+.ch-form__done .quote__done-text a { color: var(--ink); }
+
+
+/* 3. Reviews: the homepage testimonials head, with the badge pair. ----------- */
+
+.page-contact-v2 .ch-reviews {
+  padding-block: clamp(1.75rem, 1.2rem + 1.6vw, 3rem) .75rem;
+  border-top: 1px solid var(--ch-line);
+}
+/* Heading left, the Google + Yelp pair level with it on the right. */
+@media (min-width: 48em) {
+  .page-contact-v2 .ch-reviews .testi__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+  .page-contact-v2 .ch-reviews .testi__title { white-space: normal; max-width: 17em; }
+}
+
+
+/* 4. What Happens Next (original markup): more room above it. ---------------- */
+
+.page-contact .ch-process.process-sec { padding-top: clamp(2.75rem, 2rem + 2.4vw, 4.5rem); }
+
+
+/* 5. Our Brooklyn Office: the steps section's head, cards on its radius. ---- */
+
+.page-contact-v2 .ch-office { padding-block: clamp(2.5rem, 1.8rem + 2.2vw, 4rem) clamp(1rem, .7rem + 1vw, 1.75rem); }
+.page-contact-v2 .ch-office__head { margin-bottom: clamp(1.25rem, 1rem + .8vw, 1.75rem); }
+
+/* Map column a little narrower than the photo, as on the Royal page. */
+.ch-office__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  align-items: stretch;
+  gap: clamp(1.25rem, .9rem + 1.2vw, 2rem);
+}
+.ch-office__place {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  min-width: 0;
+}
+
+/* 19rem: the floor at which Google keeps its place card in the embed. */
+.ch-office__map {
+  flex: 1 1 auto;
+  min-height: 19rem;
+  overflow: hidden;
+  border: 1px solid var(--ch-line);
+  border-radius: var(--radius-xl);
+  background-color: #E8E6E1;
+}
+.ch-office__map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 19rem;
+  border: 0;
+}
+
+.ch-office__photo {
+  position: relative;
+  min-height: 19rem;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background-color: var(--ink);
+}
+.ch-office__photo::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 5px;
+  background-color: var(--brand);
+}
+.ch-office__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+}
+
+
+/* 6. FAQ (original markup): intro and the two buttons left, the numbered
+      accordion right. ------------------------------------------------------- */
+
+.page-contact-v2 .ch-faq { padding-block: clamp(2rem, 1.4rem + 2vw, 3.5rem); }
+
+.ch-faq__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  align-items: start;
+  gap: 1.5rem clamp(2rem, 1rem + 2.5vw, 4rem);
+}
+.page-contact-v2 .ch-faq__head {
+  justify-items: start;
+  margin-bottom: 0;
+  text-align: left;
+}
+.page-contact-v2 .ch-faq__head .faq__lede { margin-top: .75rem; }
+.ch-faq__actions { margin-top: 1.5rem; }
+/* The white estimate button is outlined in ink on the light ground. */
+.page-contact-v2 .ch-faq__actions .btn.cta-themed.cta-07.ch-faq__cta { border: 2px solid var(--ink) !important; }
+
+.page-contact-v2 .ch-faq__list { grid-template-columns: minmax(0, 1fr); gap: .75rem; }
+
+/* Each question is an H3 inside its summary, styled as the label was. */
+.page-contact-v2 h3.qa__label {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+
+/* Tablet and phone --------------------------------------------------------------
+   Form first, then the video and the tiles; the office stacks map, address,
+   photo; the FAQ intro sits above its accordion. */
+@media (max-width: 61.99em) {
+  .ch__main { grid-template-columns: minmax(0, 1fr); }
+  .ch-form { order: -1; }
+  .ch__video { flex: none; min-height: 0; aspect-ratio: 16 / 9; }
+
+  .ch-office__grid { grid-template-columns: minmax(0, 1fr); }
+  .ch-office__photo { min-height: 0; aspect-ratio: 4 / 3; }
+
+  .ch-faq__inner { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 40em) {
+  .ch__band { padding-block: .75rem .875rem; }
+  .ch__title { font-size: 1.625rem; }
+  .ch__lede { font-size: .9375rem; }
+  /* A short band on a phone: the marks wait for the reviews and the footer. */
+  .ch__marks { display: none; }
+
+  .ch__main { gap: 1rem; padding-top: .875rem; }
+  .ch-form { padding: .75rem .875rem .75rem; }
+  .ch-form__grid { gap: .625rem; }
+
+  .ch__tiles { gap: .5rem; }
+  .ch-tile { gap: .5rem; padding: .625rem .75rem; }
+  .ch-tile__icon { width: 2rem; height: 2rem; font-size: .8125rem; }
+  .ch-tile__value { font-size: .9375rem; }
+
+  .ch-office__map,
+  .ch-office__map iframe { flex: none; height: 19rem; }
+
+  .ch-faq__actions { flex-direction: column; }
+  .ch-faq__actions > * { justify-content: center; }
+}
+
+@media (max-width: 22em) {
+  .ch-form__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---- Oct 13 (Nitesh): band spacing like the Royal contact page, no marker
+   stripe, no form shadow, tighter gap between reviews and the steps. ---- */
+.ch__band { padding-block: clamp(1.25rem, .9rem + 1.1vw, 2rem); }
+.ch__band-inner { align-items: flex-end; gap: 1rem 2.5rem; }
+.ch__title { margin: 0; font-size: clamp(1.875rem, 1.225rem + 2vw, 2.75rem); line-height: 1.12; }
+.ch__accent { padding-inline: 0; background-image: none; color: var(--ink); }
+.ch__lede { font-size: 1.0625rem; line-height: 1.6; }
+.ch__title + .ch__lede { margin-top: .5rem; }
+.ch__main { padding-top: clamp(1rem, .8rem + .8vw, 1.5rem); }
+.ch-form { box-shadow: none; }
+.page-contact-v2 .ch-reviews { padding-bottom: 0; }
+.page-contact .ch-process.process-sec { padding-top: clamp(1.25rem, 1rem + 1vw, 2rem); }
+@media (max-width: 40em) {
+  .ch__band { padding-block: 1rem; }
+  .ch__title { font-size: 1.75rem; }
+}
+/* Short laptop screens (the client's ~1440 x 630): keep the whole form on the first screen. */
+@media (min-width: 62em) and (max-height: 760px) {
+  .ch__band { padding-block: 1.125rem; }
+  .ch__main { padding-top: .875rem; }
+  .ch-form__grid { gap: .4rem 1rem; }
+  .ch-form .field__input { min-height: 2.25rem; }
+  .ch-form .field__input--area { height: 2.75rem; min-height: 2.75rem; }
+}
+
+/* ---- Oct 13 (Nitesh): grey band; the office sits right under the reviews,
+   and is more compact. ---- */
+.ch__band { background-color: #F2F2F0; border-bottom-color: #E2E2DE; }
+.page-contact-v2 .ch-office { padding-block: clamp(1.25rem, 1rem + 1vw, 2rem) clamp(1.25rem, 1rem + 1vw, 2rem); }
+.page-contact-v2 .ch-office__head { margin-bottom: clamp(.75rem, .6rem + .5vw, 1.125rem); }
+/* the map stays ≥ 19rem (304px): Google only shows the business card at that height */
+.page-contact .ch-process.process-sec { padding-top: clamp(1.75rem, 1.4rem + 1.2vw, 2.75rem); }

@@ -255,7 +255,7 @@
 
   (function backgroundVideos() {
     var videos = Array.prototype.slice.call(
-      document.querySelectorAll('#hero-video, #cta-band-video'));
+      document.querySelectorAll('#hero-video, #cta-band-video, #contact-video'));
     if (!videos.length) return;
 
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');

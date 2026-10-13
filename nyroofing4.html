@@ -24,7 +24,7 @@
   <!-- Standalone sheet. This page shares no CSS with index/nyc2 so the new
        brand palette can never leak into the Royal Renovators pages. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="css/nyroofing4.css?v=17">
+  <link rel="stylesheet" href="css/nyroofing4.css?v=18">
 </head>
 <body>
 
@@ -360,7 +360,7 @@
              nyroofing2.js already binds to. -->
         <div class="gform">
 
-          <p class="gform__title">Get a free quote</p>
+          <p class="gform__title"><span class="quote__title-box">Get A Free Quote</span></p>
 
           <form class="gform__form" id="quote-form" action="#" method="post" novalidate>
 
@@ -391,7 +391,7 @@
             <div class="field field--wide">
               <label class="field__label" for="q-message">How Can We Help?</label>
               <textarea class="field__input field__input--area" id="q-message" name="message"
-                        rows="3" placeholder="A leak, a new roof, or something else? Tell us what you need&hellip;" required></textarea>
+                        rows="2" placeholder="A leak, a new roof, or something else? Tell us what you need&hellip;" required></textarea>
               <p class="field__error" data-error-for="q-message" hidden></p>
             </div>
 
@@ -637,7 +637,7 @@
                    the contact page already. -->
               <ul class="abt__points mob-hide">
                 <li>
-                  <span>Brownstones, row houses and flat-roof apartment buildings</span>
+                  <span>Brownstones, row houses, and flat-roof apartment buildings</span>
                 </li>
                 <li>
                   <span>Written, Itemized Quotes With Photographs Of Every Problem Area</span>
@@ -680,7 +680,7 @@
             <h2 class="projects__title">Roofing Projects Across <span class="projects__accent">Brooklyn</span></h2>
           </div>
           <p class="projects__lede">
-            Flat roofs, shingle roofs, siding and repairs, photographed on the day
+            Flat roofs, shingle roofs, siding, and repairs, photographed on the day
             each job was completed.
           </p>
         </div>
@@ -763,7 +763,7 @@
           </div>
           <p class="svcs__lede">
             Reliable roofing solutions built to protect your home and business
-            across Brooklyn, installed, repaired and maintained by local crews.
+            across Brooklyn, installed, repaired, and maintained by local crews.
           </p>
         </div>
 
@@ -953,7 +953,7 @@
             </li>
             <li>
               <span class="diff__icon" aria-hidden="true"><i class="fa-solid fa-people-group"></i></span>
-              Brooklyn crews who know prewar flats, brownstones and row houses
+              Brooklyn crews who know prewar flats, brownstones, and row houses
             </li>
             <li>
               <span class="diff__icon" aria-hidden="true"><i class="fa-solid fa-screwdriver-wrench"></i></span>
@@ -1115,7 +1115,7 @@
               <div class="systab__content">
                 <h3 class="systab__name">Shingle Roofing</h3>
                 <p class="systab__text">
-                  Asphalt shingle roofing is a popular choice for NYC homes for its affordability, durability, and range of styles, and typically lasts 20 to 30 years. We install, repair, and replace asphalt shingle roofs built to stand up to New York weather.
+                  Asphalt shingle roofing is a popular choice for NYC homes for its affordability, durability, and range of styles, and typically lasts 20 to 30 years. We install, repair, and replace asphalt shingle roofs built to stand up to NYC weather.
                 </p>
                 <dl class="systab__facts">
                   <div>
@@ -1184,7 +1184,7 @@
                   </div>
                   <div>
                     <dt>Systems</dt>
-                    <dd>Siding panels, trim and house wrap</dd>
+                    <dd>Siding panels, trim, and house wrap</dd>
                   </div>
                   <div>
                     <dt>Services</dt>
@@ -1361,6 +1361,11 @@
             <p class="section-eyebrow">Testimonials</p>
             <h2 class="section-title testi__title">What Brooklyn Customers <span class="accent">Say About Us</span></h2>
           </div>
+          <!-- Google + Yelp pair beside the heading (Oct 12, all sites). -->
+          <ul class="rv-badges" aria-label="Find our reviews">
+            <li class="rv-badge"><img src="images/Google__G__logo.svg.webp" alt="" width="28" height="28" loading="lazy" decoding="async"><span><strong>Google</strong><small>Reviews</small></span></li>
+            <li class="rv-badge"><i class="rv-badge__yelp fa-brands fa-yelp" aria-hidden="true"></i><span><strong>Yelp</strong><small>Reviews</small></span></li>
+          </ul>
         </div>
 
         <!-- Trustindex: live Google reviews widget -->
@@ -1628,7 +1633,7 @@
             <div class="contact__map-card">
               <div class="contact__map">
                 <iframe class="contact__map-frame"
-                        src="https://www.google.com/maps?q=NY+Roofing,+553+Prospect+Ave,+Brooklyn,+NY+11215&output=embed"
+                        src="https://www.google.com/maps?q=NY+Roofing,+553+Prospect+Ave,+Brooklyn,+NY+11215&z=16&output=embed"
                         title="Map showing NY Roofing at 553 Prospect Ave, Brooklyn, NY 11215"
                         loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
               </div>
@@ -1637,7 +1642,7 @@
 
           <!-- Form card (validation hooks unchanged — see contactForm in JS). -->
           <div class="quote contact__form-card">
-            <p class="quote__title">Get A Free Quote</p>
+            <p class="quote__title"><span class="quote__title-box quote__title-box--duo">Get A Free Quote</span></p>
 
             <form class="quote__form" id="contact-form" action="#" method="post" novalidate>
               <div class="field">
@@ -1786,6 +1791,6 @@
   </a>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-  <script src="js/nyroofing4.js?v=2" defer></script>
+  <script src="js/nyroofing4.js?v=3" defer></script>
 </body>
 </html>
