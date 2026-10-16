@@ -7467,3 +7467,7 @@ body { overflow-x: clip; }
 @media (max-width: 40em) {
   .rv-badge { min-height: 2.75rem; padding: .375rem .75rem .375rem .5rem; }
 }
+
+/* Oct 16: About shows Sean's team photo on its own, uncropped. */
+.abt__shot--main { aspect-ratio: 4 / 3; }
+.abt__shot--main .media-frame__image { object-position: 50% 60%; transform: none; }
