@@ -24,7 +24,7 @@
   <!-- Standalone sheet. This page shares no CSS with index/nyc2 so the new
        brand palette can never leak into the Royal Renovators pages. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="css/nyroofing4.css?v=19">
+  <link rel="stylesheet" href="css/nyroofing4.css?v=21">
 </head>
 <body>
 
@@ -127,8 +127,8 @@
                 <div class="mega mega--sm" id="menu-exteriors" hidden>
                   <ul class="mega__list">
                     <li><a href="#siding"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-grip-lines"></i></span><span>Siding</span></a></li>
-                    <li><a href="#gutters"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><span>Gutters</span></a></li>
                     <li><a href="#masonry"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-trowel-bricks"></i></span><span>Masonry</span></a></li>
+                    <li><a href="#gutters"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><span>Gutters</span></a></li>
                   </ul>
                 </div>
               </li>
@@ -242,8 +242,8 @@
             <div class="mobile-nav__subwrap">
               <ul class="mobile-nav__sub">
                 <li><a href="#siding">Siding</a></li>
-                <li><a href="#gutters">Gutters</a></li>
                 <li><a href="#masonry">Masonry</a></li>
+                <li><a href="#gutters">Gutters</a></li>
               </ul>
             </div>
           </li>
@@ -385,9 +385,8 @@
               <p class="field__error" data-error-for="q-address" hidden></p>
             </div>
 
-            <!-- Optional on purpose: four required fields is already the most a
-                 hero form should ask for, and the detail is what an estimator
-                 would phone to get anyway. -->
+            <!-- Required like every other field (Sean, Oct 19: no form may
+                 submit with a blank field). -->
             <div class="field field--wide">
               <label class="field__label" for="q-message">How Can We Help?</label>
               <textarea class="field__input field__input--area" id="q-message" name="message"
@@ -607,40 +606,20 @@
                 row houses to apartment buildings and commercial properties.
               </p>
 
+              <!-- Oct 19 (Sean): cut to one paragraph and four one-line points,
+                   so the copy is no taller than the team photo beside it. -->
               <p class="abt__text mob-hide">
-                NY Roofing has been serving residential and commercial properties
-                across Brooklyn for years. From private homes and
-                <a href="#services">brownstones</a> to apartment buildings and
-                commercial properties, we understand the structural,
-                environmental, and regulatory challenges that Brooklyn roofs face
-                and we tailor our roofing solutions accordingly.
+                NY Roofing serves homes, <a href="#services">brownstones</a>, apartment
+                buildings, and commercial properties across Brooklyn. Every roof is walked
+                and photographed before we write a price, and our own crew does the job
+                from tear-off to the final sweep.
               </p>
 
-              <p class="abt__text mob-hide">
-                Every roof is walked and photographed before a price is written, and the
-                quote you get back separates the repair from the replacement so you can
-                see what you are paying for. The crew on the job is ours, and the same
-                foreman stays with the building from tear-off to the final sweep.
-              </p>
-
-              <!-- Four short points where the mission panel and the address cards
-                   used to sit. The section was carrying a tinted box, two contact
-                   cards and two buttons in one column; this is one device instead
-                   of three, and the details it dropped are in the footer and on
-                   the contact page already. -->
-              <ul class="abt__points mob-hide">
-                <li>
-                  <span>Brownstones, row houses, and flat-roof apartment buildings</span>
-                </li>
-                <li>
-                  <span>Written, Itemized Quotes With Photographs Of Every Problem Area</span>
-                </li>
-                <li>
-                  <span>Emergency leak response, seven days a week</span>
-                </li>
-                <li>
-                  <span>Licensed and insured across all five boroughs</span>
-                </li>
+              <ul class="abt__points abt__points--short mob-hide">
+                <li><span>Brownstones and Row Houses</span></li>
+                <li><span>Written, Itemized Quotes</span></li>
+                <li><span>24/7 Emergency Leak Response</span></li>
+                <li><span>Licensed and Insured</span></li>
               </ul>
 
               <!-- The page's own .btn, so these carry the same skew wipe as
@@ -1626,7 +1605,7 @@
             <div class="contact__map-card">
               <div class="contact__map">
                 <iframe class="contact__map-frame"
-                        src="https://www.google.com/maps?q=NY+Roofing,+553+Prospect+Ave,+Brooklyn,+NY+11215&z=16&output=embed"
+                        src="https://www.google.com/maps?q=NY+Roofing,+553+Prospect+Ave,+Brooklyn,+NY+11215&z=13&output=embed"
                         title="Map showing NY Roofing at 553 Prospect Ave, Brooklyn, NY 11215"
                         loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
               </div>
@@ -1784,6 +1763,6 @@
   </a>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-  <script src="js/nyroofing4.js?v=3" defer></script>
+  <script src="js/nyroofing4.js?v=4" defer></script>
 </body>
 </html>

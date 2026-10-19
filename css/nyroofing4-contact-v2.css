@@ -162,6 +162,16 @@ a.ch-tile:hover .ch-tile__value { color: var(--brand); }
   padding-block: .875rem clamp(1.5rem, 1rem + 1.4vw, 2.5rem);
 }
 
+/* Oct 19 (Sean): the form 25% narrower on desktop (45% of the row instead of
+   60%). Nitesh: the video column takes most of the freed width, so only a
+   slightly wider gap is left between the two. */
+@media (min-width: 62em) {
+  .ch__main {
+    grid-template-columns: minmax(0, 1fr) calc((100% - 2rem) * .45);
+    column-gap: 3.5rem;
+  }
+}
+
 .ch__left {
   display: flex;
   flex-direction: column;
@@ -393,8 +403,12 @@ a.ch-tile:hover .ch-tile__value { color: var(--brand); }
   border: 0;
 }
 
+/* Oct 19 (Sean): the whole team photo, as in the homepage About section. The
+   4:3 frame matches the photo, so nothing is cropped off the bottom; the map
+   column grows to the same height. */
 .ch-office__photo {
   position: relative;
+  aspect-ratio: 4 / 3;
   min-height: 19rem;
   margin: 0;
   overflow: hidden;
@@ -414,7 +428,7 @@ a.ch-tile:hover .ch-tile__value { color: var(--brand); }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 35%;
+  object-position: 50% 60%;
 }
 
 

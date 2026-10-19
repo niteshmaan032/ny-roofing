@@ -88,15 +88,38 @@
       trigger.setAttribute('aria-expanded', 'true');
     }
 
+    // Hover intent (Oct 19, Sean: "the dropdown doesn't stick"). The Roofing
+    // card runs under the Exteriors and Areas Served tabs, so a cursor heading
+    // diagonally for its second or third column crossed those tabs and swapped
+    // menus at once. Now a menu that is already open stays put while the cursor
+    // only passes over another tab, and leaving gets a longer grace period.
+    var CLOSE_DELAY = 400;
+    var SWITCH_DELAY = 220;
+    var closeTimer;
+    var switchTimer;
+
+    function active() {
+      for (var i = 0; i < triggers.length; i++) {
+        if (triggers[i].getAttribute('aria-expanded') === 'true') return triggers[i];
+      }
+      return null;
+    }
+
     triggers.forEach(function (trigger) {
       var item = trigger.closest('.primary-nav__item');
-      var hoverTimer;
       // Hover already opened the panel by the time the pointer reaches the
       // button, so a click used to close it and a second click reopened it.
       // A click on a hover-opened panel now leaves it open; hover-leave closes.
       var openedByHover = false;
 
+      function hoverOpen() {
+        window.clearTimeout(closeTimer);
+        open(trigger);
+        openedByHover = true;
+      }
+
       trigger.addEventListener('click', function () {
+        window.clearTimeout(switchTimer);
         if (trigger.getAttribute('aria-expanded') === 'true') {
           if (openedByHover) { openedByHover = false; return; }
           close(trigger);
@@ -107,30 +130,26 @@
 
       if (!item) return;
 
+      // The panel sits inside the item, so these also cover the panel itself.
       item.addEventListener('mouseenter', function () {
         if (!DESKTOP.matches) return;
-        window.clearTimeout(hoverTimer);
-        if (trigger.getAttribute('aria-expanded') !== 'true') {
-          open(trigger);
-          openedByHover = true;
-        }
+        window.clearTimeout(switchTimer);
+        var current = active();
+        if (current === trigger) { window.clearTimeout(closeTimer); return; }
+        if (!current) { hoverOpen(); return; }
+        switchTimer = window.setTimeout(hoverOpen, SWITCH_DELAY);
       });
 
-      // A grace period covers the gap between trigger and panel, and forgives
-      // a cursor that clips a neighbouring item on the way down.
       item.addEventListener('mouseleave', function () {
         if (!DESKTOP.matches) return;
-        hoverTimer = window.setTimeout(function () { close(trigger); openedByHover = false; }, 180);
+        window.clearTimeout(switchTimer);
+        if (active() !== trigger) return;
+        window.clearTimeout(closeTimer);
+        closeTimer = window.setTimeout(function () {
+          if (active() === trigger) close(trigger);
+          openedByHover = false;
+        }, CLOSE_DELAY);
       });
-
-      var panel = panelOf(trigger);
-      if (panel) {
-        panel.addEventListener('mouseenter', function () { window.clearTimeout(hoverTimer); });
-        panel.addEventListener('mouseleave', function () {
-          if (!DESKTOP.matches) return;
-          hoverTimer = window.setTimeout(function () { close(trigger); }, 180);
-        });
-      }
     });
 
     document.addEventListener('click', function (event) {
@@ -152,7 +171,7 @@
       triggers.forEach(function (t) {
         if (t.getAttribute('aria-expanded') !== 'true') return;
         var item = t.closest('.primary-nav__item');
-        if (item && !item.contains(event.target)) close(t);
+        if (item && !item.contains(event.target) && !item.matches(':hover')) close(t);
       });
     });
 
@@ -512,7 +531,6 @@
       'c-phone': 'Enter your phone number',
       'c-email': 'Enter your email',
       'c-address': 'Enter the property address',
-      'c-phone': 'Enter your phone number',
       'c-message': 'Tell us how we can help'
     };
 
@@ -536,6 +554,9 @@
       var value = (input.value || '').trim();
       var message = '';
       if (!value) message = MESSAGES[input.id] || 'Required';
+      else if (input.type === 'tel' && value.replace(/\D/g, '').length < 10) {
+        message = 'Include the area code';
+      }
       else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
         message = 'Enter a valid email';
       }

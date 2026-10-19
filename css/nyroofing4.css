@@ -7236,6 +7236,20 @@ body { overflow-x: clip; }
   .page-contact .pstep__text { font-size: .875rem; }
 }
 
+/* Oct 19 (Sean): phones only show steps 1 and 2, so say there are more,
+   in the words the Brooklyn sliders use. */
+.page-contact .swipe-hint { display: none; }
+@media (max-width: 47.99em) {
+  .page-contact .swipe-hint {
+    display: block;
+    margin: .5rem 0 0;
+    text-align: center;
+    font-size: .8125rem;
+    font-weight: var(--fw-semi);
+    color: var(--muted, #5f5f5f);
+  }
+}
+
 
 /* ==========================================================================
    Oct 5 call (Sean) — homepage and contact page
@@ -7471,3 +7485,7 @@ body { overflow-x: clip; }
 /* Oct 16: About shows Sean's team photo on its own, uncropped. */
 .abt__shot--main { aspect-ratio: 4 / 3; }
 .abt__shot--main .media-frame__image { object-position: 50% 60%; transform: none; }
+
+
+/* Oct 19 (Sean): About on the homepage, each point on one line. */
+.abt__points--short li span { white-space: nowrap; }

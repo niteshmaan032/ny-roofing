@@ -24,7 +24,7 @@
   <!-- Standalone sheet. This page shares no CSS with index/nyc2 so the new
        brand palette can never leak into the Royal Renovators pages. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="css/nyroofing4.css?v=19">
+  <link rel="stylesheet" href="css/nyroofing4.css?v=21">
 </head>
 <body class="page-contact">
 
@@ -125,6 +125,7 @@
                   <ul class="mega__list">
                     <li><a href="nyroofing4.html#siding"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-grip-lines"></i></span><span>Siding</span></a></li>
                     <li><a href="nyroofing4.html#masonry"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-trowel-bricks"></i></span><span>Masonry</span></a></li>
+                    <li><a href="nyroofing4.html#gutters"><span class="mega__icon" aria-hidden="true"><i class="fa-solid fa-droplet"></i></span><span>Gutters</span></a></li>
                   </ul>
                 </div>
               </li>
@@ -241,6 +242,7 @@
               <ul class="mobile-nav__sub">
                 <li><a href="nyroofing4.html#siding">Siding</a></li>
                 <li><a href="nyroofing4.html#masonry">Masonry</a></li>
+                <li><a href="nyroofing4.html#gutters">Gutters</a></li>
               </ul>
             </div>
           </li>
@@ -369,7 +371,7 @@
                  since the Google Business Profile was verified (Oct 2026) this
                  resolves to the NY Roofing listing with its rating card. -->
             <div class="cboard__map" id="map">
-              <iframe src="https://www.google.com/maps?q=NY+Roofing,+553+Prospect+Ave,+Brooklyn,+NY+11215&amp;z=14&amp;output=embed"
+              <iframe src="https://www.google.com/maps?q=NY+Roofing,+553+Prospect+Ave,+Brooklyn,+NY+11215&amp;z=12&amp;output=embed"
                       title="Map showing NY Roofing at 553 Prospect Ave, Brooklyn, NY 11215"
                       loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
 
@@ -408,7 +410,8 @@
                 <label class="field__label" for="c-message">How Can We Help?</label>
                 <textarea class="field__input field__input--area" id="c-message"
                           name="message" rows="3"
-                          placeholder="A leak, a new roof, or something else? Tell us what you need&hellip;"></textarea>
+                          placeholder="A leak, a new roof, or something else? Tell us what you need&hellip;" required></textarea>
+                <p class="field__error" data-error-for="c-message" hidden></p>
               </div>
               <button class="quote__submit cta-themed cta-07" type="submit">
                 <span class="cta-wrap"><span class="quote__submit-label cta-text">Get My Free Estimate</span></span>
@@ -463,6 +466,7 @@
             <p class="pstep__text">Materials ordered and delivered, with a start date you agree to.</p>
           </li>
         </ol>
+        <p class="swipe-hint" aria-hidden="true">&larr; Swipe to see more &rarr;</p>
 
       </div>
     </section>
@@ -620,6 +624,6 @@
   </a>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
-  <script src="js/nyroofing4.js?v=3" defer></script>
+  <script src="js/nyroofing4.js?v=4" defer></script>
 </body>
 </html>
