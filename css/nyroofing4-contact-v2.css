@@ -570,3 +570,9 @@ a.ch-tile:hover .ch-tile__value { color: var(--brand); }
 
 /* NYR-C7 / R4: the phone number stays on one line on an iPhone. */
 .ch-tile__value { white-space: nowrap; }
+
+/* Oct 22 (Nitesh): the Call Us / Hours tiles a little wider, still side by
+   side and left-aligned under the video. */
+@media (min-width: 62em) {
+  .ch__tiles .ch-tile { min-width: 15rem; padding: .5rem 1.25rem .5rem .5rem; }
+}
