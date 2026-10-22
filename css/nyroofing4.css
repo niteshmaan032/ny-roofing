@@ -7489,3 +7489,67 @@ body { overflow-x: clip; }
 
 /* Oct 19 (Sean): About on the homepage, each point on one line. */
 .abt__points--short li span { white-space: nowrap; }
+
+
+/* ==========================================================================
+   Oct 19 call (Sean), segment F: NY Roofing homepage + contact pages
+   ========================================================================== */
+
+/* NYR-H1: the white estimate button is the same size as the yellow phone
+   pill above it (as in the "Get A Free Quote" band further down). */
+.diff__banner-action .diff__banner-tel,
+.diff__banner-action .btn.cta-themed.cta-07 {
+  width: min(100%, 18rem);
+  min-height: 3.75rem;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+/* NYR-H2 / NYR-C3 / R1: reviews heading on two lines, all black. */
+.testi__line { display: block; color: var(--ink); }
+
+/* NYR-H4: a two-line message box, so the whole contact block fits one screen. */
+body:not(.page-contact) .contact__form-card .field__input--area { flex: none; height: 4rem; min-height: 4rem; }
+body:not(.page-contact) .contact__form-card .quote__form { align-content: start; }
+/* ...and the map grows to end level with the shorter form. */
+@media (min-width: 62em) {
+  body:not(.page-contact) .contact__side .contact__map-card { height: 21rem; }
+}
+
+/* NYR-H5: the three info cards are clear, not black; black values, dark grey
+   labels, the yellow icon chip stays. The form is the focus. */
+.contact__card,
+.contact__card--static,
+a.contact__card:hover {
+  border: 1px solid rgba(19, 18, 17, .14);
+  background-color: var(--white);
+  color: var(--ink);
+  box-shadow: none;
+}
+a.contact__card:hover { border-color: var(--brand); transform: translateY(-2px); }
+.contact__card-title { color: #5C5850; }
+.contact__card-value,
+a.contact__card:hover .contact__card-value { color: var(--ink); }
+a.contact__card:hover .contact__chip { background-color: var(--brand); color: var(--ink); }
+
+/* NYR-H7: every footer text pure white (the icons stay yellow). */
+.site-footer__about,
+.site-footer__badges li,
+.site-footer__col a:not(.site-footer__cta),
+.site-footer__contact li,
+.site-footer__contact a,
+.site-footer__addr,
+.site-footer__bar,
+.site-footer__copy,
+.site-footer__terms,
+.site-footer__sep,
+.site-footer__chip,
+.site-footer__google { color: #fff; }
+.site-footer__col a:not(.site-footer__cta):hover,
+.site-footer__terms:hover { color: var(--brand); }
+
+/* NYR-C6 / R3: no floating call button on any screen (the header has one). */
+.call-fab { display: none !important; }
+
+/* NYR-C7 / R4: a phone number never breaks across two lines. */
+a[href^="tel:"] { white-space: nowrap; }

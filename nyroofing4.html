@@ -24,7 +24,7 @@
   <!-- Standalone sheet. This page shares no CSS with index/nyc2 so the new
        brand palette can never leak into the Royal Renovators pages. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="css/nyroofing4.css?v=21">
+  <link rel="stylesheet" href="css/nyroofing4.css?v=22">
 </head>
 <body>
 
@@ -336,14 +336,15 @@
           </p>
 
           <div class="vhero__actions">
+            <!-- Oct 19: estimate left, call right (all sites). -->
+            <a class="btn cta-themed cta-07 vhero__estimate cta-w" href="nyroofing4-contact-v2.html">
+              <span class="btn__text cta-wrap"><span class="cta-text">Get A Free Estimate</span></span>
+            </a>
             <a class="btn cta-themed cta-07 vhero__call cta-y" href="tel:+16468380441">
               <span class="btn__pip" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
               <span class="btn__text cta-wrap">
                 <span class="btn__number cta-text">Call (646) 838-0441</span>
               </span>
-            </a>
-          <a class="btn cta-themed cta-07 vhero__estimate cta-w" href="#contact">
-              <span class="btn__text cta-wrap"><span class="cta-text">Get A Free Estimate</span></span>
             </a>
           </div>
 
@@ -491,7 +492,7 @@
     <!-- ================= 1. About =================
          Built on the hero's curve language: soft rounded panels doing the
          separating, no hairline rules anywhere in the section. -->
-    <section class="section local" id="about">
+    <section class="section local" id="about-old">
       <div class="container">
 
         <div class="local__grid">
@@ -559,11 +560,11 @@
             </ul>
 
             <div class="local__actions">
-              <a class="btn cta-themed cta-07 cta-y" href="#contact">
+              <a class="btn cta-themed cta-07 cta-y" href="#about">
                 <span class="btn__pip" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
                 <span class="btn__text cta-wrap"><span class="btn__number cta-text">About Us</span></span>
               </a>
-              <a class="btn cta-themed cta-07 local__actions-alt cta-w" href="#contact">
+              <a class="btn cta-themed cta-07 local__actions-alt cta-w" href="nyroofing4-contact-v2.html">
                 <span class="btn__pip" aria-hidden="true"><i class="fa-solid fa-clipboard-check"></i></span>
                 <span class="btn__text cta-wrap"><span class="btn__number cta-text">Request A Free Quote</span></span>
               </a>
@@ -577,7 +578,7 @@
 
 
     <!-- ================= 1b. About (rebuilt to spec) ================= -->
-    <section class="abt" id="about-new">
+    <section class="abt" id="about">
       <div class="container">
         <div class="abt__card">
 
@@ -629,7 +630,7 @@
                 <li><span class="abt__points-icon" aria-hidden="true"><i class="fa-solid fa-bolt"></i></span><span>24/7 Emergency Response</span></li>
               </ul>
               <div class="abt__actions">
-                <a class="btn cta-themed cta-07 cta-y" href="#contact">
+                <a class="btn cta-themed cta-07 cta-y" href="nyroofing4-contact-v2.html">
                   <span class="btn__pip" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
                   <span class="btn__text cta-wrap"><span class="btn__number cta-text">Get A Free Estimate Today</span></span>
                 </a>
@@ -976,7 +977,7 @@
                 (646) 838-0441
               </a>
               <p class="diff__banner-or"><span>or</span></p>
-              <a class="btn cta-themed cta-07 btn--block" href="#contact">
+              <a class="btn cta-themed cta-07" href="nyroofing4-contact-v2.html">
                 <span class="btn__text cta-wrap"><span class="btn__number cta-text">Get A Free Estimate</span></span>
               </a>
             </div>
@@ -1253,7 +1254,7 @@
               </a>
             </div>
             <p class="cta-band__action-or"><span>or</span></p>
-            <a class="btn cta-themed cta-07 cta-w" href="#contact">
+            <a class="btn cta-themed cta-07 cta-w" href="nyroofing4-contact-v2.html">
               <span class="btn__text cta-wrap"><span class="btn__number cta-text">Get A Free Estimate</span></span>
             </a>
           </div>
@@ -1331,7 +1332,7 @@
         <div class="testi__head">
           <div>
             <p class="section-eyebrow">Testimonials</p>
-            <h2 class="section-title testi__title">What Brooklyn Customers <span class="accent">Say About Us</span></h2>
+            <h2 class="section-title testi__title">What Brooklyn Customers <span class="testi__line">Say About NY Roofing</span></h2>
           </div>
           <!-- Google + Yelp pair beside the heading (Oct 12, all sites). -->
           <ul class="rv-badges" aria-label="Find our reviews">
@@ -1484,7 +1485,7 @@
         </div>
 
         <div class="faq__grid">
-          <details class="qa">
+          <details class="qa" name="faq-home">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">01</span>
               <span class="qa__label">What types of roofing services do you provide in Brooklyn?</span>
@@ -1492,7 +1493,7 @@
             </summary>
             <p class="qa__a">We offer roof repairs, replacements, installations, and maintenance for flat roofs, shingle roofs, slate roofs, and more. Our solutions are tailored to the unique needs of Brooklyn residential and commercial properties.</p>
           </details>
-          <details class="qa">
+          <details class="qa" name="faq-home">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">02</span>
               <span class="qa__label">How do I know if my roof needs to be repaired or replaced?</span>
@@ -1500,7 +1501,7 @@
             </summary>
             <p class="qa__a">Signs like leaks, water stains, missing shingles, ponding water, or visible wear are common indicators. Our team provides thorough inspections to help you understand the best solution for your roof.</p>
           </details>
-          <details class="qa">
+          <details class="qa" name="faq-home">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">03</span>
               <span class="qa__label">How long does a typical roofing project take?</span>
@@ -1508,7 +1509,7 @@
             </summary>
             <p class="qa__a">Project timelines depend on the size and complexity of the roof and the type of service needed. Most residential repairs can be completed in a day, while full replacements may take several days.</p>
           </details>
-          <details class="qa mob-hide">
+          <details class="qa mob-hide" name="faq-home">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">04</span>
               <span class="qa__label">Are you licensed and insured in Brooklyn, NY?</span>
@@ -1516,7 +1517,7 @@
             </summary>
             <p class="qa__a">Yes, NY Roofing is fully licensed and insured to perform roofing work in New York City. We follow all local building codes and safety standards to ensure quality and peace of mind.</p>
           </details>
-          <details class="qa mob-hide">
+          <details class="qa mob-hide" name="faq-home">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">05</span>
               <span class="qa__label">What roofing materials do you recommend for Brooklyn buildings?</span>
@@ -1524,7 +1525,7 @@
             </summary>
             <p class="qa__a">We recommend materials based on your building structure, budget, and long-term goals. Popular options include flat roofing systems, asphalt shingles, clay tiles, and slate roofing.</p>
           </details>
-          <details class="qa">
+          <details class="qa" name="faq-home">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">06</span>
               <span class="qa__label">Do you offer warranties on your roofing services?</span>
@@ -1544,13 +1545,13 @@
             </div>
           </div>
           <div class="faq__foot-actions">
+            <a class="btn cta-themed cta-07 cta-w" href="nyroofing4-contact-v2.html">
+              <span class="btn__pip" aria-hidden="true"><i class="fa-solid fa-clipboard-check"></i></span>
+              <span class="btn__text cta-wrap"><span class="btn__number cta-text">Request A Free Estimate</span></span>
+            </a>
             <a class="faq__foot-tel cta-y" href="tel:+16468380441">
               <i class="fa-solid fa-phone" aria-hidden="true"></i>
               (646) 838-0441
-            </a>
-            <a class="btn cta-themed cta-07 cta-w" href="#contact">
-              <span class="btn__pip" aria-hidden="true"><i class="fa-solid fa-clipboard-check"></i></span>
-              <span class="btn__text cta-wrap"><span class="btn__number cta-text">Request A Free Estimate</span></span>
             </a>
           </div>
         </div>
@@ -1605,7 +1606,7 @@
             <div class="contact__map-card">
               <div class="contact__map">
                 <iframe class="contact__map-frame"
-                        src="https://www.google.com/maps?q=NY+Roofing,+553+Prospect+Ave,+Brooklyn,+NY+11215&z=13&output=embed"
+                        src="https://www.google.com/maps?q=NY+Roofing,+553+Prospect+Ave,+Brooklyn,+NY+11215&amp;z=12&amp;output=embed"
                         title="Map showing NY Roofing at 553 Prospect Ave, Brooklyn, NY 11215"
                         loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
               </div>
@@ -1674,12 +1675,7 @@
         <div class="site-footer__brand">
           <a class="site-footer__home" href="nyroofing4.html" aria-label="NY Roofing home"><img class="site-footer__logo" src="images/ny-roofing-logo-light.png?v=2"
                alt="NY Roofing" width="1348" height="742" loading="lazy"></a>
-          <p class="site-footer__about">
-            NY Roofing specializes in flat roof repair, replacement, and installation
-            for brownstones, attached brick homes, and mixed-use buildings across
-            Brooklyn&rsquo;s neighborhoods. We deliver quality workmanship for lasting
-            results. BBB Accredited.
-          </p>
+          <p class="site-footer__about">NY Roofing specializes in flat roof repair, replacement, and installation for brownstones, attached brick homes, and mixed-use buildings across Brooklyn&rsquo;s neighborhoods. We are BBB Accredited and have delivered quality roofing workmanship for 35+ years.</p>
           <!-- The social links, moved down from the header strip. -->
           <ul class="socials socials--on-dark site-footer__socials">
             <li><a href="#facebook" aria-label="NY Roofing on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a></li>
@@ -1742,7 +1738,7 @@
           <a class="site-footer__terms" href="#terms">Terms and Conditions</a>
         </p>
         <ul class="site-footer__marks" aria-label="Ratings, accreditation and credentials">
-          <li class="site-footer__google"><img src="images/Google__G__logo.svg.webp" alt="Google" width="1280" height="1280" decoding="async"><span><strong>5.0</strong> <span class="star" aria-hidden="true">&#9733;</span><span class="visually-hidden">out of 5 on Google</span></span></li>
+          <li class="site-footer__google"><img src="images/Google__G__logo.svg.webp" alt="Google" width="1280" height="1280" decoding="async"><span><strong>5.0</strong> <span class="star" aria-hidden="true">&#9733;</span> <strong>Google</strong></span></li>
           <li class="site-footer__yelp"><img src="images/yelp-badge.png" alt="People love us on Yelp" width="540" height="539" loading="lazy" decoding="async"></li>
           <li class="site-footer__bbb"><img class="bbb-logo" src="images/bbb-accredited-640.png" alt="BBB Accredited Business" width="640" height="360" decoding="async"></li>
           <li class="site-footer__chip"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i>Licensed &amp; Insured</li>
@@ -1756,11 +1752,6 @@
 
 
 
-  <!-- Floating call button: a disc at rest, the number slides out on hover. -->
-  <a class="call-fab" href="tel:+16468380441" aria-label="Call NY Roofing on (646) 838-0441">
-    <span class="call-fab__label">(646) 838-0441</span>
-    <span class="call-fab__icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
-  </a>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
   <script src="js/nyroofing4.js?v=4" defer></script>

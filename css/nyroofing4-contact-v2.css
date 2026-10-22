@@ -538,3 +538,35 @@ a.ch-tile:hover .ch-tile__value { color: var(--brand); }
 .page-contact-v2 .ch-office__head { margin-bottom: clamp(.75rem, .6rem + .5vw, 1.125rem); }
 /* the map stays ≥ 19rem (304px): Google only shows the business card at that height */
 .page-contact .ch-process.process-sec { padding-top: clamp(1.75rem, 1.4rem + 1.2vw, 2.75rem); }
+
+/* ==========================================================================
+   Oct 19 call (Sean), segment F
+   ========================================================================== */
+
+/* NYR-C1: the trust marks without their white boxes: just the logos and text. */
+.ch__marks { gap: .75rem 1.75rem; }
+.ch__mark,
+.ch__mark--yelp {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+/* NYR-C2: the Call Us / Hours tiles about half the size, side by side at
+   their own width, left-aligned under the video. */
+.ch__tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: .5rem;
+}
+.ch__tiles .ch-tile { flex: 0 0 auto; gap: .5rem; padding: .375rem .875rem .375rem .375rem; border-radius: 8px; }
+.ch__tiles .ch-tile__icon { width: 1.75rem; height: 1.75rem; border-radius: 6px; font-size: .75rem; }
+.ch__tiles .ch-tile__body { gap: 0; }
+.ch__tiles .ch-tile__label { font-size: .625rem; }
+.ch__tiles .ch-tile__value { font-size: .875rem; }
+
+/* NYR-C7 / R4: the phone number stays on one line on an iPhone. */
+.ch-tile__value { white-space: nowrap; }

@@ -25,8 +25,8 @@
   <!-- Standalone sheet. This page shares no CSS with index/nyc2 so the new
        brand palette can never leak into the Royal Renovators pages. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="css/nyroofing4.css?v=21">
-  <link rel="stylesheet" href="css/nyroofing4-contact-v2.css?v=10">
+  <link rel="stylesheet" href="css/nyroofing4.css?v=22">
+  <link rel="stylesheet" href="css/nyroofing4-contact-v2.css?v=11">
 </head>
 <body class="page-contact page-contact-v2">
 
@@ -425,7 +425,7 @@
         <div class="testi__head">
           <div>
             <p class="section-eyebrow">Testimonials</p>
-            <h2 class="section-title testi__title" id="ch-reviews-title">What Brooklyn Customers <span class="accent">Say About NY Roofing</span></h2>
+            <h2 class="section-title testi__title" id="ch-reviews-title">What Brooklyn Customers <span class="testi__line">Say About NY Roofing</span></h2>
           </div>
           <ul class="rv-badges" aria-label="Find our reviews">
             <li class="rv-badge"><img src="images/Google__G__logo.svg.webp" alt="" width="28" height="28" loading="lazy" decoding="async"><span><strong>Google</strong><small>Reviews</small></span></li>
@@ -538,18 +538,18 @@
             Questions we get asked most before a first visit.
           </p>
           <div class="faq__foot-actions ch-faq__actions">
+            <a class="btn cta-themed cta-07 ch-faq__cta" href="#contact-form">
+              <span class="btn__text cta-wrap"><span class="btn__number cta-text">Request A Free Estimate</span></span>
+            </a>
             <a class="faq__foot-tel cta-y cta-pill" href="tel:+16468380441">
               <i class="fa-solid fa-phone" aria-hidden="true"></i>
               Call (646) 838-0441
-            </a>
-            <a class="btn cta-themed cta-07 ch-faq__cta" href="#contact-form">
-              <span class="btn__text cta-wrap"><span class="btn__number cta-text">Request A Free Estimate</span></span>
             </a>
           </div>
         </div>
 
         <div class="faq__grid ch-faq__list">
-          <details class="qa">
+          <details class="qa" name="faq-contact">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">01</span>
               <h3 class="qa__label">Is the estimate really free?</h3>
@@ -557,7 +557,7 @@
             </summary>
             <p class="qa__a">Yes. The inspection, the photographs, and the written quote cost nothing, and there is no obligation to book the work.</p>
           </details>
-          <details class="qa">
+          <details class="qa" name="faq-contact">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">02</span>
               <h3 class="qa__label">How quickly can you come out?</h3>
@@ -565,7 +565,7 @@
             </summary>
             <p class="qa__a">Most inspections happen within a day or two. Active leaks and storm damage are treated as emergencies and seen the same day.</p>
           </details>
-          <details class="qa">
+          <details class="qa" name="faq-contact">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">03</span>
               <h3 class="qa__label">Can you repair it, or does the whole roof have to go?</h3>
@@ -573,7 +573,7 @@
             </summary>
             <p class="qa__a">Often a repair is genuinely enough, and we will say so. The quote prices the repair and the replacement separately, with photographs, so the choice is yours to make.</p>
           </details>
-          <details class="qa">
+          <details class="qa" name="faq-contact">
             <summary class="qa__q">
               <span class="qa__num" aria-hidden="true">04</span>
               <h3 class="qa__label">Which areas do you cover?</h3>
@@ -599,12 +599,7 @@
         <div class="site-footer__brand">
           <a class="site-footer__home" href="nyroofing4.html" aria-label="NY Roofing home"><img class="site-footer__logo" src="images/ny-roofing-logo-light.png?v=2"
                alt="NY Roofing" width="1348" height="742" loading="lazy"></a>
-          <p class="site-footer__about">
-            NY Roofing specializes in flat roof repair, replacement, and installation
-            for brownstones, attached brick homes, and mixed-use buildings across
-            Brooklyn&rsquo;s neighborhoods. We deliver quality workmanship for lasting
-            results. BBB Accredited.
-          </p>
+          <p class="site-footer__about">NY Roofing specializes in flat roof repair, replacement, and installation for brownstones, attached brick homes, and mixed-use buildings across Brooklyn&rsquo;s neighborhoods. We are BBB Accredited and have delivered quality roofing workmanship for 35+ years.</p>
           <!-- The social links, moved down from the header strip. -->
           <ul class="socials socials--on-dark site-footer__socials">
             <li><a href="nyroofing4.html#facebook" aria-label="NY Roofing on Facebook"><i class="fa-brands fa-facebook-f" aria-hidden="true"></i></a></li>
@@ -667,7 +662,7 @@
           <a class="site-footer__terms" href="#terms">Terms and Conditions</a>
         </p>
         <ul class="site-footer__marks" aria-label="Ratings, accreditation and credentials">
-          <li class="site-footer__google"><img src="images/Google__G__logo.svg.webp" alt="Google" width="1280" height="1280" decoding="async"><span><strong>5.0</strong> <span class="star" aria-hidden="true">&#9733;</span><span class="visually-hidden">out of 5 on Google</span></span></li>
+          <li class="site-footer__google"><img src="images/Google__G__logo.svg.webp" alt="Google" width="1280" height="1280" decoding="async"><span><strong>5.0</strong> <span class="star" aria-hidden="true">&#9733;</span> <strong>Google</strong></span></li>
           <li class="site-footer__yelp"><img src="images/yelp-badge.png" alt="People love us on Yelp" width="540" height="539" loading="lazy" decoding="async"></li>
           <li class="site-footer__bbb"><img class="bbb-logo" src="images/bbb-accredited-640.png" alt="BBB Accredited Business" width="640" height="360" decoding="async"></li>
           <li class="site-footer__chip"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i>Licensed &amp; Insured</li>
@@ -681,11 +676,6 @@
 
 
 
-  <!-- Floating call button: a disc at rest, the number slides out on hover. -->
-  <a class="call-fab" href="tel:+16468380441" aria-label="Call NY Roofing on (646) 838-0441">
-    <span class="call-fab__label">(646) 838-0441</span>
-    <span class="call-fab__icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
-  </a>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
   <script src="js/nyroofing4.js?v=4" defer></script>
