@@ -1,0 +1,1658 @@
+/* ==========================================================================
+   NY Roofing: Flat Roofing service page. Loaded after nyroofing4.css, only by
+   nyroofing4-flat-roofing.html. Every rule here is page-specific; the shared
+   components (header, footer, buttons, .systab, .process-sec, .faq/.qa,
+   .testi, .cta-band) come from nyroofing4.css unchanged.
+
+   Section order follows the Royal Brooklyn flat roofing page Sean liked:
+   hero, services, buildings, systems, repair vs replace, process, why us,
+   areas, reviews, FAQs, estimate form, CTA band. Drawn in NY Roofing's
+   yellow on ink, Inter, the homepage's pills, radii and rhythm.
+   ========================================================================== */
+
+.page-flat-roofing {
+  --fr-tint: #F7F6F3;                  /* warm grey band (--surface-2) */
+  --fr-yellow-tint: rgba(252, 185, 9, .07);
+  --fr-line: rgba(19, 18, 17, .1);
+  --fr-pad: clamp(2rem, 1.4rem + 1.6vw, 3rem);
+}
+
+/* The homepage's phone ordering (main as a flex column) must not reach this
+   page. */
+.page-flat-roofing main { display: block; }
+
+.page-flat-roofing .nowrap { white-space: nowrap; }
+
+
+/* Section shell and heads ---------------------------------------------------- */
+
+.fr-sec { padding-block: var(--fr-pad); }
+
+/* Split head as on the homepage (projects / why us): eyebrow and title left,
+   one supporting line right, sharing the baseline. */
+.fr-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem clamp(2rem, 1rem + 3vw, 3.75rem);
+  margin-bottom: clamp(1.25rem, 1rem + 1vw, 2rem);
+}
+
+/* The homepage's pale-yellow eyebrow pill. */
+.fr-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0 0 .75rem;
+  padding: .5rem 1rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.fr-title {
+  max-width: 22ch;
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.75rem, 1.05rem + 2.25vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  text-wrap: balance;
+}
+.fr-accent { color: var(--brand); }
+
+.fr-lede {
+  max-width: 46ch;
+  margin: 0;
+  padding-bottom: .375rem;
+  color: #1E1C1A;
+  font-size: 1.125rem;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+.fr-center-lede {
+  max-width: 56ch;
+  margin: .75rem auto 0;
+  color: #1E1C1A;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  text-align: center;
+  text-wrap: pretty;
+}
+
+
+/* Button pairs: estimate (white) left, call (yellow, phone) right. ---------- */
+
+.fr-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem;
+}
+.fr-actions .btn.cta-themed.cta-07 { min-height: 3.25rem; padding: .75rem 1.5rem; }
+.fr-actions .btn.cta-themed.cta-07.cta-y { padding-left: 1.125rem; }
+.fr-actions .btn__number,
+.fr-actions .cta-text { white-space: nowrap; }
+
+
+
+/* 1. Hero (v3) ---------------------------------------------------------------------
+   A light service-page hero, deliberately unlike the homepage's ink diagonal:
+   the contact page's warm grey band, copy left, the job photo right in a
+   rounded card sitting on a thick yellow offset frame, with chips naming the
+   systems we install. Height is the content's, so it fits 1440 x 630. */
+
+.fr-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid #E2E2DE;
+  background-color: #F2F2F0;
+  color: var(--ink);
+}
+/* A faint dot field behind the photo column only. */
+.fr-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 0 52%;
+  background-image: radial-gradient(rgba(19, 18, 17, .09) 1px, transparent 1.5px);
+  background-size: 16px 16px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 35%);
+          mask-image: linear-gradient(90deg, transparent, #000 35%);
+}
+
+.fr-hero__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr);
+  align-items: center;
+  gap: 2rem clamp(2.5rem, 1rem + 4vw, 5rem);
+  padding-block: clamp(1.75rem, 1.2rem + 1.6vw, 2.75rem) clamp(2.25rem, 1.6rem + 1.8vw, 3.25rem);
+}
+
+.fr-crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem .5rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: .8125rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.fr-crumbs li { display: inline-flex; align-items: center; gap: .5rem; }
+.fr-crumbs li + li::before { content: "/"; color: var(--brand-deep); }
+.fr-crumbs a { color: var(--ink-2); text-decoration: none; }
+.fr-crumbs a:hover,
+.fr-crumbs a:focus-visible { color: var(--brand-ink); text-decoration: underline; }
+.fr-crumbs [aria-current] { color: var(--ink); }
+
+.fr-hero__title {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2.125rem, 1.35rem + 2.5vw, 3.375rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -.035em;
+  line-height: 1.08;
+}
+/* Ink words on a yellow marker: legible on the light band, still brand. */
+.fr-hero__title-alt {
+  display: inline-block;
+  margin-top: .125em;
+  padding: 0 .2em .04em;
+  border-radius: 6px;
+  background-color: var(--brand);
+}
+
+.fr-hero__lede {
+  max-width: 34rem;
+  margin: 1.125rem 0 0;
+  color: var(--ink-2);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.fr-hero .fr-actions { margin-top: 1.5rem; }
+.fr-btn-framed.btn.cta-themed.cta-07 { border: 2px solid var(--ink) !important; }
+
+/* Trust row in ink, for the light ground. */
+.fr-trust {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 1.5rem;
+  margin: 1.5rem 0 0;
+  padding: 1.125rem 0 0;
+  border-top: 1px solid rgba(19, 18, 17, .12);
+  list-style: none;
+}
+.fr-trust li { display: inline-flex; align-items: center; gap: .5rem; color: var(--ink); font-size: 1rem; font-weight: var(--fw-bold); }
+.fr-trust__google img { width: 1.625rem; height: 1.625rem; }
+.fr-trust__google strong { font-size: 1.125rem; font-weight: var(--fw-black); }
+.fr-trust__lic i { color: var(--brand-deep); }
+.fr-trust__bbb img { display: block; width: auto; height: 2.375rem; }
+.fr-trust__yelp img { display: block; width: 2.625rem; height: 2.625rem; }
+
+/* Photo card on a thick yellow offset frame. */
+.fr-hero__media {
+  position: relative;
+  margin: 0 1.125rem 1.125rem 0;
+}
+.fr-hero__media::before {
+  content: "";
+  position: absolute;
+  inset: 1.125rem -1.125rem -1.125rem 1.125rem;
+  border-radius: 24px;
+  background-color: var(--brand);
+}
+/* An ink corner tick on the frame, bottom-right. */
+.fr-hero__media::after {
+  content: "";
+  position: absolute;
+  right: -1.125rem;
+  bottom: -1.125rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-right: 6px solid var(--ink);
+  border-bottom: 6px solid var(--ink);
+  border-bottom-right-radius: 24px;
+}
+.fr-hero__frame {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border: 6px solid var(--white);
+  border-radius: 24px;
+  background-color: var(--ink);
+  box-shadow: 0 24px 48px -30px rgba(19, 18, 17, .55);
+}
+.fr-hero__frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 45%;
+}
+
+/* Floating chips: the systems we install, stacked over the photo's left edge. */
+.fr-hero__systems {
+  position: absolute;
+  left: -1.5rem;
+  bottom: 1.75rem;
+  z-index: 1;
+  display: grid;
+  justify-items: start;
+  gap: .375rem;
+}
+.fr-hero__systems-label {
+  padding: .25rem .625rem;
+  border-radius: 6px;
+  background-color: var(--ink);
+  color: var(--brand);
+  font-size: .6875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.fr-hero__sys {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .4375rem .875rem .4375rem .5rem;
+  border: 1px solid rgba(19, 18, 17, .1);
+  border-radius: 100px;
+  background-color: var(--white);
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+  box-shadow: 0 12px 24px -16px rgba(19, 18, 17, .5);
+}
+.fr-hero__sys i {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .75rem;
+}
+
+/* Quick fact chip at the photo's top-right. */
+.fr-hero__open {
+  position: absolute;
+  top: -1rem;
+  right: 1.5rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: .625rem;
+  margin: 0;
+  padding: .5rem 1rem .5rem .5rem;
+  border-radius: 12px;
+  background-color: var(--ink);
+  color: var(--white);
+  box-shadow: 0 14px 28px -18px rgba(19, 18, 17, .7);
+}
+.fr-hero__open-icon {
+  display: grid;
+  place-items: center;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 8px;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .875rem;
+}
+.fr-hero__open strong { display: block; font-size: .9375rem; font-weight: var(--fw-black); line-height: 1.2; }
+.fr-hero__open small { display: block; color: rgba(255, 255, 255, .7); font-size: .75rem; font-weight: var(--fw-semi); }
+
+
+/* 2. Services: three photo cards and a dark bar. ----------------------------------- */
+
+.fr-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, .75rem + .8vw, 1.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fr-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--fr-line);
+  border-radius: var(--radius-xl);
+  background-color: var(--white);
+  transition: box-shadow var(--dur-base) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+.fr-card:hover { box-shadow: 0 22px 40px -30px rgba(19, 18, 17, .45); transform: translateY(-2px); }
+
+.fr-card__photo {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  background-color: #E8E6E1;
+}
+.fr-card__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fr-card__photo::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background-color: var(--brand);
+}
+.fr-card__icon {
+  position: absolute;
+  left: 1.25rem;
+  bottom: -1.375rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 3px solid var(--white);
+  border-radius: 10px;
+  background-color: var(--ink);
+  color: var(--brand);
+  font-size: 1rem;
+}
+
+.fr-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 2rem 1.5rem 1.5rem;
+}
+.fr-card__title {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.3125rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: -.015em;
+  line-height: 1.25;
+}
+.fr-card__text {
+  margin: .625rem 0 0;
+  color: var(--ink-2);
+  font-size: .9375rem;
+  line-height: 1.65;
+}
+
+/* Check-mark list used by the cards. */
+.fr-ticks {
+  display: grid;
+  gap: .375rem;
+  margin: 1rem 0 0;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--fr-line);
+  list-style: none;
+}
+.fr-ticks li {
+  position: relative;
+  padding-left: 1.625rem;
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-semi);
+  line-height: 1.45;
+}
+.fr-ticks li::before {
+  content: "\f00c";
+  position: absolute;
+  left: 0;
+  top: .125rem;
+  display: grid;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-family: "Font Awesome 6 Free";
+  font-size: .5625rem;
+  font-weight: 900;
+}
+
+.fr-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: clamp(1rem, .75rem + .8vw, 1.5rem);
+  padding: 1rem 1rem 1rem clamp(1.25rem, 1rem + 1vw, 2rem);
+  border-radius: var(--radius-xl);
+  background-color: var(--dark);
+  color: rgba(255, 255, 255, .84);
+}
+.fr-bar__text { flex: 1 1 24rem; margin: 0; font-size: 1.0625rem; line-height: 1.5; }
+.fr-bar__text strong { color: var(--white); }
+
+
+/* 3. Residential & commercial: photo left, copy right. ------------------------------ */
+
+.fr-overview { background-color: var(--fr-tint); }
+
+.fr-overview__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(1.75rem, 1rem + 3vw, 4rem);
+}
+
+.fr-overview__photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background-color: var(--ink);
+}
+.fr-overview__photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 60%;
+}
+.fr-overview__photo::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 5px;
+  background-color: var(--brand);
+}
+.fr-overview__tag {
+  position: absolute;
+  left: 1rem;
+  bottom: 1.25rem;
+  padding: .375rem .75rem;
+  border-radius: 6px;
+  background-color: var(--white);
+  color: var(--ink);
+  font-size: .8125rem;
+  font-weight: var(--fw-bold);
+}
+
+.fr-overview__text {
+  margin: 1rem 0 0;
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+.fr-overview__text--sm { font-size: .9375rem; color: var(--muted); }
+
+.fr-overview__label {
+  margin: 1.25rem 0 .625rem;
+  color: var(--ink);
+  font-size: .8125rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.fr-chips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fr-chips li {
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+  min-height: 2.75rem;
+  padding: .5rem .875rem;
+  border: 1px solid var(--fr-line);
+  border-radius: 10px;
+  background-color: var(--white);
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-semi);
+}
+.fr-chips i { width: 1rem; color: var(--brand-deep); text-align: center; }
+
+
+/* 4. Systems: the homepage picker with three tabs. --------------------------------- */
+
+.fr-systems__head { margin-bottom: clamp(1.25rem, 1rem + 1vw, 2rem); }
+.fr-systab .systab__tabs { gap: .5rem; }
+@media (min-width: 62em) {
+  .fr-systab .systab__tab { min-width: 13.5rem; }
+  .fr-systab .systab__panel { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); }
+}
+
+
+/* 5. Repair or replace: two lists and a dark "not sure" card. ----------------------- */
+
+.fr-signs { background-color: var(--fr-tint); }
+
+.fr-signs__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 1.05fr);
+  gap: clamp(1rem, .75rem + .8vw, 1.5rem);
+  align-items: stretch;
+}
+
+.fr-sign {
+  padding: 1.5rem;
+  border: 1px solid var(--fr-line);
+  border-radius: var(--radius-xl);
+  background-color: var(--white);
+}
+.fr-sign__head {
+  display: flex;
+  align-items: center;
+  gap: .875rem;
+  margin: 0 0 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--fr-line);
+}
+.fr-sign__head strong { display: block; color: var(--ink); font-size: 1.1875rem; font-weight: var(--fw-bold); line-height: 1.25; }
+.fr-sign__head small { display: block; margin-top: .125rem; color: var(--muted); font-size: .875rem; }
+.fr-sign__mark {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 10px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: 1rem;
+}
+.fr-sign--replace .fr-sign__mark { background-color: var(--ink); color: var(--brand); }
+
+.fr-sign__list {
+  display: grid;
+  gap: .625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fr-sign__list li {
+  position: relative;
+  padding-left: 1.375rem;
+  color: var(--ink);
+  font-size: .9844rem;
+  line-height: 1.5;
+}
+.fr-sign__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .5rem;
+  width: .5rem;
+  height: .5rem;
+  border-radius: 2px;
+  background-color: var(--brand);
+  transform: rotate(45deg);
+}
+
+.fr-unsure {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background-color: var(--dark);
+  color: rgba(255, 255, 255, .84);
+}
+.fr-unsure__img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: .9;
+}
+/* No photo here (v4: every job photo appears once on the page): ink with a
+   yellow hatch fading in from the top-right corner. */
+.fr-unsure::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: repeating-linear-gradient(45deg, rgba(252, 185, 9, .16) 0 2px, transparent 2px 14px);
+  -webkit-mask-image: radial-gradient(120% 90% at 100% 0%, #000 0%, transparent 70%);
+          mask-image: radial-gradient(120% 90% at 100% 0%, #000 0%, transparent 70%);
+}
+.fr-unsure__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+}
+.fr-unsure__title { margin: 0; color: var(--white); font-size: 1.375rem; font-weight: var(--fw-bold); letter-spacing: -.015em; }
+.fr-unsure__text { margin: .5rem 0 1.125rem; font-size: .9375rem; line-height: 1.6; }
+.fr-actions--stack { gap: .625rem; }
+
+
+/* 6. Process: the contact page's steps, a little more room above. ------------------- */
+
+.page-flat-roofing .fr-process { padding-block: var(--fr-pad); background-color: var(--fr-tint); }
+.fr-process .process-sec__head { margin-bottom: clamp(1.25rem, 1rem + 1vw, 2rem); }
+
+
+/* 7. Why NY Roofing: six numbered points on the homepage's pale-yellow ground. ------- */
+
+.fr-why { background-color: var(--fr-yellow-tint); }
+
+.fr-why__marks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: .75rem 1.75rem;
+  margin: 0;
+  padding: 0 0 .5rem;
+  list-style: none;
+}
+.fr-why__mark { display: inline-flex; align-items: center; gap: .5rem; color: var(--ink); }
+.fr-why__mark img { display: block; width: 1.75rem; height: 1.75rem; }
+.fr-why__mark strong { font-size: 1.25rem; font-weight: var(--fw-black); }
+.fr-why__mark .fr-why__bbb { width: auto; height: 2.5rem; }
+.fr-why__mark .fr-why__yelp { width: 2.75rem; height: 2.75rem; }
+.fr-star { color: var(--brand-deep); font-size: 1.125rem; }
+
+.fr-why__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--fr-line);
+  border-radius: var(--radius-xl);
+  background-color: var(--white);
+  list-style: none;
+}
+.fr-why__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: .25rem 1rem;
+  padding: 1.5rem;
+  border-right: 1px solid var(--fr-line);
+  border-bottom: 1px solid var(--fr-line);
+}
+.fr-why__item:nth-child(3n) { border-right: 0; }
+.fr-why__item:nth-last-child(-n + 3) { border-bottom: 0; }
+.fr-why__num {
+  display: grid;
+  grid-row: span 2;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-black);
+}
+.fr-why__title { margin: .125rem 0 0; color: var(--ink); font-size: 1.125rem; font-weight: var(--fw-bold); line-height: 1.3; }
+.fr-why__text { margin: 0; color: var(--ink-2); font-size: .9375rem; line-height: 1.6; }
+
+
+/* 8. Areas: neighborhood links left, the map right. --------------------------------- */
+
+.fr-areas__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: stretch;
+  gap: clamp(1.75rem, 1rem + 3vw, 4rem);
+}
+.fr-areas__body { align-self: center; }
+.fr-areas__text {
+  max-width: 48ch;
+  margin: 1rem 0 0;
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.fr-areas__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .5rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fr-areas__list a,
+.fr-areas__also a {
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+  min-height: 2.875rem;
+  padding: .5rem .875rem;
+  border: 1px solid var(--fr-line);
+  border-radius: 10px;
+  background-color: var(--white);
+  color: var(--ink);
+  font-size: .9375rem;
+  font-weight: var(--fw-semi);
+  text-decoration: none;
+  transition: border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+.fr-areas__list i { color: var(--brand-deep); }
+.fr-areas__list a:hover,
+.fr-areas__list a:focus-visible,
+.fr-areas__also a:hover,
+.fr-areas__also a:focus-visible { border-color: var(--brand); background-color: rgba(252, 185, 9, .1); }
+
+.fr-areas__also {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem;
+  margin: 1rem 0 0;
+}
+.fr-areas__also span {
+  margin-right: .25rem;
+  color: var(--muted);
+  font-size: .8125rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.fr-areas__also a { min-height: 2.5rem; background-color: var(--ink); border-color: var(--ink); color: var(--white); }
+.fr-areas__also a:hover,
+.fr-areas__also a:focus-visible { color: var(--ink); }
+
+/* 19rem+: Google only shows the business card in the embed at that height. */
+.fr-areas__map {
+  min-height: 23rem;
+  overflow: hidden;
+  border: 1px solid var(--fr-line);
+  border-radius: var(--radius-xl);
+  background-color: #E8E6E1;
+}
+.fr-areas__map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 23rem;
+  border: 0;
+}
+
+
+/* 9. Reviews: the contact page's head, badges level with the title. ------------------ */
+
+.page-flat-roofing .fr-reviews {
+  padding-block: var(--fr-pad);
+  background-color: var(--fr-tint);
+}
+@media (min-width: 48em) {
+  .page-flat-roofing .fr-reviews .testi__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+  .page-flat-roofing .fr-reviews .testi__title { white-space: normal; max-width: 17em; }
+}
+
+
+/* 10. FAQ: the homepage layout (centered head, two-column grid, foot card). -- */
+
+.page-flat-roofing .fr-faq { padding-block: var(--fr-pad); background-color: var(--white); }
+/* Five questions in the two-column grid: the last one spans both columns. */
+.page-flat-roofing .fr-faq__list .qa:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+/* Each question is an H3 inside its summary, styled as the label was. */
+.page-flat-roofing h3.qa__label {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+
+/* 11. Estimate form: intro, tiles and a photo left; the contact page's yellow
+       form right (rules copied from nyroofing4-contact-v2.css, same classes). -- */
+
+.fr-quote__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) calc((100% - 3.5rem) * .5);
+  align-items: center;
+  gap: 2rem 3.5rem;
+}
+
+.fr-quote__intro {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.fr-quote__text {
+  max-width: 46ch;
+  margin: 1rem 0 0;
+  color: var(--ink-2);
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.fr-quote__tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.fr-quote__tiles .ch-tile { flex: 1 1 12rem; }
+.fr-quote__tiles .ch-tile--wide { flex-basis: 100%; }
+
+.fr-quote { background-color: var(--fr-tint); }
+
+/* Tiles: ink, a yellow chip, white text. */
+.ch-tile {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-width: 0;
+  padding: .625rem 1rem .625rem .625rem;
+  border-radius: 10px;
+  background-color: var(--ink);
+  color: var(--white);
+  text-decoration: none;
+}
+.ch-tile__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .875rem;
+}
+.ch-tile__body { display: grid; gap: .125rem; min-width: 0; font-style: normal; }
+.ch-tile__label {
+  color: rgba(255, 255, 255, .6);
+  font-size: .6875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .14em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+.ch-tile__value {
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: var(--fw-bold);
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: nowrap;
+}
+a.ch-tile__value:hover,
+a.ch-tile__value:focus-visible { color: var(--brand); }
+.ch-tile--wide .ch-tile__value { white-space: normal; }
+
+/* The form: solid brand yellow, black frame. */
+.ch-form {
+  position: relative;
+  min-width: 0;
+  padding: 1rem 1.75rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-xl);
+  background-color: var(--brand);
+  color: var(--ink);
+}
+.ch-form__head {
+  margin-bottom: .75rem;
+  padding-bottom: .75rem;
+  border-bottom: 1px solid rgba(19, 18, 17, .22);
+  text-align: center;
+}
+.ch-form__title {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.375rem, 1.2rem + .6vw, 1.5rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  text-transform: capitalize;
+}
+.ch-form__title .quote__title-box {
+  padding: .1875rem .875rem;
+  border: 2px solid var(--ink);
+  background-color: var(--white);
+}
+.ch-form__form[hidden] { display: none; }
+
+.ch-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem 1rem;
+}
+.ch-form__grid .field { gap: .25rem; min-width: 0; }
+.ch-form__grid .field--wide { grid-column: 1 / -1; }
+
+.ch-form .field__label {
+  color: var(--ink);
+  font-size: .75rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  line-height: 1.2;
+}
+.ch-form .field__input {
+  min-height: 2.75rem;
+  padding: .375rem .875rem;
+  border: 1px solid rgba(19, 18, 17, .3);
+  border-radius: 8px;
+  background-color: var(--white);
+  color: var(--ink);
+}
+.ch-form .field__input::placeholder { color: #6E6A62; }
+.ch-form .field__input:hover { border-color: rgba(19, 18, 17, .55); }
+.ch-form .field__input:focus,
+.ch-form .field__input:focus-visible {
+  outline: 0;
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(19, 18, 17, .2);
+}
+.ch-form .field__input--area { height: 5.5rem; min-height: 5.5rem; resize: vertical; }
+.ch-form .field__error { color: #7A0F0A; font-weight: var(--fw-bold); }
+.ch-form .field.is-invalid .field__input { border-color: #9B1C14; border-width: 2px; }
+
+/* Black pill: the strongest contrast the yellow allows. */
+.ch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  min-height: 3rem;
+  padding: .375rem 1.75rem .375rem .375rem;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  background-color: var(--ink);
+  color: var(--white);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.ch-btn__pip {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .8125rem;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.ch-btn:hover,
+.ch-btn:focus-visible { background-color: var(--white); color: var(--ink); }
+.ch-btn:hover .ch-btn__pip,
+.ch-btn:focus-visible .ch-btn__pip { transform: translateX(2px); }
+.ch-btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.ch-form__submit {
+  display: flex;
+  width: min(100%, 29rem);
+  margin: 1rem auto 0;
+}
+.ch-form__callback {
+  margin: .5rem 0 0;
+  color: var(--ink);
+  font-size: .875rem;
+  font-weight: var(--fw-bold);
+  text-align: center;
+}
+
+.ch-form__done { justify-items: center; text-align: center; }
+.ch-form__done .quote__done-mark { background-color: var(--ink); color: var(--brand); }
+.ch-form__done .quote__done-text,
+.ch-form__done .quote__done-text a { color: var(--ink); }
+
+
+/* 12. CTA band: estimate left, "or", call right, on one row. ------------------------- */
+
+.page-flat-roofing .fr-cta { padding-bottom: 0; }
+.page-flat-roofing .fr-cta .cta-band__inner { padding-block: clamp(2rem, 1.5rem + 1.6vw, 3.25rem); }
+
+.page-flat-roofing .fr-cta__action {
+  grid-template-columns: auto auto auto;
+  align-items: center;
+  gap: 1rem;
+  width: auto;
+  padding: 1.25rem 1.5rem;
+}
+.page-flat-roofing .fr-cta__action .btn.cta-themed.cta-07,
+.page-flat-roofing .fr-cta__action .cta-band__phone {
+  width: auto;
+  min-height: 3.5rem;
+  font-size: 1.125rem;
+  white-space: nowrap;
+}
+.page-flat-roofing .fr-cta__action .cta-band__action-or { display: block; color: rgba(255, 255, 255, .7); }
+.page-flat-roofing .fr-cta__action .cta-band__action-or::before,
+.page-flat-roofing .fr-cta__action .cta-band__action-or::after { content: none; }
+
+
+/* Tablet ------------------------------------------------------------------------- */
+
+@media (max-width: 74.99em) {
+  .fr-signs__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fr-unsure { grid-column: 1 / -1; min-height: 15rem; }
+  .fr-unsure__body { max-width: 34rem; }
+}
+
+@media (max-width: 61.99em) {
+  /* Hero: copy first, the framed photo below it. */
+  .fr-hero::before { inset: 50% 0 0 0; }
+  .fr-hero__inner { grid-template-columns: minmax(0, 1fr); gap: 2.5rem; }
+  .fr-hero__media { max-width: 40rem; }
+
+  .fr-head { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .fr-why__marks { justify-content: flex-start; }
+
+  .fr-cards { grid-template-columns: minmax(0, 1fr); }
+  .fr-card { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+  .fr-card__photo { aspect-ratio: auto; min-height: 14rem; }
+  .fr-card__photo::after { inset: 0 0 0 auto; width: 4px; height: auto; }
+  .fr-card__icon { left: auto; right: -1.375rem; bottom: 1.25rem; }
+  .fr-card__body { padding: 1.5rem 1.5rem 1.5rem 2.25rem; }
+
+  .fr-overview__grid,
+  .fr-areas__grid,
+  .fr-quote__grid { grid-template-columns: minmax(0, 1fr); }
+
+
+  .fr-why__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fr-why__item:nth-child(3n) { border-right: 1px solid var(--fr-line); }
+  .fr-why__item:nth-child(2n) { border-right: 0; }
+  .fr-why__item:nth-last-child(-n + 3) { border-bottom: 1px solid var(--fr-line); }
+  .fr-why__item:nth-last-child(-n + 2) { border-bottom: 0; }
+
+  /* Heading first, then the form, then what the estimate includes. */
+  .fr-quote__grid { gap: 0; }
+  .fr-quote__intro { display: contents; }
+  .fr-quote__intro .fr-eyebrow { justify-self: start; }
+  .fr-quote .ch-form { margin-top: 1.25rem; }
+  .fr-quote__ticks,
+  .fr-quote__tiles { order: 1; }
+
+  .page-flat-roofing .fr-cta__action { justify-self: center; }
+}
+
+
+/* Phone --------------------------------------------------------------------------- */
+
+@media (max-width: 40em) {
+  .page-flat-roofing { --fr-pad: 2rem; }
+
+  .fr-eyebrow { font-size: .8125rem; padding: .375rem .875rem; }
+  .fr-lede { font-size: 1rem; }
+
+  .fr-hero__inner { padding-block: 1.25rem 2.25rem; gap: 2.25rem; }
+  .fr-crumbs ol { font-size: .75rem; margin-bottom: .875rem; }
+  .fr-hero__title { font-size: 2.125rem; }
+  .fr-hero__lede { font-size: 1rem; }
+  .fr-hero .fr-actions { margin-top: 1.375rem; }
+  .fr-trust { gap: .75rem 1.25rem; }
+  .fr-trust li { font-size: .9375rem; }
+  .fr-trust__bbb img { height: 2.125rem; }
+  .fr-trust__yelp img { width: 2.375rem; height: 2.375rem; }
+
+  .fr-hero__media { margin: 0 .75rem .75rem 0; }
+  .fr-hero__media::before { inset: .75rem -.75rem -.75rem .75rem; border-radius: 18px; }
+  .fr-hero__media::after { right: -.75rem; bottom: -.75rem; width: 3rem; height: 3rem; border-width: 5px; border-bottom-right-radius: 18px; }
+  .fr-hero__frame { border-width: 4px; border-radius: 18px; }
+  /* Phones: the three system chips in one row along the photo's foot. */
+  .fr-hero__systems { left: .5rem; right: .5rem; bottom: .5rem; display: flex; flex-wrap: wrap; gap: .25rem; }
+  .fr-hero__systems-label { display: none; }
+  .fr-hero__sys { gap: .3125rem; padding: .25rem .5rem .25rem .25rem; font-size: .78125rem; }
+  .fr-hero__sys i { width: 1.375rem; height: 1.375rem; font-size: .625rem; }
+  .fr-hero__open { top: -.875rem; right: 1rem; padding: .375rem .75rem .375rem .375rem; }
+  .fr-hero__open-icon { width: 1.75rem; height: 1.75rem; font-size: .75rem; }
+
+  /* Pairs stack full width; the call stays second (right/below). */
+  .fr-actions { flex-direction: column; align-items: stretch; }
+  .fr-actions .btn.cta-themed.cta-07 { justify-content: center; width: 100%; }
+
+  .fr-card { display: flex; }
+  .fr-card__photo { aspect-ratio: 16 / 10; min-height: 0; }
+  .fr-card__photo::after { inset: auto 0 0; width: auto; height: 4px; }
+  .fr-card__icon { left: 1.25rem; right: auto; bottom: -1.375rem; }
+  .fr-card__body { padding: 1.875rem 1.25rem 1.25rem; }
+  .fr-bar { padding: 1.25rem; }
+  .fr-bar .fr-actions { width: 100%; }
+  .fr-bar__text { font-size: 1rem; }
+
+  .fr-chips { grid-template-columns: minmax(0, 1fr); }
+  .fr-chips li { min-height: 2.5rem; }
+
+  /* The homepage clamps the systems copy on phones; this page shows it all. */
+  .page-flat-roofing .systab__text { display: block; -webkit-line-clamp: unset; overflow: visible; }
+  .page-flat-roofing .systab__facts div:nth-child(3) { display: grid; }
+  .fr-systab .systab__tab { min-width: 0; }
+  .page-flat-roofing .systab__facts { grid-template-columns: minmax(0, 1fr); gap: .625rem; }
+  .page-flat-roofing .systab__cta { width: 100%; justify-content: center; }
+
+  .fr-signs__grid { grid-template-columns: minmax(0, 1fr); }
+  .fr-sign { padding: 1.25rem; }
+
+  /* Steps two by two, as compact as the contact page's slider cards. */
+  .page-flat-roofing .fr-process .process-sec__steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem .75rem; margin-top: 3rem; }
+  .page-flat-roofing .fr-process .pstep { padding: 3rem .75rem 1rem; }
+  .page-flat-roofing .fr-process .pstep + .pstep::after { content: none; }
+  .page-flat-roofing .fr-process .pstep__title { font-size: 1rem; }
+  .page-flat-roofing .fr-process .pstep__text { font-size: .875rem; line-height: 1.55; }
+  .fr-unsure { min-height: 0; }
+  .fr-unsure__body { padding: 1.5rem 1.25rem 1.25rem; }
+
+  .fr-why__grid { grid-template-columns: minmax(0, 1fr); }
+  .fr-why__item,
+  .fr-why__item:nth-child(3n),
+  .fr-why__item:nth-child(2n) { border-right: 0; border-bottom: 1px solid var(--fr-line); padding: 1.125rem 1.25rem; }
+  .fr-why__item:last-child { border-bottom: 0; }
+  .fr-why__num { width: 2.25rem; height: 2.25rem; font-size: .8125rem; }
+  .fr-why__mark .fr-why__bbb { height: 2.125rem; }
+
+  .fr-areas__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fr-areas__list a { font-size: .875rem; padding-inline: .625rem; gap: .5rem; }
+  .fr-areas__map,
+  .fr-areas__map iframe { min-height: 19rem; height: 19rem; }
+
+
+  .ch-form { padding: .875rem .875rem 1rem; }
+  .ch-form__grid { gap: .625rem; }
+  .fr-quote__tiles .ch-tile { flex-basis: 100%; }
+
+  .page-flat-roofing .fr-cta__action { grid-template-columns: minmax(0, 1fr); width: 100%; padding: 1rem; gap: .625rem; }
+  .page-flat-roofing .fr-cta__action .btn.cta-themed.cta-07,
+  .page-flat-roofing .fr-cta__action .cta-band__phone { width: 100%; justify-content: center; }
+  .page-flat-roofing .fr-cta__action .cta-band__action-or { text-align: center; }
+}
+
+@media (max-width: 22em) {
+  .ch-form__grid { grid-template-columns: minmax(0, 1fr); }
+  .fr-areas__list { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Estimate intro: what the free estimate includes, above the tiles. */
+.fr-quote__ticks { margin-top: 1.25rem; padding-top: 0; border-top: 0; }
+.fr-quote__ticks li { font-size: 1rem; }
+
+
+/* ==========================================================================
+   v2-v3 (Nitesh): mid-page banner, "where flat roofs leak", what's included.
+   Background order down the page: light grey hero, white, grey, white, banner, grey, white,
+   grey, white, pale yellow, white, grey, white, grey, ink.
+   ========================================================================== */
+
+/* Mid-page banner: brand yellow, an ink slab on the homepage diagonal at the
+   right carrying the button pair. Distinct from the video CTA band at the end. */
+.fr-banner {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--brand);
+  color: var(--ink);
+}
+.fr-banner__inner {
+  --bpad: clamp(1.75rem, 1.3rem + 1.4vw, 2.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 1.5rem 6rem;
+  padding-block: var(--bpad);
+}
+.fr-banner__copy { align-self: center; max-width: 40rem; }
+.fr-banner__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0 0 .5rem;
+  padding: .375rem .875rem;
+  border-radius: 100px;
+  background-color: var(--ink);
+  color: var(--brand);
+  font-size: .8125rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.fr-banner__title {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.625rem, 1.05rem + 1.9vw, 2.5rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -.03em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+.fr-banner__text { margin: .5rem 0 0; font-size: 1.0625rem; font-weight: var(--fw-medium); line-height: 1.5; }
+/* The ink slab belongs to the button cell: it runs from the cell's diagonal
+   left edge out to the viewport edge and the full band height, so the
+   buttons always sit on it whatever the screen width. A thin ink stripe
+   rides just ahead of the cut, the hero's stripe inverted. */
+.fr-banner__actions {
+  position: relative;
+  z-index: 0;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding-left: 1rem;
+}
+.fr-banner__actions::before,
+.fr-banner__actions::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: calc(-1 * var(--bpad));
+  bottom: calc(-1 * var(--bpad));
+  right: -100vw;
+  clip-path: polygon(4.5rem 0, 100% 0, 100% 100%, 0 100%);
+}
+.fr-banner__actions::before { left: -3.5rem; background-color: var(--dark); }
+.fr-banner__actions::after {
+  left: -4.75rem;
+  right: auto;
+  width: 5rem;
+  background-color: var(--dark);
+  clip-path: polygon(4.5rem 0, 4.875rem 0, .375rem 100%, 0 100%);
+}
+
+
+/* Where flat roofs leak: six sources left, the "water travels" panel right. */
+.fr-leaks__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: clamp(1rem, .75rem + .8vw, 1.5rem);
+  align-items: stretch;
+}
+.fr-leaks__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(.75rem, .6rem + .5vw, 1rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: leak;
+}
+.fr-leak {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  gap: .25rem 1rem;
+  padding: 1.25rem 1.25rem 1.25rem 1.125rem;
+  border: 1px solid var(--fr-line);
+  border-left: 4px solid var(--brand);
+  border-radius: 14px;
+  background-color: var(--white);
+  counter-increment: leak;
+}
+.fr-leak::after {
+  content: counter(leak, decimal-leading-zero);
+  position: absolute;
+  top: 1rem;
+  right: 1.125rem;
+  color: rgba(19, 18, 17, .18);
+  font-size: .875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .04em;
+}
+.fr-leak__icon {
+  display: grid;
+  grid-row: span 2;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 10px;
+  background-color: rgba(252, 185, 9, .18);
+  color: var(--brand-ink);
+  font-size: 1.0625rem;
+}
+.fr-leak__title { margin: .125rem 2rem 0 0; color: var(--ink); font-size: 1.0625rem; font-weight: var(--fw-bold); line-height: 1.3; }
+.fr-leak__text { margin: 0; color: var(--ink-2); font-size: .9375rem; line-height: 1.55; }
+
+.fr-travel {
+  position: relative;
+  overflow: hidden;
+  padding: 1.75rem 1.5rem 1.5rem;
+  border-radius: var(--radius-xl);
+  background-color: var(--dark);
+  color: rgba(255, 255, 255, .84);
+}
+.fr-travel::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 5px;
+  background-color: var(--brand);
+}
+.fr-travel__icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 10px;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: 1.0625rem;
+}
+.fr-travel__title { margin: 1rem 0 0; color: var(--white); font-size: 1.3125rem; font-weight: var(--fw-bold); letter-spacing: -.015em; line-height: 1.25; }
+.fr-travel__text { margin: .5rem 0 0; font-size: .9375rem; line-height: 1.6; }
+.fr-travel__label {
+  margin: 1.25rem 0 .625rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, .14);
+  color: var(--brand);
+  font-size: .75rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.fr-travel__list { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.fr-travel__list li { position: relative; padding-left: 1.375rem; font-size: .9375rem; line-height: 1.45; }
+.fr-travel__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .45rem;
+  width: .5rem;
+  height: .5rem;
+  border-radius: 2px;
+  background-color: var(--brand);
+  transform: rotate(45deg);
+}
+
+
+@media (max-width: 61.99em) {
+  .fr-banner__actions::before,
+  .fr-banner__actions::after { content: none; }
+  .fr-banner__inner { grid-template-columns: minmax(0, 1fr); }
+  .fr-banner__actions { padding: 1rem; border-radius: 14px; background-color: var(--dark); width: fit-content; flex-wrap: wrap; }
+  .fr-leaks__grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 40em) {
+  .fr-banner__inner { padding-block: 1.75rem; }
+  .fr-banner__title { font-size: 1.625rem; }
+  .fr-banner__text { font-size: 1rem; }
+  .fr-banner__actions { width: 100%; }
+
+  .fr-leaks__list { grid-template-columns: minmax(0, 1fr); }
+  .fr-leak { padding: 1rem 1rem 1rem .875rem; }
+
+
+}
+
+
+/* ==========================================================================
+   v4 (Nitesh): "Recent Flat Roofs" gallery and its lightbox; the system tabs
+   show a branded tile instead of a photo so no job photo repeats on the page.
+   ========================================================================== */
+
+/* System tab tile: ink, a yellow hatch, the system's name. */
+.fr-systile {
+  position: relative;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: .375rem;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  background-color: var(--dark);
+  background-image: repeating-linear-gradient(45deg, rgba(252, 185, 9, .1) 0 2px, transparent 2px 16px);
+  color: var(--white);
+  text-align: center;
+}
+.fr-systile::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 6px;
+  background-color: var(--brand);
+}
+.fr-systile__icon {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  margin-bottom: .5rem;
+  border-radius: 18px;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: 1.75rem;
+  box-shadow: 0 0 0 8px rgba(252, 185, 9, .16);
+}
+.fr-systile__name { font-size: clamp(2rem, 1.4rem + 2vw, 3rem); font-weight: var(--fw-black); letter-spacing: -.03em; line-height: 1; }
+.fr-systile__sub { color: rgba(255, 255, 255, .7); font-size: .8125rem; font-weight: var(--fw-bold); letter-spacing: .12em; text-transform: uppercase; }
+
+/* Gallery: the lead photo over two columns and two rows, two beside it,
+   three across underneath. */
+.fr-work__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: 12.5rem;
+  gap: .75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fr-work__item { min-width: 0; }
+.fr-work__item--lead { grid-column: span 2; grid-row: span 2; }
+
+.fr-work__open {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 14px;
+  background-color: var(--ink);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: zoom-in;
+}
+.fr-work__open img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s var(--ease-out);
+}
+.fr-work__open::after {
+  content: "";
+  position: absolute;
+  inset: 45% 0 0;
+  background: linear-gradient(transparent, rgba(12, 11, 10, .72));
+  pointer-events: none;
+}
+.fr-work__open:hover img,
+.fr-work__open:focus-visible img { transform: scale(1.04); }
+.fr-work__open:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+.fr-work__zoom {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .8125rem;
+  opacity: .92;
+}
+.fr-work__cap {
+  position: absolute;
+  left: .875rem;
+  right: .875rem;
+  bottom: .875rem;
+  z-index: 1;
+  display: grid;
+  justify-items: start;
+  gap: .25rem;
+}
+.fr-work__tag {
+  padding: .1875rem .5rem;
+  border-radius: 6px;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .6875rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.fr-work__title { color: var(--white); font-size: .9375rem; font-weight: var(--fw-bold); line-height: 1.3; text-shadow: 0 1px 8px rgba(0, 0, 0, .4); }
+.fr-work__item--lead .fr-work__title { font-size: 1.25rem; }
+
+.fr-work__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--fr-line);
+}
+.fr-work__all {
+  display: inline-flex;
+  align-items: center;
+  gap: .625rem;
+  min-height: 3.25rem;
+  padding: .75rem 1.5rem;
+  border-radius: 8px;
+  background-color: var(--ink);
+  color: var(--white);
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  text-decoration: none;
+  transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+.fr-work__all i { color: var(--brand); transition: transform var(--dur-fast) var(--ease-out); }
+.fr-work__all:hover,
+.fr-work__all:focus-visible { background-color: var(--brand); color: var(--ink); }
+.fr-work__all:hover i,
+.fr-work__all:focus-visible i { color: var(--ink); transform: translateX(3px); }
+
+/* Lightbox. */
+.fr-lb {
+  width: min(100vw - 2rem, 70rem);
+  max-width: none;
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 18px;
+  background: var(--dark);
+  color: var(--white);
+}
+.fr-lb::backdrop { background: rgba(12, 11, 10, .82); }
+html.fr-lb-open { overflow: hidden; }
+.fr-lb__inner { position: relative; padding: 1rem; }
+.fr-lb__fig { margin: 0; }
+.fr-lb__img {
+  display: block;
+  width: 100%;
+  max-height: calc(100dvh - 9rem);
+  object-fit: contain;
+  border-radius: 10px;
+  background-color: #000;
+}
+.fr-lb__cap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .5rem .75rem;
+  padding: .875rem .25rem 0;
+}
+.fr-lb__title { font-size: 1rem; font-weight: var(--fw-bold); }
+.fr-lb__count { margin-left: auto; color: rgba(255, 255, 255, .6); font-size: .875rem; font-variant-numeric: tabular-nums; }
+.fr-lb__close,
+.fr-lb__nav {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.fr-lb__close { top: -1rem; right: -1rem; }
+.fr-lb__nav { top: 50%; transform: translateY(-50%); }
+.fr-lb__nav--prev { left: -1.375rem; }
+.fr-lb__nav--next { right: -1.375rem; }
+.fr-lb__close:hover, .fr-lb__nav:hover,
+.fr-lb__close:focus-visible, .fr-lb__nav:focus-visible { background-color: var(--white); outline: 3px solid var(--brand); outline-offset: 2px; }
+
+@media (max-width: 61.99em) {
+  .fr-work__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 12rem; }
+  .fr-work__item--lead { grid-column: 1 / -1; grid-row: span 2; }
+  /* Five photos under the lead in two columns: the last one runs full width. */
+  .fr-work__item:last-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 40em) {
+  .fr-systile__icon { width: 3.5rem; height: 3.5rem; font-size: 1.375rem; border-radius: 14px; }
+
+  .fr-work__grid { grid-auto-rows: 9.5rem; gap: .5rem; }
+  .fr-work__cap { left: .5rem; right: .5rem; bottom: .5rem; }
+  .fr-work__item:not(.fr-work__item--lead) .fr-work__title { font-size: .8125rem; }
+  .fr-work__item--lead .fr-work__title { font-size: 1rem; }
+  .fr-work__zoom { top: .5rem; right: .5rem; width: 1.75rem; height: 1.75rem; font-size: .6875rem; }
+  .fr-work__foot { flex-direction: column; align-items: stretch; }
+  .fr-work__all { justify-content: center; }
+
+  .fr-lb { width: calc(100vw - 1rem); }
+  .fr-lb__inner { padding: 3.75rem .5rem .75rem; }
+  .fr-lb__close { top: .5rem; right: .5rem; }
+  .fr-lb__nav { top: .5rem; transform: none; }
+  .fr-lb__nav--prev { left: .5rem; }
+  .fr-lb__nav--next { left: 3.75rem; right: auto; }
+}
+
+/* Phones and tablets: the system tile is a short band, not a 4:3 block. */
+@media (max-width: 61.99em) {
+  .fr-systile { aspect-ratio: 16 / 7; }
+  .fr-systile__icon { margin-bottom: .25rem; }
+}

@@ -1,0 +1,609 @@
+/* ==========================================================================
+   NY Roofing: Blog (nyroofing4-blog.html). Loaded after nyroofing4.css, only
+   by this page. Tokens, header, footer, buttons, eyebrows, the blog card
+   (.bcard), the reviews head and the CTA band all come from the shared sheet;
+   this file adds the page head, topic chips, featured article, grid, and the
+   "Ask the team" band.
+   Layout follows the NYC Renovators Brooklyn blog (head, topic strip,
+   featured, grid, CTA band), drawn in NY Roofing's yellow and ink.
+   ========================================================================== */
+
+.page-blog {
+  --bl-band: #F2F2F0;            /* the contact page's grey heading band */
+  --bl-band-line: #E2E2DE;
+  --bl-pale: #FFF6D8;            /* pale brand yellow (contact form card) */
+}
+
+/* The homepage's phone section order must not reach this page. */
+.page-blog main { display: block; }
+
+
+/* 1. Page head ---------------------------------------------------------------- */
+
+.bhead__band {
+  padding-block: clamp(1.125rem, .9rem + .8vw, 1.75rem);
+  border-bottom: 1px solid var(--bl-band-line);
+  background-color: var(--bl-band);
+}
+.bhead__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem 2.5rem;
+}
+.bhead__copy { min-width: 0; max-width: 60rem; }
+
+.bhead__crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .25rem .5rem;
+  margin: 0 0 .375rem;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: .75rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.bhead__crumbs li + li::before { content: "/"; margin-right: .5rem; color: rgba(19, 18, 17, .3); }
+.bhead__crumbs a { color: var(--ink); text-decoration: none; }
+.bhead__crumbs a:hover,
+.bhead__crumbs a:focus-visible { text-decoration: underline; text-decoration-color: var(--brand-deep); text-underline-offset: 3px; }
+
+.bhead__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.2rem + 1.9vw, 2.75rem);
+  font-weight: var(--fw-black);
+  letter-spacing: -.035em;
+  line-height: 1.12;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.bhead__lede {
+  margin: .5rem 0 0;
+  font-size: 1.0625rem;
+  font-weight: var(--fw-medium);
+  line-height: 1.55;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* Search: white field with the ink frame of the site's inputs. */
+.bsearch { flex: 0 1 26rem; min-width: 0; }
+.bsearch__label {
+  display: block;
+  margin-bottom: .375rem;
+  font-size: .75rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.bsearch__field { position: relative; }
+.bsearch__icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: .9375rem;
+  pointer-events: none;
+}
+.bsearch__input {
+  width: 100%;
+  min-height: 3.25rem;
+  padding: .75rem 3rem .75rem 2.75rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  background-color: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.bsearch__input::placeholder { color: #8C8981; }
+.bsearch__input::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
+.bsearch__input:focus { outline: none; box-shadow: 0 0 0 4px rgba(252, 185, 9, .55); }
+.bsearch__clear {
+  position: absolute;
+  top: 50%;
+  right: .375rem;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1rem;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+.bsearch__clear[hidden] { display: none; }
+.bsearch__clear:hover,
+.bsearch__clear:focus-visible { background-color: rgba(252, 185, 9, .3); }
+.bsearch__stat {
+  margin: .5rem 0 0;
+  font-size: .875rem;
+  color: var(--ink-2);
+}
+.bsearch__stat strong { color: var(--ink); font-weight: var(--fw-black); }
+
+
+/* 2. Topic chips -------------------------------------------------------------- */
+
+.btopics { border-bottom: 1px solid var(--line-strong); background-color: var(--white); }
+.btopics__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .75rem 1.25rem;
+  padding-block: .875rem;
+}
+/* The label stays for screen readers (it names the chip group); visually the
+   chips speak for themselves and fit one row at 1440. */
+.btopics__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  margin: 0;
+  color: var(--muted);
+  font-size: .75rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.btopics__chips { display: flex; flex-wrap: wrap; gap: .5rem; min-width: 0; }
+.btopics__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  min-height: 2.75rem;
+  padding: .375rem .4375rem .375rem .9375rem;
+  border: 1px solid rgba(19, 18, 17, .18);
+  border-radius: 100px;
+  background-color: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: .875rem;
+  font-weight: var(--fw-bold);
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out),
+              border-color var(--dur-fast) var(--ease-out),
+              color var(--dur-fast) var(--ease-out);
+}
+.btopics__n {
+  display: grid;
+  place-items: center;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding-inline: .375rem;
+  border-radius: 100px;
+  background-color: rgba(252, 185, 9, .2);
+  color: var(--brand-ink);
+  font-size: .75rem;
+  font-weight: var(--fw-black);
+  font-variant-numeric: tabular-nums;
+}
+.btopics__chip:hover { border-color: var(--brand-deep); background-color: #FFFBEE; }
+.btopics__chip:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.btopics__chip[aria-pressed="true"] { border-color: var(--ink); background-color: var(--ink); color: var(--white); }
+.btopics__chip[aria-pressed="true"] .btopics__n { background-color: var(--brand); color: var(--ink); }
+.btopics__count { margin: 0 0 0 auto; color: var(--muted); font-size: .875rem; white-space: nowrap; }
+
+
+/* 3. Featured article --------------------------------------------------------- */
+
+.bfeat { padding-block: clamp(1.25rem, 1rem + .8vw, 1.75rem) 0; }
+.bfeat[hidden] { display: none; }
+.bfeat__card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 1rem + 1.5vw, 2.75rem);
+  align-items: center;
+  padding: clamp(.75rem, .6rem + .4vw, 1rem);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-xl);
+  background-color: var(--surface);
+}
+.bfeat__media {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: clamp(17.5rem, 12rem + 9vw, 23rem);
+  border-radius: var(--radius-lg);
+  background-color: var(--dark-2);
+  box-shadow: inset 0 -4px 0 var(--brand);
+}
+.bfeat__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: calc(100% - 4px);
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+.bfeat__body {
+  display: grid;
+  justify-items: start;
+  gap: .75rem;
+  min-width: 0;
+  padding-right: clamp(0rem, -1rem + 2vw, 1.5rem);
+}
+.bfeat__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  margin: 0;
+  padding: .375rem .875rem;
+  border-radius: 100px;
+  background-color: var(--ink);
+  color: var(--brand);
+  font-size: .75rem;
+  font-weight: var(--fw-black);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.bfeat__eyebrow i { font-size: .6875rem; }
+.bfeat__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.15rem + 1vw, 2.125rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.bfeat__excerpt {
+  margin: 0;
+  max-width: 58ch;
+  color: var(--ink-2);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+.bfeat__btn.btn.cta-themed { gap: .625rem; margin-top: .25rem; }
+.bfeat__btn i { font-size: .875rem; }
+
+
+/* 4. Article grid ------------------------------------------------------------- */
+
+.blist { padding-block: clamp(2rem, 1.5rem + 1.6vw, 3.25rem) clamp(1.5rem, 1.2rem + 1vw, 2.25rem); }
+.blist__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 1rem 3rem;
+  margin-bottom: clamp(1.25rem, 1rem + .8vw, 1.75rem);
+}
+.blist__head .process-sec__eyebrow { margin-bottom: .75rem; }
+.blist__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 1.1rem + 2.1vw, 2.875rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  color: var(--ink);
+}
+.blist__note {
+  max-width: 40ch;
+  margin: 0;
+  padding-bottom: .375rem;
+  color: var(--ink-2);
+  font-size: 1rem;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.blist__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, .8rem + .6vw, 1.5rem);
+}
+.bpost[hidden] { display: none; }
+
+/* The homepage card (.bcard), with an excerpt and a fixed title slot so the
+   rows line up whatever the title length. */
+.bpost.bcard { grid-template-rows: auto auto auto 1fr auto; padding: 1rem 1rem 1.25rem; }
+.bpost .bcard__img { margin-bottom: .25rem; }
+.bpost .bcard__meta { flex-wrap: wrap; gap: .375rem .75rem; }
+.bpost .bcard__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+  min-height: calc(3 * 1.35em);
+  font-size: 1.125rem;
+}
+.bpost__excerpt {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: .9375rem;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.bpost .bcard__more { margin-top: .25rem; }
+.bpost .media-frame__image { transition: transform .4s var(--ease-out); }
+.bpost:hover .media-frame__image { transform: scale(1.04); }
+
+.blist__empty {
+  padding: 2rem 1.25rem;
+  border: 1px dashed rgba(19, 18, 17, .25);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+.blist__empty[hidden] { display: none; }
+.blist__empty-title { margin: 0; font-size: 1.125rem; font-weight: var(--fw-bold); }
+.blist__empty-text { margin: .25rem 0 0; color: var(--ink-2); }
+.blist__reset {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-weight: var(--fw-bold);
+  text-decoration: underline;
+  text-decoration-color: var(--brand-deep);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.blist__more { display: flex; justify-content: center; margin-top: clamp(1.25rem, 1rem + .8vw, 1.75rem); }
+.blist__more[hidden] { display: none; }
+.blist__more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .625rem;
+  min-height: 3.25rem;
+  padding: .75rem 1.75rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  background-color: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 1.0625rem;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+.blist__more-btn i { font-size: .8125rem; }
+.blist__more-btn:hover { background-color: var(--brand); }
+.blist__more-btn:focus-visible { outline: 3px solid var(--brand); outline-offset: 3px; }
+
+
+/* 5. Ask the team: pale yellow card in the contact form's black frame ----------- */
+
+.bask { padding-block: clamp(1rem, .8rem + .6vw, 1.5rem) clamp(2rem, 1.5rem + 1.6vw, 3rem); }
+.bask__card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1.5rem clamp(1.5rem, 1rem + 3vw, 4rem);
+  padding: clamp(1.25rem, 1rem + 1.4vw, 2.25rem);
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-xl);
+  background-color: var(--bl-pale);
+}
+.bask__kicker { margin: 0 0 .75rem; font-size: 1rem; font-weight: var(--fw-black); }
+.bask__title {
+  margin: 0;
+  font-size: clamp(1.625rem, 1.2rem + 1.4vw, 2.375rem);
+  font-weight: var(--fw-bold);
+  letter-spacing: -.025em;
+  line-height: 1.15;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.bask__text { margin: .625rem 0 0; max-width: 52ch; color: var(--ink); font-size: 1.0625rem; line-height: 1.55; }
+.bask__actions { margin-top: 1.25rem; }
+.bask .faq__foot-actions .btn.cta-themed.cta-07 { border: 2px solid var(--ink) !important; }
+
+.bask__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bask__fact {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  min-height: 4.5rem;
+  padding: .75rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-md);
+  background-color: var(--white);
+  line-height: 1.2;
+}
+.bask__fact strong { display: block; color: var(--ink); font-size: 1.0625rem; font-weight: var(--fw-black); white-space: nowrap; }
+.bask__fact small {
+  display: block;
+  margin-top: .125rem;
+  color: var(--muted);
+  font-size: .75rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.bask__fact--google img { width: 2rem; height: 2rem; flex: none; }
+.bask__star { color: var(--brand-deep); }
+.bask__fact--bbb img { display: block; flex: none; width: auto; height: 2rem; }
+.bask__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  background-color: var(--ink);
+  color: var(--brand);
+  font-size: .9375rem;
+}
+
+
+/* 6. Reviews: the homepage testimonials head with the badge pair --------------- */
+
+.page-blog .breviews {
+  padding-block: clamp(1.75rem, 1.2rem + 1.6vw, 3rem) .75rem;
+  border-top: 1px solid var(--line-strong);
+}
+@media (min-width: 48em) {
+  .page-blog .breviews .testi__head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+  .page-blog .breviews .testi__title { white-space: normal; max-width: 17em; }
+}
+
+
+/* 7. CTA band: estimate left, call right ------------------------------------- */
+
+.bcta__actions { justify-content: center; }
+.bcta__actions .faq__foot-tel { white-space: nowrap; }
+@media (min-width: 62em) {
+  .bcta .cta-band__inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    justify-items: start;
+    align-items: center;
+    text-align: left;
+  }
+  .bcta .cta-band__copy { justify-items: start; }
+  .bcta .cta-band__meta { justify-content: flex-start; }
+  .bcta__actions { flex-wrap: nowrap; justify-content: flex-end; }
+}
+
+
+/* Responsive ------------------------------------------------------------------ */
+
+@media (max-width: 79.99em) {
+  .blist__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 61.99em) {
+  .bsearch { flex-basis: 100%; }
+  .bfeat__card { grid-template-columns: minmax(0, 1fr); }
+  .bfeat__media { height: auto; aspect-ratio: 16 / 8; }
+  .bfeat__body { padding: 0 .5rem .75rem; }
+  .blist__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .blist__head { grid-template-columns: minmax(0, 1fr); }
+  .bask__card { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 47.99em) {
+  .btopics__count { flex-basis: 100%; margin-left: 0; }
+}
+
+@media (max-width: 40em) {
+  .bhead__band { padding-block: 1rem 1.125rem; }
+  .bhead__title { font-size: 1.75rem; }
+  .bhead__lede { font-size: 1rem; }
+
+  /* Chips scroll sideways in one row instead of stacking. */
+  .btopics__inner { gap: .5rem; padding-block: .75rem; }
+  .btopics__label { display: none; }
+  .btopics__chips {
+    flex-wrap: nowrap;
+    width: calc(100% + 2 * var(--edge));
+    margin-inline: calc(-1 * var(--edge));
+    padding-inline: var(--edge);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .btopics__chips::-webkit-scrollbar { display: none; }
+  .btopics__count { font-size: .8125rem; }
+
+  .bfeat__media { aspect-ratio: 4 / 3; }
+  .bfeat__body { padding: 0 .25rem .5rem; gap: .625rem; }
+  .bfeat__title { font-size: 1.375rem; }
+  .bfeat__excerpt { font-size: .9375rem; }
+  .bfeat__btn.btn.cta-themed { width: 100%; }
+
+  .blist__grid { grid-template-columns: minmax(0, 1fr); }
+  .bpost .bcard__title { min-height: 0; }
+  .blist__note { display: none; }
+  .blist__more-btn { width: 100%; justify-content: center; }
+
+  .bask__actions { flex-direction: column; }
+  .bask__actions > * { justify-content: center; }
+  .bask__facts { gap: .5rem; }
+  .bask__fact { min-height: 3.75rem; padding: .625rem .75rem; gap: .5rem; }
+  .bask__fact strong { font-size: .9375rem; }
+  .bask__fact small { font-size: .6875rem; letter-spacing: .04em; }
+  .bask__fact--google img { width: 1.5rem; height: 1.5rem; }
+  .bask__fact--bbb img { height: 1.5rem; }
+  .bask__icon { width: 1.875rem; height: 1.875rem; font-size: .8125rem; }
+
+  .bcta__actions { flex-direction: column; width: 100%; }
+  .bcta__actions > * { justify-content: center; }
+}
+
+/* Short laptop screens (Sean's 1440 x 630): the head and the whole featured
+   card fit on the first screen. */
+@media (min-width: 62em) and (max-height: 760px) {
+  .bhead__band { padding-block: .75rem .875rem; }
+  .bhead__title { font-size: 2.375rem; }
+  .bhead__lede { margin-top: .25rem; font-size: 1rem; }
+  .bsearch__stat { margin-top: .25rem; }
+  .btopics__inner { padding-block: .5rem; }
+  .bfeat { padding-top: .875rem; }
+  .bfeat__card { padding: .75rem; }
+  .bfeat__media { height: 16rem; }
+  .bfeat__body { gap: .5rem; }
+  .bfeat__btn.btn.cta-themed { min-height: 3rem; margin-top: .125rem; }
+  .bfeat__title { font-size: 1.75rem; }
+  .bfeat__excerpt { font-size: .9375rem; line-height: 1.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bpost .media-frame__image { transition: none; }
+  .bpost:hover .media-frame__image { transform: none; }
+}
+
+/* Phones: compact list cards (photo left, title right) so nine articles do
+   not run to a dozen screens; the excerpt and the pill drop out. */
+@media (max-width: 40em) {
+  .bpost.bcard {
+    grid-template-columns: 6.75rem minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr;
+    column-gap: .875rem;
+    row-gap: .375rem;
+    align-items: start;
+    padding: .625rem;
+    border-radius: var(--radius-lg);
+  }
+  .bpost .bcard__img {
+    grid-row: 1 / -1;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+    border-radius: 10px;
+  }
+  .bpost .bcard__meta { gap: .25rem .5rem; }
+  .bpost .bcard__admin { padding: .1875rem .5rem; font-size: .625rem; }
+  .bpost .bcard__date { font-size: .6875rem; letter-spacing: .06em; }
+  .bpost .bcard__title { font-size: 1rem; line-height: 1.3; }
+  .bpost__excerpt, .bpost .bcard__more { display: none; }
+}
+@media (max-width: 40em) {
+  .bask__fact strong { white-space: normal; }
+}
+@media (max-width: 40em) {
+  .bask__fact small { display: none; }
+  .bask__fact--google small { display: block; }
+}
