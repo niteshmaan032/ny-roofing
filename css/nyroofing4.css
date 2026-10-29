@@ -7553,3 +7553,142 @@ a.contact__card:hover .contact__chip { background-color: var(--brand); color: va
 
 /* NYR-C7 / R4: a phone number never breaks across two lines. */
 a[href^="tel:"] { white-space: nowrap; }
+
+
+/* ==========================================================================
+   Oct 27 call (Sean): the yellow hero form is the main one
+   Ported from the v2 staging page (css/nyroofing4-v2.css, which stays as it
+   was for nyroofing4-v2.html): solid brand yellow, black frame, white
+   fields, black submit with the yellow arrow pip, the call-back line under
+   it. Sean's refinements on top of the v2 look:
+   - the title is plain black letters (no white box, no border);
+   - the submit is square-cornered like the hero buttons (4px), keeping its
+     colours and the arrow pip.
+   Everything is scoped to .gform--yellow, so the glass rules above no
+   longer apply where the form carries that class.
+   ========================================================================== */
+
+/* A slightly wider form column (31rem with the glass form). */
+@media (min-width: 62em) {
+  .vhero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 33rem); }
+}
+
+.gform.gform--yellow {
+  padding: .875rem 1.75rem 1rem;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius-xl);
+  background: var(--brand);
+  -webkit-backdrop-filter: none;
+          backdrop-filter: none;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, .75);
+  color: var(--ink);
+}
+
+/* Title: black letters on a hairline-ruled head. */
+.gform--yellow .gform__head {
+  margin-bottom: .625rem;
+  padding-bottom: .5rem;
+  border-bottom: 1px solid rgba(19, 18, 17, .22);
+  text-align: center;
+}
+.gform--yellow .gform__title {
+  margin: 0;
+  font-size: clamp(1.5rem, 1.3rem + .7vw, 1.75rem);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.gform--yellow .gform__form { gap: .625rem 1rem; margin-top: 0; }
+.gform--yellow .gform__form .field { gap: .25rem; }
+
+.gform--yellow .gform__form .field__label {
+  color: var(--ink);
+  font-size: .75rem;
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+  letter-spacing: .1em;
+}
+.gform--yellow .gform__form .field__input {
+  min-height: 2.75rem;
+  padding: .375rem .875rem;
+  border: 1px solid rgba(19, 18, 17, .3);
+  border-radius: 8px;
+  background-color: var(--white);
+  color: var(--ink);
+}
+.gform--yellow .gform__form .field__input::placeholder { color: #6E6A62; }
+.gform--yellow .gform__form .field__input:hover { border-color: rgba(19, 18, 17, .55); }
+.gform--yellow .gform__form .field__input:focus,
+.gform--yellow .gform__form .field__input:focus-visible {
+  outline: 0;
+  border-color: var(--ink);
+  background-color: var(--white);
+  box-shadow: 0 0 0 3px rgba(19, 18, 17, .2);
+}
+.gform--yellow .gform__form .field__input--area { height: 3.75rem; min-height: 3.75rem; }
+
+/* Errors in dark red on the yellow. */
+.gform--yellow .gform__form .field__error { color: #7A0F0A; font-weight: var(--fw-bold); }
+.gform--yellow .gform__form .field.is-invalid .field__input { border-color: #9B1C14; border-width: 2px; }
+.gform--yellow .gform__form .field.is-invalid .field__input:focus { box-shadow: 0 0 0 3px rgba(155, 28, 20, .2); }
+
+/* Black submit, square-cornered like the hero buttons. */
+.gform--yellow .gform__pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .75rem;
+  justify-self: center;
+  width: min(100%, 26rem);
+  min-height: 3rem;
+  margin-top: .375rem;
+  padding: .375rem 1.25rem;
+  border: 2px solid var(--ink);
+  border-radius: 4px;
+  background-color: var(--ink);
+  color: var(--white);
+  font-size: 1.0625rem;
+  font-weight: var(--fw-black);
+  line-height: 1.2;
+}
+.gform__pill-pip {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.125rem;
+  height: 2.125rem;
+  border-radius: 50%;
+  background-color: var(--brand);
+  color: var(--ink);
+  font-size: .8125rem;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+.gform--yellow .gform__pill:hover,
+.gform--yellow .gform__pill:focus-visible {
+  border-color: var(--ink);
+  background-color: var(--white);
+  color: var(--ink);
+}
+.gform--yellow .gform__pill:hover .gform__pill-pip,
+.gform--yellow .gform__pill:focus-visible .gform__pill-pip { transform: translateX(2px); }
+.gform--yellow .gform__pill:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.gform--yellow .gform__form .form-callback {
+  margin-top: 0;
+  color: var(--ink);
+  font-size: .875rem;
+  font-weight: var(--fw-bold);
+}
+
+/* Thank-you state on the yellow. */
+.gform--yellow .gform__done .quote__done-mark { background-color: var(--ink); color: var(--brand); }
+.gform--yellow .gform__done .quote__done-title,
+.gform--yellow .gform__done .quote__done-text,
+.gform--yellow .gform__done .quote__done-text a { color: var(--ink); }
+
+/* Phones: a little less padding; Name and Phone still share a line. */
+@media (max-width: 40em) {
+  .gform.gform--yellow { padding: .75rem .875rem .875rem; }
+  .gform--yellow .gform__form { gap: .625rem; }
+  .gform--yellow .gform__pill { width: 100%; }
+}

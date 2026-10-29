@@ -576,3 +576,17 @@ a.ch-tile:hover .ch-tile__value { color: var(--brand); }
 @media (min-width: 62em) {
   .ch__tiles .ch-tile { min-width: 15rem; padding: .5rem 1.25rem .5rem .5rem; }
 }
+
+
+/* ==========================================================================
+   Oct 27 call (Sean)
+   ========================================================================== */
+
+/* The form title is plain black letters: no white box, no border (the
+   markup no longer carries .quote__title-box). A touch larger now that it
+   has no frame. */
+.ch-form__title { font-size: clamp(1.5rem, 1.3rem + .7vw, 1.75rem); }
+
+/* The submit is square-cornered like the hero buttons (4px), keeping its
+   black fill and the yellow arrow pip, now centred with the label. */
+.ch-btn { padding: .375rem 1.25rem; border-radius: 4px; }

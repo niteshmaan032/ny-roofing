@@ -24,7 +24,7 @@
   <!-- Standalone sheet. This page shares no CSS with index/nyc2 so the new
        brand palette can never leak into the Royal Renovators pages. -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-  <link rel="stylesheet" href="css/nyroofing4.css?v=22">
+  <link rel="stylesheet" href="css/nyroofing4.css?v=23">
 </head>
 <body>
 
@@ -356,12 +356,16 @@
           </ul>
         </div>
 
-        <!-- Glass over the footage: the video reads through the pane rather
-             than behind a card. Same ids and .field structure the validator in
-             nyroofing2.js already binds to. -->
-        <div class="gform">
+        <!-- Oct 27 call: the solid yellow form from the v2 staging page
+             replaces the glass pane (Sean: "it's the best, make this the main
+             one"). The title is plain black letters and the submit button is
+             square-cornered like the hero buttons. Same ids and .field
+             structure the validator in nyroofing4.js binds to. -->
+        <div class="gform gform--yellow">
 
-          <p class="gform__title"><span class="quote__title-box">Get A Free Quote</span></p>
+          <div class="gform__head">
+            <p class="gform__title">Get A Free Quote</p>
+          </div>
 
           <form class="gform__form" id="quote-form" action="#" method="post" novalidate>
 
@@ -395,7 +399,10 @@
               <p class="field__error" data-error-for="q-message" hidden></p>
             </div>
 
-            <button class="gform__submit cta-y" type="submit">Get My Free Estimate</button>
+            <button class="gform__submit gform__pill" type="submit">
+              <span class="gform__pill-pip" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></span>
+              <span class="gform__pill-label">Get My Free Estimate</span>
+            </button>
             <p class="form-callback">We&rsquo;ll call you back within the hour</p>
           </form>
 

@@ -1656,3 +1656,13 @@ html.fr-lb-open { overflow: hidden; }
   .fr-systile { aspect-ratio: 16 / 7; }
   .fr-systile__icon { margin-bottom: .25rem; }
 }
+
+
+/* ==========================================================================
+   Oct 27 call (Sean): the yellow estimate form matches the contact page
+   ========================================================================== */
+
+/* Title in plain black letters (no white box, no border); the submit is
+   square-cornered like the hero buttons, keeping its colours and pip. */
+.ch-form__title { font-size: clamp(1.5rem, 1.3rem + .7vw, 1.75rem); }
+.ch-btn { padding: .375rem 1.25rem; border-radius: 4px; }
